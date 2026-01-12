@@ -1,0 +1,149 @@
+:root {
+  /* Premium Palette - Red & Blue */
+  --primary-red: #E53935;
+  /* Main Action / Brand Color */
+  --primary-red-hover: #D32F2F;
+  --primary-blue: #0A2540;
+  /* Sidebar / text / deep accents */
+  --primary-blue-hover: #001b33;
+  --accent-blue: #1E88E5;
+  /* Secondary actions */
+
+  --bg-page: #F0F2F5;
+  /* Slightly darker for contrast */
+  --bg-card: #FFFFFF;
+  --text-main: #1A1A1A;
+  --text-muted: #6C757D;
+  --border-light: #DEE2E6;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  /* Softer corners */
+  --radius-lg: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-blue-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: white;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.btn-accent {
+  background-color: var(--primary-red);
+  color: whithe;
+}
+
+.btn-accent:hover {
+  background-color: var(--primary-red-hover);
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(10, 37, 64, 0.1);
+}
+
+/* React Phone Number Input Customization */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.PhoneInputInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: white;
+  outline: none;
+}
+
+.PhoneInputInput:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.1);
+}
+
+.PhoneInputCountry {
+  margin-right: 0.5rem;
+}
+
+.PhoneInputCountrySelect {
+  display: none;
+}

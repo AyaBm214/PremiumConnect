@@ -1,0 +1,124 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    width: 280px;
+    background: white;
+    border-right: 1px solid var(--border-light);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    /* Removed background/padding to blend */
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 160px;
+    /* Much bigger */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Bouncy transition */
+}
+
+.logo img:hover {
+    transform: scale(1.1) rotate(-1deg);
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+}
+
+.timeline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stepItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.activeStep {
+    background-color: #ebf8ff;
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.completedStep {
+    color: var(--primary-blue);
+}
+
+.check {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.saveExitBtn {
+    margin-top: auto;
+    background: none;
+    border: 1px solid var(--border-light);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+.saveExitBtn:hover {
+    border-color: var(--text-main);
+    color: var(--text-main);
+}
+
+.main {
+    flex: 1;
+    padding: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 1rem;
+}
+
+.header h2 {
+    font-size: 1.75rem;
+    color: var(--primary-blue);
+}
+
+.progress {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.stepContent {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+}

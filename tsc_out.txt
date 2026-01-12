@@ -1,0 +1,8 @@
+﻿src/app/client/onboarding/[id]/page.tsx(127,26): error TS2304: Cannot find name 'Step4Access'.
+src/app/client/onboarding/[id]/page.tsx(129,40): error TS7006: Parameter 'access' implicitly has an 'any' type.
+src/app/client/onboarding/[id]/page.tsx(135,26): error TS2304: Cannot find name 'Step5Rules'.
+src/app/client/onboarding/[id]/page.tsx(137,40): error TS7006: Parameter 'rules' implicitly has an 'any' type.
+src/app/client/onboarding/[id]/page.tsx(143,26): error TS2304: Cannot find name 'Step6Guide'.
+src/app/client/onboarding/[id]/page.tsx(145,40): error TS7006: Parameter 'guide' implicitly has an 'any' type.
+src/app/client/onboarding/[id]/page.tsx(151,26): error TS2304: Cannot find name 'Step7Payment'.
+src/app/client/onboarding/[id]/page.tsx(153,40): error TS7006: Parameter 'payment' implicitly has an 'any' type.

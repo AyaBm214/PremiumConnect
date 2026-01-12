@@ -1,0 +1,113 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.75rem;
+    color: #0A2540;
+}
+
+.tableCard {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.table td {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-light);
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+.propCell {
+    display: flex;
+    flex-direction: column;
+}
+
+.propName {
+    font-weight: 500;
+}
+
+.propId {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.progressBar {
+    width: 100px;
+    height: 6px;
+    background: var(--border-light);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--primary-blue);
+}
+
+.statusBadge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.draft {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.pending_review {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+.sectionCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+.sectionTitle { margin-bottom: 1rem; color: var(--primary-blue); font-size: 1.1rem; }
+.row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f1f3f5; }
+.label { color: var(--text-muted); }
+.value { font-weight: 500; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag { background: #e3f2fd; color: #1565c0; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
