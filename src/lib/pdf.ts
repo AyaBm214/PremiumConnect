@@ -46,8 +46,7 @@ export const generatePropertyPDF = (property: Property) => {
             ['Pets Allowed', data.rules?.pets ? `Yes (Max: ${data.rules.maxPets || 'Any'})` : 'No'],
             ['Events Allowed', data.rules?.events ? 'Yes' : 'No'],
             ['Cleaning Fee', data.rules?.cleaningFee ? `$${data.rules.cleaningFee}` : '$0'],
-            ['Security Deposit', data.rules?.securityDeposit ? `$${data.rules.securityDeposit}` : '$0'],
-            ['Pet Fee', data.rules?.petFee ? `$${data.rules.petFee}` : '$0'],
+
             ['Max Guests', data.rules?.maxGuests?.toString() || 'N/A'],
             ['Quiet Hours', data.rules?.quietHours || 'None'],
         ],
