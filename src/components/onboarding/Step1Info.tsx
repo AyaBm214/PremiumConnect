@@ -114,8 +114,10 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                 <Input
                     label={t('photos.zone.bathroom')}
                     type="number"
-                    value={formData.numBathrooms || ''}
-                    onChange={e => handleChange('numBathrooms', parseInt(e.target.value))}
+                    step={0.5}
+                    min={0}
+                    value={formData.numBathrooms ?? ''}
+                    onChange={e => handleChange('numBathrooms', e.target.value === '' ? undefined : parseFloat(e.target.value))}
                     required
                 />
                 <div className={styles.row}>

@@ -67,13 +67,13 @@ export default function ProfilePage() {
             const filePath = `${profile.id}/documents/${fileName}`;
 
             const { error: uploadError } = await supabase.storage
-                .from('user_docs') // Assuming 'user_docs' bucket or 'documents'
+                .from('properties') // Using properties bucket since it exists
                 .upload(filePath, file);
 
             if (uploadError) throw uploadError;
 
             const { data: { publicUrl } } = supabase.storage
-                .from('user_docs')
+                .from('properties')
                 .getPublicUrl(filePath);
 
             setProfile(prev => ({
