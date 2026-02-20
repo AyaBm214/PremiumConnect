@@ -50,12 +50,12 @@ export default function UsersPage() {
                                         <td>{u.phone_number || '-'}</td>
                                         <td>{u.business_number || '-'}</td>
                                         <td>
-                                            <div style={{ fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                                                <span style={{ color: u.documents?.identity_proof ? 'green' : 'red' }}>ID: {u.documents?.identity_proof ? '✓' : '✗'}</span>
-                                                <span style={{ color: u.documents?.void_cheque ? 'green' : 'red' }}>Void: {u.documents?.void_cheque ? '✓' : '✗'}</span>
-                                                <span style={{ color: u.documents?.insurance_proof ? 'green' : 'red' }}>Ins: {u.documents?.insurance_proof ? '✓' : '✗'}</span>
-                                                <span style={{ color: u.documents?.citq_certificate ? 'green' : 'red' }}>CITQ: {u.documents?.citq_certificate ? '✓' : '✗'}</span>
-                                                <span style={{ color: u.documents?.tax_confirmation ? 'green' : 'red' }}>Tax: {u.documents?.tax_confirmation ? '✓' : '✗'}</span>
+                                            <div style={{ fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                <div>ID: {u.documents?.identity_proof ? <a href={u.documents.identity_proof} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}>Download</a> : <span style={{ color: 'red', fontWeight: 'bold' }}>✗</span>}</div>
+                                                <div>Void: {u.documents?.void_cheque ? <a href={u.documents.void_cheque} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}>Download</a> : <span style={{ color: 'red', fontWeight: 'bold' }}>✗</span>}</div>
+                                                <div>Ins: {u.documents?.insurance_proof ? <a href={u.documents.insurance_proof} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}>Download</a> : <span style={{ color: 'red', fontWeight: 'bold' }}>✗</span>}</div>
+                                                <div>CITQ: {u.documents?.citq_certificate ? <a href={u.documents.citq_certificate} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}>Download</a> : <span style={{ color: 'red', fontWeight: 'bold' }}>✗</span>}</div>
+                                                <div style={{ color: u.documents?.tax_confirmation ? 'green' : 'red', marginTop: '2px' }}>Tax: {u.documents?.tax_confirmation ? '✓' : '✗'}</div>
                                             </div>
                                         </td>
                                         <td>{u.created_at ? new Date(u.created_at).toLocaleDateString() : '-'}</td>

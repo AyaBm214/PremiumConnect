@@ -31,3 +31,12 @@ USING (auth.uid() = id);
 CREATE POLICY "Users can delete own profile" 
 ON public.profiles FOR DELETE 
 USING (auth.uid() = id);
+
+-- Allow admins to view all profiles
+CREATE POLICY "Admins can view all profiles"
+ON public.profiles FOR SELECT
+USING (
+  (auth.jwt() -> 'user_metadata' ->> 'type') = 'admin'
+  OR 
+  (auth.jwt() ->> 'email') = 'admin@premiumconnect.com'
+);
