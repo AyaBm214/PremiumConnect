@@ -79,8 +79,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const isLoginPage = pathname === '/admin/login';
 
     return (
-        <AuthProvider>
+        <>
             {isLoginPage ? children : <AdminGuard>{children}</AdminGuard>}
-        </AuthProvider>
+        </>
     );
 }

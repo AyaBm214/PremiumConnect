@@ -90,7 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 data: {
                     full_name: name,
                     type: 'client' // Default to client
-                }
+                },
+                emailRedirectTo: `${window.location.origin}/auth/confirm`,
             }
         });
 
@@ -99,24 +100,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             throw error;
         }
 
-        if (data.user) {
-            // Auto-create profile so they appear in Admin Users immediately
-            const { error: profileError } = await supabase.from('profiles').insert({
-                id: data.user.id,
-                email: email,
-                full_name: name || '',
-                created_at: new Date().toISOString(),
-                documents: {}, // Initialize empty
-                phone_number: ''
-            });
+        // Profile creation is now handled by a database trigger (handle_new_user)
+        // to ensure it works even if the user hasn't confirmed their email yet.
 
-            if (profileError) {
-                console.error('Error creating initial profile:', profileError);
-                // Continue anyway, it shouldn't block signup flow, but might mean they don't show up yet.
-            }
-        }
-
-        router.push('/client/dashboard');
+        // Show a success message or redirect to login
+        router.push('/client/login');
     };
 
     const logout = async () => {

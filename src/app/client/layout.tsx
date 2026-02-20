@@ -1,5 +1,3 @@
-import { AuthProvider } from '@/lib/AuthContext';
-import { LanguageProvider } from '@/lib/LanguageContext';
 import React from 'react';
 
 export default function ClientLayout({
@@ -8,12 +6,8 @@ export default function ClientLayout({
     children: React.ReactNode;
 }) {
     return (
-        <AuthProvider>
-            <LanguageProvider>
-                <div className="client-app-root">
-                    {children}
-                </div>
-            </LanguageProvider>
-        </AuthProvider>
+        <div className="client-app-root">
+            {children}
+        </div>
     );
 }
