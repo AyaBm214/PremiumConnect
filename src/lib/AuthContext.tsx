@@ -107,8 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Profile creation is now handled by a database trigger (handle_new_user)
         // to ensure it works even if the user hasn't confirmed their email yet.
 
-        // Show a success message or redirect to login
-        router.push('/client/login');
+        setIsLoading(false);
     };
 
     const logout = async () => {
