@@ -32,6 +32,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'signup.pass_mismatch': { en: "Passwords don't match", fr: 'Les mots de passe ne correspondent pas' },
     'signup.pass_short': { en: 'Password too short', fr: 'Mot de passe trop court' },
     'signup.error': { en: 'Signup error', fr: "Erreur d'inscription" },
+    'signup.check_email': { en: 'Check Your Email', fr: 'Vérifiez votre courriel' },
+    'signup.email_sent': { en: 'A confirmation link has been sent to your email address. Please click it to activate your account.', fr: 'Un lien de confirmation a été envoyé à votre adresse courriel. Veuillez cliquer dessus pour activer votre compte.' },
 
     // Dashboard
     'dash.welcome': { en: 'Welcome back', fr: 'Bienvenue' },

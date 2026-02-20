@@ -17,6 +17,7 @@ export default function SignupPage() {
         password: '',
         confirmPassword: ''
     });
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,6 +27,7 @@ export default function SignupPage() {
         }
         try {
             await signup(formData.email, formData.password, formData.name);
+            setIsSuccess(true);
         } catch (error) {
             console.error(error);
             alert(formData.password.length < 6 ? t('signup.pass_short') : t('signup.error'));
@@ -58,62 +60,75 @@ export default function SignupPage() {
                 </div>
 
                 <h1 className={styles.title}>
-                    {t('signup.title')}
+                    {isSuccess ? t('signup.check_email') || 'Success!' : t('signup.title')}
                 </h1>
                 <p className={styles.subtitle}>
-                    {t('signup.subtitle')}
+                    {isSuccess
+                        ? t('signup.email_sent') || 'Please check your email to confirm your account.'
+                        : t('signup.subtitle')}
                 </p>
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <Input
-                        name="name"
-                        label={t('signup.name')}
-                        type="text"
-                        placeholder="John Doe"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    <Input
-                        name="email"
-                        label={t('login.email')}
-                        type="email"
-                        placeholder="exemple@email.com"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        autoComplete="email"
-                    />
-                    <Input
-                        name="password"
-                        label={t('login.password')}
-                        type="password"
-                        placeholder="••••••••"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        autoComplete="new-password"
-                    />
-                    <Input
-                        name="confirmPassword"
-                        label={t('signup.confirm')}
-                        type="password"
-                        placeholder="••••••••"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                        autoComplete="new-password"
-                    />
+                {isSuccess ? (
+                    <div className={styles.successContainer} style={{ textAlign: 'center', padding: '2rem 0' }}>
+                        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📧</div>
+                        <Link href="/client/login">
+                            <Button variant="primary" fullWidth>
+                                {t('signup.signin')}
+                            </Button>
+                        </Link>
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className={styles.form}>
+                        <Input
+                            name="name"
+                            label={t('signup.name')}
+                            type="text"
+                            placeholder="John Doe"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                        <Input
+                            name="email"
+                            label={t('login.email')}
+                            type="email"
+                            placeholder="exemple@email.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            autoComplete="email"
+                        />
+                        <Input
+                            name="password"
+                            label={t('login.password')}
+                            type="password"
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            autoComplete="new-password"
+                        />
+                        <Input
+                            name="confirmPassword"
+                            label={t('signup.confirm')}
+                            type="password"
+                            placeholder="••••••••"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            autoComplete="new-password"
+                        />
 
-                    <Button
-                        variant="primary"
-                        fullWidth
-                        type="submit"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? '...' : t('signup.title')}
-                    </Button>
-                </form>
+                        <Button
+                            variant="primary"
+                            fullWidth
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? '...' : t('signup.title')}
+                        </Button>
+                    </form>
+                )}
 
                 <div className={styles.footer}>
                     {t('signup.have_account')}

@@ -83,6 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(true);
         if (!password) throw new Error('Password required');
 
+        console.log('Attempting signup for:', email, 'with redirect:', `${window.location.origin}/auth/confirm`);
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
@@ -96,9 +97,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (error) {
+            console.error('Signup error:', error);
             setIsLoading(false);
             throw error;
         }
+
+        console.log('Signup successful. Response data:', data);
 
         // Profile creation is now handled by a database trigger (handle_new_user)
         // to ensure it works even if the user hasn't confirmed their email yet.
