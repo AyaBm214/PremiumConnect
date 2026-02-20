@@ -28,9 +28,10 @@ export default function SignupPage() {
         try {
             await signup(formData.email, formData.password, formData.name);
             setIsSuccess(true);
-        } catch (error) {
-            console.error(error);
-            alert(formData.password.length < 6 ? t('signup.pass_short') : t('signup.error'));
+        } catch (error: any) {
+            console.error('Signup caught error:', error);
+            const errorMessage = error.message || t('signup.error');
+            alert(formData.password.length < 6 ? t('signup.pass_short') : errorMessage);
         }
     };
 

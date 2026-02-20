@@ -18,9 +18,12 @@ export default function ClientDashboard() {
     const supabase = createClient();
 
     useEffect(() => {
-        // If not logged in redirect
+        // If not logged in redirect, but wait for a small window to ensure session is picked up
         if (!isLoading && !user) {
-            router.push('/client/login');
+            const timer = setTimeout(() => {
+                if (!user) router.push('/client/login');
+            }, 500);
+            return () => clearTimeout(timer);
         }
 
         async function loadProperties() {

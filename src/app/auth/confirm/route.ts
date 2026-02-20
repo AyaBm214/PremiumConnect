@@ -4,25 +4,33 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get('code');
-    // if "next" is in param, use it as the redirect URL
     const next = searchParams.get('next') ?? '/client/dashboard';
+
+    console.log('[AUTH CONFIRM] Processing code exchange. Origin:', origin);
 
     if (code) {
         const supabase = createClient();
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        const { error, data } = await supabase.auth.exchangeCodeForSession(code);
+
         if (!error) {
-            const forwardedHost = request.headers.get('x-forwarded-host'); // localhost:3000 or tenant.vercel.app
+            console.log('[AUTH CONFIRM] Code exchange successful for user:', data.user?.email);
+
+            const forwardedHost = request.headers.get('x-forwarded-host');
             const isLocalEnv = process.env.NODE_ENV === 'development';
-            if (isLocalEnv) {
-                return NextResponse.redirect(`${origin}${next}`);
-            } else if (forwardedHost) {
-                return NextResponse.redirect(`https://${forwardedHost}${next}`);
-            } else {
-                return NextResponse.redirect(`${origin}${next}`);
+
+            // Construct target URL
+            let targetUrl = `${origin}${next}`;
+            if (!isLocalEnv && forwardedHost) {
+                targetUrl = `https://${forwardedHost}${next}`;
             }
+
+            console.log('[AUTH CONFIRM] Redirecting to:', targetUrl);
+            return NextResponse.redirect(targetUrl);
+        } else {
+            console.error('[AUTH CONFIRM] Code exchange error:', error.message);
         }
     }
 
-    // return the user to an error page with instructions
+    console.warn('[AUTH CONFIRM] Falling back to login due to missing code or error');
     return NextResponse.redirect(`${origin}/client/login?error=auth_code_error`);
 }
