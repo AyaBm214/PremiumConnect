@@ -4,8 +4,11 @@ import { createClient } from '@/lib/supabase/client';
 import { Property } from '@/lib/types';
 import styles from './dashboard.module.css';
 
+import { useLanguage } from '@/lib/LanguageContext';
+
 export default function AdminDashboardPage() {
     const supabase = createClient();
+    const { t } = useLanguage();
     const [stats, setStats] = useState({
         totalProperties: 0,
         totalClients: 0,
@@ -15,7 +18,6 @@ export default function AdminDashboardPage() {
 
     useEffect(() => {
         async function loadStats() {
-            // Note: This query depends on RLS policies allowing the user to see all properties.
             const { data: allProps, error } = await supabase.from('properties').select('*');
 
             if (error || !allProps) {
@@ -37,19 +39,19 @@ export default function AdminDashboardPage() {
 
     return (
         <div>
-            <h1 className={styles.title}>Dashboard Overview</h1>
+            <h1 className={styles.title}>{t('admin.dash.title')}</h1>
 
             <div className={styles.statsGrid}>
-                <StatCard title="Total Properties" value={stats.totalProperties} icon="🏠" />
-                <StatCard title="Total Clients" value={stats.totalClients} icon="👥" />
-                <StatCard title="Active Onboardings" value={stats.activeOnboardings} icon="⏳" />
-                <StatCard title="Completed" value={stats.completed} icon="✅" />
+                <StatCard title={t('admin.dash.total_props')} value={stats.totalProperties} icon="🏠" />
+                <StatCard title={t('admin.dash.total_clients')} value={stats.totalClients} icon="👥" />
+                <StatCard title={t('admin.dash.active')} value={stats.activeOnboardings} icon="⏳" />
+                <StatCard title={t('admin.dash.completed')} value={stats.completed} icon="✅" />
             </div>
 
             <div className={styles.section}>
-                <h2 className={styles.subtitle}>Recent Activity</h2>
+                <h2 className={styles.subtitle}>{t('admin.dash.recent')}</h2>
                 <div className={styles.newsFeed}>
-                    <p className={styles.placeholder}>No recent activity to show.</p>
+                    <p className={styles.placeholder}>{t('admin.dash.no_activity')}</p>
                 </div>
             </div>
         </div>

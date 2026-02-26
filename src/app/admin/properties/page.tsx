@@ -7,11 +7,14 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import styles from './properties.module.css';
 
+import { useLanguage } from '@/lib/LanguageContext';
+
 export default function AdminPropertiesPage() {
     const [properties, setProperties] = useState<Property[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const supabase = createClient();
+    const { t } = useLanguage();
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -50,10 +53,10 @@ export default function AdminPropertiesPage() {
     return (
         <div>
             <header className={styles.header}>
-                <h1 className={styles.title}>All Properties</h1>
+                <h1 className={styles.title}>{t('admin.props.title')}</h1>
                 <div style={{ width: 300 }}>
                     <Input
-                        placeholder="Search properties..."
+                        placeholder={t('admin.props.search')}
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />

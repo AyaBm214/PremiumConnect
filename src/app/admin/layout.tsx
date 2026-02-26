@@ -6,15 +6,18 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './admin.module.css';
 
+import { useLanguage } from '@/lib/LanguageContext';
+
 function AdminSidebar() {
     const pathname = usePathname();
     const { user, logout } = useAuth();
+    const { language, setLanguage, t } = useLanguage();
 
     const links = [
-        { href: '/admin/dashboard', label: 'Overview', icon: '📊' },
-        { href: '/admin/properties', label: 'Properties', icon: '🏠' },
-        { href: '/admin/users', label: 'Users', icon: '👥' },
-        { href: '/admin/media', label: 'Media', icon: '📁' },
+        { href: '/admin/dashboard', label: t('admin.overview'), icon: '📊' },
+        { href: '/admin/properties', label: t('admin.properties'), icon: '🏠' },
+        { href: '/admin/users', label: t('admin.users'), icon: '👥' },
+        { href: '/admin/media', label: t('admin.media'), icon: '📁' },
     ];
 
     return (
@@ -28,6 +31,22 @@ function AdminSidebar() {
                     style={{ objectFit: 'contain' }}
                 />
             </div>
+
+            <div className={styles.langSwitch}>
+                <button
+                    className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`}
+                    onClick={() => setLanguage('en')}
+                >
+                    EN
+                </button>
+                <button
+                    className={`${styles.langBtn} ${language === 'fr' ? styles.langActive : ''}`}
+                    onClick={() => setLanguage('fr')}
+                >
+                    FR
+                </button>
+            </div>
+
             <div className={styles.userInfo}>
                 {user?.email}
             </div>
@@ -43,7 +62,7 @@ function AdminSidebar() {
                     </Link>
                 ))}
             </nav>
-            <button onClick={logout} className={styles.logoutBtn}>Logout</button>
+            <button onClick={logout} className={styles.logoutBtn}>{t('admin.logout')}</button>
         </aside>
     );
 }
