@@ -82,7 +82,27 @@ export const generatePropertyPDF = (property: Property) => {
 export const downloadRemoteFile = async (url: string, filename: string) => {
     try {
         const response = await fetch(url);
+
+        // Check if response is successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Check if it's actually a PDF
+        const contentType = response.headers.get('content-type');
+        if (contentType && !contentType.includes('application/pdf')) {
+            console.warn(`File at ${url} is not a PDF (Content-Type: ${contentType}). Falling back to new tab.`);
+            window.open(url, '_blank');
+            return;
+        }
+
         const blob = await response.blob();
+
+        // Basic sanity check - very unlikely to be a valid PDF if it's under 100 bytes
+        if (blob.size < 100) {
+            throw new Error('Downloaded blob is too small to be a PDF.');
+        }
+
         const blobUrl = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = blobUrl;
@@ -92,8 +112,9 @@ export const downloadRemoteFile = async (url: string, filename: string) => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
-        console.error('Download failed:', error);
-        // Fallback to opening in new tab if blob download fails
+        console.error('Direct download failed:', error);
+        console.info('Attempting to open in new tab instead...');
+        // Fallback: Just open the URL. This bypasses CORS issues that might affect fetch()
         window.open(url, '_blank');
     }
 };

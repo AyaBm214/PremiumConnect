@@ -111,7 +111,12 @@ export default function AdminPropertiesPage() {
                                                     variant="outline"
                                                     style={{ color: '#007bff', borderColor: '#007bff', padding: '0 8px' }}
                                                     title={t('admin.details.download_citq')}
-                                                    onClick={() => prop.data.info?.citqFile && downloadRemoteFile(prop.data.info.citqFile, `CITQ_${prop.data.info.propertyName || prop.id}.pdf`)}
+                                                    onClick={() => {
+                                                        if (prop.data.info?.citqFile) {
+                                                            const safeName = (prop.data.info.propertyName || prop.id).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                                                            downloadRemoteFile(prop.data.info.citqFile, `CITQ_${safeName}.pdf`);
+                                                        }
+                                                    }}
                                                 >
                                                     CITQ 📄
                                                 </Button>

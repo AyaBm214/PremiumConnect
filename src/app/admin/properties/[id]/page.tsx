@@ -107,7 +107,12 @@ export default function PropertyDetailsPage() {
                         <Button
                             variant="outline"
                             style={{ borderColor: '#007bff', color: '#007bff' }}
-                            onClick={() => data.info?.citqFile && downloadRemoteFile(data.info.citqFile, `CITQ_${data.info.propertyName || property.id}.pdf`)}
+                            onClick={() => {
+                                if (data.info?.citqFile) {
+                                    const safeName = (data.info.propertyName || property.id).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                                    downloadRemoteFile(data.info.citqFile, `CITQ_${safeName}.pdf`);
+                                }
+                            }}
                         >
                             {t('admin.details.download_citq')}
                         </Button>
