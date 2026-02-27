@@ -147,8 +147,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     {formData.citqFile && <p style={{ fontSize: '0.8rem', color: 'green', marginBottom: '0.5rem' }}>✓ {t('profile.uploaded')}</p>}
                     <FileUploader
                         label={t('info.citq')}
-                        accept=".pdf"
-                        description="Required for legal compliance"
+                        accept=".pdf,image/*"
+                        description="PDF or image (JPG, PNG)"
                         onChange={(files) => handleFileUpload(files, 'citqFile')}
                         disabled={uploading}
                     />

@@ -87,26 +87,33 @@ export const downloadRemoteFile = async (url: string, filename: string) => {
         const response = await fetch(proxyUrl);
 
         if (!response.ok) {
-            throw new Error(`Proxy error! status: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.details || `Proxy error! status: ${response.status}`);
         }
 
         const blob = await response.blob();
 
-        if (blob.size < 100) {
-            throw new Error('Downloaded blob is too small.');
+        // Try to get the filename from the Content-Disposition header if the proxy changed it
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let finalFilename = filename;
+        if (contentDisposition && contentDisposition.includes('filename=')) {
+            const match = contentDisposition.match(/filename="(.+)"/);
+            if (match && match[1]) {
+                finalFilename = match[1];
+            }
         }
 
         const blobUrl = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = blobUrl;
-        link.download = filename;
+        link.download = finalFilename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
         console.error('Proxy download failed:', error);
-        // Final fallback: Just open the URL.
+        // Fallback: just open the URL
         window.open(url, '_blank');
     }
 };
