@@ -81,26 +81,19 @@ export const generatePropertyPDF = (property: Property) => {
 
 export const downloadRemoteFile = async (url: string, filename: string) => {
     try {
-        const response = await fetch(url);
+        // Use our server-side proxy to bypass CORS and force download
+        const proxyUrl = `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
 
-        // Check if response is successful
+        const response = await fetch(proxyUrl);
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // Check if it's actually a PDF
-        const contentType = response.headers.get('content-type');
-        if (contentType && !contentType.includes('application/pdf')) {
-            console.warn(`File at ${url} is not a PDF (Content-Type: ${contentType}). Falling back to new tab.`);
-            window.open(url, '_blank');
-            return;
+            throw new Error(`Proxy error! status: ${response.status}`);
         }
 
         const blob = await response.blob();
 
-        // Basic sanity check - very unlikely to be a valid PDF if it's under 100 bytes
         if (blob.size < 100) {
-            throw new Error('Downloaded blob is too small to be a PDF.');
+            throw new Error('Downloaded blob is too small.');
         }
 
         const blobUrl = window.URL.createObjectURL(blob);
@@ -112,9 +105,8 @@ export const downloadRemoteFile = async (url: string, filename: string) => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
-        console.error('Direct download failed:', error);
-        console.info('Attempting to open in new tab instead...');
-        // Fallback: Just open the URL. This bypasses CORS issues that might affect fetch()
+        console.error('Proxy download failed:', error);
+        // Final fallback: Just open the URL.
         window.open(url, '_blank');
     }
 };
