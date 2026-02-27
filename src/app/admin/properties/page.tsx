@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Property } from '@/lib/types';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { downloadRemoteFile } from '@/lib/pdf';
 import { Input } from '@/components/ui/Input';
 import styles from './properties.module.css';
 
@@ -105,11 +106,15 @@ export default function AdminPropertiesPage() {
                                                 <Button size="sm" variant="outline">{t('admin.props.view')}</Button>
                                             </Link>
                                             {prop.data.info?.citqFile && (
-                                                <a href={prop.data.info.citqFile} target="_blank" rel="noopener noreferrer" title={t('admin.details.download_citq')}>
-                                                    <Button size="sm" variant="outline" style={{ color: '#007bff', borderColor: '#007bff', padding: '0 8px' }}>
-                                                        CITQ 📄
-                                                    </Button>
-                                                </a>
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    style={{ color: '#007bff', borderColor: '#007bff', padding: '0 8px' }}
+                                                    title={t('admin.details.download_citq')}
+                                                    onClick={() => prop.data.info?.citqFile && downloadRemoteFile(prop.data.info.citqFile, `CITQ_${prop.data.info.propertyName || prop.id}.pdf`)}
+                                                >
+                                                    CITQ 📄
+                                                </Button>
                                             )}
                                         </div>
                                     </td>

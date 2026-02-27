@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { generatePropertyPDF } from '@/lib/pdf';
+import { generatePropertyPDF, downloadRemoteFile } from '@/lib/pdf';
 import { Property } from '@/lib/types';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
@@ -107,7 +107,7 @@ export default function PropertyDetailsPage() {
                         <Button
                             variant="outline"
                             style={{ borderColor: '#007bff', color: '#007bff' }}
-                            onClick={() => data.info?.citqFile && window.open(data.info.citqFile, '_blank')}
+                            onClick={() => data.info?.citqFile && downloadRemoteFile(data.info.citqFile, `CITQ_${data.info.propertyName || property.id}.pdf`)}
                         >
                             {t('admin.details.download_citq')}
                         </Button>
