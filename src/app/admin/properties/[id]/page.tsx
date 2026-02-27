@@ -103,6 +103,15 @@ export default function PropertyDetailsPage() {
                         }
                     }}>{t('admin.details.download_media')}</Button>
                     <Button variant="outline" onClick={() => generatePropertyPDF(property)}>{t('admin.details.download_pdf')}</Button>
+                    {data.info?.citqFile && (
+                        <Button
+                            variant="outline"
+                            style={{ borderColor: '#007bff', color: '#007bff' }}
+                            onClick={() => data.info?.citqFile && window.open(data.info.citqFile, '_blank')}
+                        >
+                            {t('admin.details.download_citq')}
+                        </Button>
+                    )}
                     <Button
                         style={{ backgroundColor: '#dc3545', color: 'white', border: 'none' }}
                         onClick={async () => {

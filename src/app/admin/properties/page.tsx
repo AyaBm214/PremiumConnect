@@ -100,9 +100,18 @@ export default function AdminPropertiesPage() {
                                     </td>
                                     <td>{new Date(prop.updatedAt).toLocaleDateString()}</td>
                                     <td>
-                                        <Link href={`/admin/properties/${prop.id}`}>
-                                            <Button size="sm" variant="outline">View</Button>
-                                        </Link>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Link href={`/admin/properties/${prop.id}`}>
+                                                <Button size="sm" variant="outline">{t('admin.props.view')}</Button>
+                                            </Link>
+                                            {prop.data.info?.citqFile && (
+                                                <a href={prop.data.info.citqFile} target="_blank" rel="noopener noreferrer" title={t('admin.details.download_citq')}>
+                                                    <Button size="sm" variant="outline" style={{ color: '#007bff', borderColor: '#007bff', padding: '0 8px' }}>
+                                                        CITQ 📄
+                                                    </Button>
+                                                </a>
+                                            )}
+                                        </div>
                                     </td>
                                 </tr>
                             ))

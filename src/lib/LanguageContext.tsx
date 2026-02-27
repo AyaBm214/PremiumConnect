@@ -344,6 +344,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.details.back': { en: 'Back', fr: 'Retour' },
     'admin.details.download_media': { en: 'Download All Media', fr: 'Télécharger tous les médias' },
     'admin.details.download_pdf': { en: 'Download PDF', fr: 'Télécharger PDF' },
+    'admin.details.download_citq': { en: 'Download CITQ', fr: 'Télécharger CITQ' },
+    'admin.details.citq_not_found': { en: 'No CITQ PDF uploaded', fr: 'Aucun PDF CITQ téléchargé' },
     'admin.details.delete_prop': { en: 'Delete Property', fr: 'Supprimer la propriété' },
     'admin.details.delete_confirm': { en: 'Are you sure you want to delete this property? This action cannot be undone.', fr: 'Êtes-vous sûr de vouloir supprimer cette propriété ? Cette action est irréversible.' },
     'admin.details.delete_success': { en: 'Property deleted successfully', fr: 'Propriété supprimée avec succès' },
