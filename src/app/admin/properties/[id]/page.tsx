@@ -487,8 +487,25 @@ export default function PropertyDetailsPage() {
                     )}
                 </Section>
 
+                <Section
+                    title={t('admin.details.section.contract')}
+                >
+                    <Row label={t('admin.details.contract.status')} value={data.contract?.status === 'approved' ? t('contract.approve') : (data.contract?.status === 'changes_requested' ? t('contract.request_changes') : 'Pending')} />
+                    {data.contract?.comments && (
+                        <div style={{ marginTop: '1rem', padding: '1rem', background: '#fff9f0', borderRadius: '8px', border: '1px solid #f59e0b' }}>
+                            <strong style={{ fontSize: '0.9rem', color: '#92400e' }}>{t('admin.details.contract.comments')}:</strong>
+                            <p style={{ whiteSpace: 'pre-wrap', fontSize: '0.9rem', marginTop: '0.5rem' }}>{data.contract.comments}</p>
+                        </div>
+                    )}
+                    {data.contract?.reviewedAt && (
+                        <Row
+                            label={t('admin.details.contract.date')}
+                            value={new Date(data.contract.reviewedAt).toLocaleString()}
+                        />
+                    )}
+                </Section>
             </div>
-        </div >
+        </div>
     );
 }
 

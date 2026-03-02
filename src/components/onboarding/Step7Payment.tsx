@@ -90,7 +90,7 @@ export default function Step7Payment({ propertyId, propertyName, data, onUpdate,
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>
                 <Button variant="outline" onClick={onBack}>{t('step.back')}</Button>
                 <Button size="lg" onClick={handleFinish} className={styles.nextBtn}>
-                    {t('step.save_exit')}
+                    {t('step.next')}
                 </Button>
             </div>
         </div>

@@ -5,4 +5,5 @@ export const ONBOARDING_STEPS = [
     { id: 4, title: 'Rules & Fees', icon: '📋' },
     { id: 5, title: 'Guest Guide', icon: '📖' },
     { id: 6, title: 'Payment', icon: '💳' },
+    { id: 7, title: 'Contract', icon: '📝' },
 ];

@@ -13,6 +13,7 @@ import Step4Access from '@/components/onboarding/Step4Access';
 import Step5Rules from '@/components/onboarding/Step5Rules';
 import Step6Guide from '@/components/onboarding/Step6Guide';
 import Step7Payment from '@/components/onboarding/Step7Payment';
+import StepContract from '@/components/onboarding/StepContract';
 import { notifyAdminOnCompletion } from '@/app/actions/onboarding-actions';
 
 export default function OnboardingPage() {
@@ -104,7 +105,7 @@ export default function OnboardingPage() {
 
     const nextStep = () => {
         if (!property) return;
-        const next = Math.min(property.currentStep + 1, 6);
+        const next = Math.min(property.currentStep + 1, 7);
         handleUpdate({ currentStep: next });
     };
 
@@ -154,7 +155,7 @@ export default function OnboardingPage() {
             <main className={styles.main}>
                 <header className={styles.header}>
                     <h2>{ONBOARDING_STEPS[property.currentStep - 1].title}</h2>
-                    <div className={styles.progress}>Step {property.currentStep} of 7</div>
+                    <div className={styles.progress}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
                 </header>
 
                 <div className={styles.stepContent}>
@@ -220,8 +221,14 @@ export default function OnboardingPage() {
                             propertyName={property.name}
                             data={property.data.payment}
                             onUpdate={(payment) => handleUpdate({ data: { ...property.data, payment } })}
-
-                            // ...
+                            onNext={nextStep}
+                            onBack={prevStep}
+                        />
+                    )}
+                    {property.currentStep === 7 && (
+                        <StepContract
+                            data={property.data.contract}
+                            onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}
                             onNext={async () => {
                                 handleUpdate({ status: 'pending_review', progress: 100 });
                                 await notifyAdminOnCompletion(property.id, property.data.info?.propertyName || 'Untitled');

@@ -76,6 +76,12 @@ export interface Property {
             transitInstitution?: string;
             branchNumber?: string;
         };
+        // Step 7: Contract
+        contract?: {
+            status: 'approved' | 'changes_requested';
+            comments?: string;
+            reviewedAt?: string;
+        };
     };
 }
 

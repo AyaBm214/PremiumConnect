@@ -56,6 +56,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'step.rules': { en: 'Rules & Fees', fr: 'Règles et Frais' },
     'step.guide': { en: 'Guest Guide', fr: 'Guide Invité' },
     'step.payment': { en: 'Payment', fr: 'Paiement' },
+    'step.contract': { en: 'Contract Approval', fr: 'Approbation du contrat' },
     'step.next': { en: 'Next Step', fr: 'Étape Suivante' },
     'step.back': { en: 'Back', fr: 'Retour' },
     'step.save_exit': { en: 'Save & Exit', fr: 'Sauvegarder & Quitter' },
@@ -65,6 +66,15 @@ const dictionary: Record<string, Record<Language, string>> = {
     'payment.institution': { en: 'Institution Number', fr: "Numéro d'institution" },
     'payment.branch': { en: 'Branch (Transit) Number', fr: 'Numéro de transit (Succursale)' },
     'payment.account': { en: 'Account Number', fr: 'Numéro de compte' },
+
+    // Contract Step
+    'contract.title': { en: 'Contract Review', fr: 'Révision du contrat' },
+    'contract.subtitle': { en: 'Please review and approve your management contract.', fr: 'Veuillez réviser et approuver votre contrat de gestion.' },
+    'contract.download': { en: 'Download Contract (Word)', fr: 'Télécharger le contrat (Word)' },
+    'contract.approve': { en: 'Approve as-is', fr: 'Approuver tel quel' },
+    'contract.request_changes': { en: 'Request changes/Add comments', fr: 'Demander des modifications / Ajouter des commentaires' },
+    'contract.comments_placeholder': { en: 'Specify any changes, additions, or removals you want...', fr: 'Précisez les changements, ajouts ou retraits que vous souhaitez...' },
+    'contract.success': { en: 'Contract feedback saved!', fr: 'Commentaires du contrat enregistrés !' },
 
     // Photos Step
     'photos.title': { en: 'Property Photos', fr: 'Photos de la Propriété' },
@@ -361,6 +371,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.details.section.payment': { en: 'Payment Details', fr: 'Détails de paiement' },
     'admin.details.section.guide': { en: 'Guest Guide & Luggage', fr: 'Guide Invité & Bagages' },
     'admin.details.section.access': { en: 'Uploads & Access', fr: 'Téléchargements & Accès' },
+    'admin.details.section.contract': { en: 'Contract Approval', fr: 'Approbation du contrat' },
     'admin.details.info.type': { en: 'Type', fr: 'Type' },
     'admin.details.info.address': { en: 'Address', fr: 'Adresse' },
     'admin.details.info.floor': { en: 'Floor', fr: 'Étage' },
@@ -400,6 +411,9 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.details.access.type': { en: 'Access Type', fr: 'Type d\'accès' },
     'admin.details.access.instructions': { en: 'Instructions', fr: 'Instructions' },
     'admin.details.access.tour': { en: 'Tour Video', fr: 'Vidéo de visite' },
+    'admin.details.contract.status': { en: 'Status', fr: 'Statut' },
+    'admin.details.contract.comments': { en: 'Client Comments', fr: 'Commentaires du client' },
+    'admin.details.contract.date': { en: 'Reviewed At', fr: 'Révisé le' },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
