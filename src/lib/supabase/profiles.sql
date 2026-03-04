@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     full_name TEXT,
     email TEXT,
     phone_number TEXT,
-    business_number TEXT,
     documents JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );

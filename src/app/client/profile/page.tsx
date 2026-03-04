@@ -128,8 +128,8 @@ export default function ProfilePage() {
             <p>{t('profile.subtitle')}</p>
 
             <div style={{ display: 'grid', gap: '1rem', marginTop: '2rem' }}>
-                <Input label={t('profile.full_name')} value={profile.full_name || ''} onChange={e => handleChange('full_name', e.target.value)} />
-                <Input label="Email" value={profile.email || ''} disabled onChange={() => { }} />
+                <Input label={t('profile.fullname')} value={profile.full_name || ''} onChange={e => handleChange('full_name', e.target.value)} />
+                <Input label={t('profile.email')} value={profile.email || ''} disabled onChange={() => { }} />
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-main)' }}>{t('profile.phone')}</label>
@@ -141,13 +141,12 @@ export default function ProfilePage() {
                     />
                 </div>
 
-                <Input label={t('profile.business')} value={profile.business_number || ''} onChange={e => handleChange('business_number', e.target.value)} />
             </div>
 
-            <h3 style={{ marginTop: '2rem' }}>{t('profile.legal')}</h3>
+            <h3 style={{ marginTop: '2rem' }}>{t('profile.section.docs')}</h3>
             <div style={{ display: 'grid', gap: '1rem' }}>
                 <FileUploader
-                    label={t('profile.identity')}
+                    label={t('profile.doc.id')}
                     onChange={files => handleDocUpload(files, 'identity_proof')}
                     description={profile.documents?.identity_proof ? `✓ ${t('profile.uploaded')}` : ''}
                 />
@@ -171,17 +170,39 @@ export default function ProfilePage() {
                         </Button>
                     </div>
 
-                    <div style={{ padding: '1rem', backgroundColor: 'var(--bg-secondary, #f9f9f9)', borderRadius: '6px' }}>
-                        <p style={{ margin: 0, fontWeight: 500, color: 'var(--text-main)' }}>
+                    <div style={{ padding: '1.25rem', backgroundColor: 'var(--bg-secondary, #f9f9f9)', borderRadius: '8px', border: '1px solid var(--border-light, #f0f0f0)' }}>
+                        <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-main)', fontSize: '0.95rem' }}>
                             {bankingType === 'canada' ? t('profile.banking.canada_instr') : t('profile.banking.intl_instr')}
                         </p>
-                        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+
+                        {bankingType === 'intl' && (
+                            <div style={{ margin: '1rem 0', display: 'grid', gap: '0.4rem' }}>
+                                {[
+                                    'profile.banking.intl.holder',
+                                    'profile.banking.intl.bank',
+                                    'profile.banking.intl.address',
+                                    'profile.banking.intl.institution',
+                                    'profile.banking.intl.transit',
+                                    'profile.banking.intl.account',
+                                    'profile.banking.intl.swift',
+                                    'profile.banking.intl.iban',
+                                    'profile.banking.intl.currency'
+                                ].map(key => (
+                                    <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-main)' }}>
+                                        <span style={{ color: 'var(--primary-blue, #0066cc)' }}>➤</span>
+                                        {t(key)}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <p style={{ margin: '0.75rem 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
                             {t('profile.banking.email_note')}
                         </p>
                     </div>
                 </div>
                 <FileUploader
-                    label={t('profile.insurance')}
+                    label={t('profile.doc.ins')}
                     onChange={files => handleDocUpload(files, 'insurance_proof')}
                     description={profile.documents?.insurance_proof ? `✓ ${t('profile.uploaded')}` : ''}
                 />

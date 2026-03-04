@@ -90,7 +90,6 @@ export interface UserProfile {
     full_name: string;
     email: string;
     phone_number: string;
-    business_number?: string; // NEQ
     documents: {
         identity_proof: string; // URL
         void_cheque: string; // URL

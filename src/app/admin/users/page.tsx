@@ -37,21 +37,19 @@ export default function UsersPage() {
                                 <th>{t('admin.users.table.name')}</th>
                                 <th>{t('admin.users.table.email')}</th>
                                 <th>{t('admin.users.table.phone')}</th>
-                                <th>{t('admin.users.table.business')}</th>
                                 <th>{t('admin.users.table.docs')}</th>
                                 <th>{t('admin.users.table.joined')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {users.length === 0 ? (
-                                <tr><td colSpan={6} className={styles.empty}>{t('admin.users.empty')}</td></tr>
+                                <tr><td colSpan={5} className={styles.empty}>{t('admin.users.empty')}</td></tr>
                             ) : (
                                 users.map(u => (
                                     <tr key={u.id}>
                                         <td><div className={styles.propName}>{u.full_name || 'N/A'}</div></td>
                                         <td>{u.email}</td>
                                         <td>{u.phone_number || '-'}</td>
-                                        <td>{u.business_number || '-'}</td>
                                         <td>
                                             <div style={{ fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                                 <div>ID: {u.documents?.identity_proof ? <a href={u.documents.identity_proof} target="_blank" rel="noopener noreferrer" style={{ color: '#0066cc', textDecoration: 'underline', fontWeight: 500 }}>{t('admin.users.download')}</a> : <span style={{ color: 'red', fontWeight: 'bold' }}>✗</span>}</div>

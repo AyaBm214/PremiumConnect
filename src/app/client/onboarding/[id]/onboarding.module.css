@@ -16,6 +16,53 @@
     top: 0;
 }
 
+.progressContainer {
+    display: none;
+    /* Removed the top overall bar */
+}
+
+.stepProgress {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.stepTitleAndPercent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.miniProgressBar {
+    height: 4px;
+    background-color: var(--border-light);
+    border-radius: 2px;
+    overflow: hidden;
+    width: 60px;
+    /* Small bar next to percentage or title */
+}
+
+.miniProgressFill {
+    height: 100%;
+    background-color: var(--primary-blue);
+    transition: width 0.3s ease;
+}
+
+.stepPercentage {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.activeStep .stepPercentage {
+    color: var(--primary-blue);
+}
+
+.completedStep .stepPercentage {
+    color: var(--primary-blue);
+}
+
 .logo {
     display: flex;
     justify-content: center;
@@ -43,34 +90,69 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    position: relative;
+    padding-left: 0.5rem;
+}
+
+.progressLine {
+    position: absolute;
+    left: 1.25rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 2px;
+    background-color: var(--border-light);
+    z-index: 0;
 }
 
 .stepItem {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-md);
+    gap: 1.25rem;
+    padding: 0.5rem 0;
     color: var(--text-muted);
     font-size: 0.95rem;
     transition: all 0.2s;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.stepCircle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.3s;
 }
 
 .activeStep {
-    background-color: #ebf8ff;
     color: var(--primary-blue);
-    font-weight: 600;
+    font-weight: 700;
+}
+
+.activeStep .stepCircle {
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: #ebf8ff;
+    box-shadow: 0 0 0 4px #ebf8ff;
 }
 
 .completedStep {
-    color: var(--primary-blue);
+    color: var(--text-main);
 }
 
-.check {
-    margin-left: auto;
-    font-size: 0.8rem;
-    font-weight: bold;
+.completedStep .stepCircle {
+    border-color: var(--primary-blue);
+    background-color: var(--primary-blue);
+    color: white;
 }
 
 .saveExitBtn {

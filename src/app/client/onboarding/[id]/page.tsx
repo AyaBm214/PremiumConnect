@@ -15,11 +15,13 @@ import Step6Guide from '@/components/onboarding/Step6Guide';
 import Step7Payment from '@/components/onboarding/Step7Payment';
 import StepContract from '@/components/onboarding/StepContract';
 import { notifyAdminOnCompletion } from '@/app/actions/onboarding-actions';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function OnboardingPage() {
     const params = useParams();
     const router = useRouter();
     const { user } = useAuth();
+    const { t } = useLanguage();
     const [property, setProperty] = useState<Property | null>(null);
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
@@ -121,30 +123,108 @@ export default function OnboardingPage() {
         router.push('/client/dashboard');
     };
 
-    if (loading || !property) return <div className={styles.loading}>Loading...</div>;
+    if (loading || !property) return <div>Loading...</div>;
+
+    const calculateStepProgress = (stepId: number): number => {
+        const data = property.data;
+        if (!data) return 0;
+
+        switch (stepId) {
+            case 1: { // Property Info
+                const info = data.info || {};
+                const fields = ['propertyName', 'description', 'address', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
+                const filled = fields.filter(f => {
+                    const val = (info as any)[f];
+                    return val !== undefined && val !== null && val !== '';
+                }).length;
+                return Math.min(100, Math.round((filled / fields.length) * 100));
+            }
+            case 2: { // Amenities
+                const count = data.amenities?.length || 0;
+                // Consider 15+ amenities as 100%
+                return Math.min(100, Math.round((count / 15) * 100));
+            }
+            case 3: { // Photos
+                const photoCount = data.photos?.length || 0;
+                const extLinksCount = data.externalLinks?.length || 0;
+                const hasDrive = !!data.googleDriveLink;
+                // Mix of photos and links: 12 units = 100%
+                const totalUnits = photoCount + extLinksCount + (hasDrive ? 2 : 0);
+                return Math.min(100, Math.round((totalUnits / 12) * 100));
+            }
+            case 4: { // Rules & Fees
+                const rules = data.rules || {};
+                const fields = ['smoking', 'pets', 'events', 'quietHours', 'cleaningFee', 'maxGuests'];
+                const filled = fields.filter(f => {
+                    const val = (rules as any)[f];
+                    return val !== undefined && val !== null && val !== '';
+                }).length;
+                return Math.min(100, Math.round((filled / fields.length) * 100));
+            }
+            case 5: { // Guest Guide
+                const guide = data.guide || {};
+                const fields = ['wifiDetails', 'wifiRouterPhoto', 'wifiSpeedTestScreenshot', 'tourVideo', 'lockPhoto', 'luggageList', 'emergencyContacts'];
+                const filled = fields.filter(f => {
+                    const val = (guide as any)[f];
+                    return val !== undefined && val !== null && val !== '' && (Array.isArray(val) ? val.length > 0 : true);
+                }).length;
+                return Math.min(100, Math.round((filled / fields.length) * 100));
+            }
+            case 6: { // Payment
+                const payment = data.payment || {};
+                const fields = ['bankName', 'accountHolder', 'accountNumber', 'transitInstitution', 'branchNumber'];
+                const filled = fields.filter(f => {
+                    const val = (payment as any)[f];
+                    return val !== undefined && val !== null && val !== '';
+                }).length;
+                return Math.min(100, Math.round((filled / fields.length) * 100));
+            }
+            case 7: { // Contract
+                return data.contract?.status === 'approved' ? 100 : 0;
+            }
+            default: return 0;
+        }
+    };
 
     return (
         <div className={styles.layout}>
-            {/* Sidebar / Timeline */}
+            {/* Sidebar */}
             <aside className={styles.sidebar}>
                 <div className={styles.logo}>
                     <img src="/logo.png" alt="Premium Booking" />
                 </div>
+
                 <nav className={styles.timeline}>
-                    {ONBOARDING_STEPS.map(step => (
-                        <div
-                            key={step.id}
-                            className={`
-                ${styles.stepItem} 
-                ${step.id === property.currentStep ? styles.activeStep : ''}
-                ${step.id < property.currentStep ? styles.completedStep : ''}
-              `}
-                        >
-                            <div className={styles.stepIcon}>{step.icon}</div>
-                            <span className={styles.stepTitle}>{step.title}</span>
-                            {step.id < property.currentStep && <span className={styles.check}>✓</span>}
-                        </div>
-                    ))}
+                    <div className={styles.progressLine} />
+                    {ONBOARDING_STEPS.map(step => {
+                        const stepProgress = calculateStepProgress(step.id);
+                        return (
+                            <div
+                                key={step.id}
+                                className={`
+                                    ${styles.stepItem} 
+                                    ${step.id === property.currentStep ? styles.activeStep : ''}
+                                    ${step.id < property.currentStep ? styles.completedStep : ''}
+                                `}
+                            >
+                                <div className={styles.stepCircle}>
+                                    {step.id < property.currentStep ? '●' : step.id}
+                                </div>
+                                <div className={styles.stepProgress}>
+                                    <div className={styles.stepTitleAndPercent}>
+                                        <span className={styles.stepTitle}>{t(step.key || '')}</span>
+                                        <span className={styles.stepPercentage}>{stepProgress}%</span>
+                                    </div>
+                                    <div className={styles.miniProgressBar}>
+                                        <div
+                                            className={styles.miniProgressFill}
+                                            style={{ width: `${stepProgress}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </nav>
                 <button onClick={handleSaveExit} className={styles.saveExitBtn}>
                     Save & Exit
@@ -154,8 +234,8 @@ export default function OnboardingPage() {
             {/* Main Content */}
             <main className={styles.main}>
                 <header className={styles.header}>
-                    <h2>{ONBOARDING_STEPS[property.currentStep - 1].title}</h2>
-                    <div className={styles.progress}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
+                    <h2>{t(ONBOARDING_STEPS[property.currentStep - 1].key || '')}</h2>
+                    <div className={styles.progressText}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
                 </header>
 
                 <div className={styles.stepContent}>
