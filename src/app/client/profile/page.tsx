@@ -11,7 +11,9 @@ import { useAuth } from '@/lib/AuthContext';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 
-export default function ProfilePage() {
+import { Suspense } from 'react';
+
+function ProfileContent() {
     const { t } = useLanguage();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -262,5 +264,13 @@ export default function ProfilePage() {
                 {saving ? t('profile.saving') : t('profile.save')}
             </Button>
         </div>
+    );
+}
+
+export default function ProfilePage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ProfileContent />
+        </Suspense>
     );
 }
