@@ -166,6 +166,20 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                 </div>
             </div>
 
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h3 className={styles.sectionTitle}>{t('step.comments_label')}</h3>
+                <textarea
+                    className={styles.textarea}
+                    placeholder={t('step.comments_placeholder')}
+                    value={formData.comments || ''}
+                    onChange={e => handleChange('comments', e.target.value)}
+                    rows={4}
+                    style={{ marginTop: '1rem' }}
+                />
+            </div>
+
             <div className={styles.actions}>
                 <Button type="submit" size="lg" className={styles.nextBtn}>
                     {t('step.next')} →

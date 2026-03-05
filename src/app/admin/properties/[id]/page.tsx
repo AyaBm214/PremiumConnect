@@ -162,6 +162,7 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('admin.details.info.rooms')} value={editedData.info?.numBathrooms} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numBathrooms: parseInt(v) } })} />
                             <EditRow label={t('admin.details.info.checkin')} value={editedData.info?.checkInTime} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, checkInTime: v } })} />
                             <EditRow label={t('admin.details.info.checkout')} value={editedData.info?.checkOutTime} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, checkOutTime: v } })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.info?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, comments: v } })} />
                         </>
                     ) : (
                         <>
@@ -172,6 +173,7 @@ export default function PropertyDetailsPage() {
                             <Row label={t('admin.details.info.rooms')} value={`${data.info?.numRooms || 0} ${t('admin.details.info.bed')} / ${data.info?.numBathrooms || 0} ${t('admin.details.info.bath')}`} />
                             <Row label={t('admin.details.info.checkin')} value={data.info?.checkInTime || 'N/A'} />
                             <Row label={t('admin.details.info.checkout')} value={data.info?.checkOutTime || 'N/A'} />
+                            <Row label={t('step.comments_label')} value={data.info?.comments} />
                         </>
                     )}
                 </Section>
@@ -195,6 +197,7 @@ export default function PropertyDetailsPage() {
                             </div>
                             <EditRow label={t('amenity.pool_date')} value={editedData.poolOpeningDate} onChange={(v) => setEditedData({ ...editedData, poolOpeningDate: v })} />
                             <EditRow label={t('amenity.hottub_date')} value={editedData.hotTubOpeningDate} onChange={(v) => setEditedData({ ...editedData, hotTubOpeningDate: v })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.amenitiesComments} isTextArea onChange={(v) => setEditedData({ ...editedData, amenitiesComments: v })} />
                         </>
                     ) : (
                         <>
@@ -213,6 +216,7 @@ export default function PropertyDetailsPage() {
                                     <Row label={t('amenity.hottub_date')} value={data.hotTubOpeningDate} />
                                 </div>
                             )}
+                            <Row label={t('step.comments_label')} value={data.amenitiesComments} />
                         </>
                     )}
                 </Section>
@@ -243,6 +247,7 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('admin.details.rules.pet_fee')} value={editedData.rules?.petFee} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, petFee: v } })} />
                             <EditRow label={t('admin.details.rules.max_guests')} value={editedData.rules?.maxGuests} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, maxGuests: v } })} />
                             <EditRow label={t('admin.details.rules.quiet_hours')} value={editedData.rules?.quietHours} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, quietHours: v } })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.rules?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, comments: v } })} />
                         </>
                     ) : (
                         <>
@@ -254,6 +259,7 @@ export default function PropertyDetailsPage() {
                             <Row label={t('admin.details.rules.pet_fee')} value={(data.rules as any)?.petFee ? `$${(data.rules as any).petFee}` : '$0'} />
                             <Row label={t('admin.details.rules.max_guests')} value={data.rules?.maxGuests || 'N/A'} />
                             <Row label={t('admin.details.rules.quiet_hours')} value={data.rules?.quietHours || 'None'} />
+                            <Row label={t('step.comments_label')} value={data.rules?.comments} />
                         </>
                     )}
                 </Section>
@@ -272,6 +278,7 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('payment.account')} value={editedData.payment?.accountNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, accountNumber: v } })} />
                             <EditRow label={t('payment.institution')} value={editedData.payment?.transitInstitution || editedData.payment?.routingNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, transitInstitution: v, routingNumber: v } })} />
                             <EditRow label={t('payment.branch')} value={editedData.payment?.branchNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, branchNumber: v } })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.payment?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, comments: v } })} />
                         </>
                     ) : (
                         <>
@@ -280,6 +287,7 @@ export default function PropertyDetailsPage() {
                             <Row label={t('payment.account')} value={data.payment?.accountNumber} />
                             <Row label={t('payment.institution')} value={data.payment?.transitInstitution || data.payment?.routingNumber} />
                             <Row label={t('payment.branch')} value={data.payment?.branchNumber} />
+                            <Row label={t('step.comments_label')} value={data.payment?.comments} />
                         </>
                     )}
                 </Section>
@@ -305,6 +313,7 @@ export default function PropertyDetailsPage() {
                                 <EditRow label={t('admin.details.guide.luggage')} value={editedData.guide?.luggageList} isTextArea onChange={(v) => setEditedData({ ...editedData, guide: { ...editedData.guide, luggageList: v } })} />
                             </div>
                             <EditRow label={t('admin.details.guide.emergency')} value={editedData.guide?.emergencyContacts} isTextArea onChange={(v) => setEditedData({ ...editedData, guide: { ...editedData.guide, emergencyContacts: v } })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.guide?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, guide: { ...editedData.guide, comments: v } })} />
                         </>
                     ) : (
                         <>
@@ -391,6 +400,7 @@ export default function PropertyDetailsPage() {
                                     </div>
                                 )}
                             </div>
+                            <Row label={t('step.comments_label')} value={data.guide?.comments} />
                         </>
                     )}
                 </Section>
@@ -407,6 +417,7 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('admin.details.access.external')} value={editedData.externalLinks?.join(', ')} isTextArea onChange={(v) => setEditedData({ ...editedData, externalLinks: v.split(',').map((s: string) => s.trim()).filter((s: string) => s) })} />
                             <EditRow label={t('admin.details.access.drive')} value={editedData.googleDriveLink} onChange={(v) => setEditedData({ ...editedData, googleDriveLink: v })} />
                             <EditRow label={t('admin.details.access.instructions')} value={editedData.access?.instructions} isTextArea onChange={(v) => setEditedData({ ...editedData, access: { ...editedData.access, instructions: v } })} />
+                            <EditRow label={t('step.comments_label')} value={editedData.photosComments} isTextArea onChange={(v) => setEditedData({ ...editedData, photosComments: v })} />
                         </>
                     ) : (
                         <>
@@ -489,6 +500,7 @@ export default function PropertyDetailsPage() {
                                     </div>
                                 )}
                             </div>
+                            <Row label={t('step.comments_label')} value={data.photosComments} />
                         </>
                     )}
                 </Section>

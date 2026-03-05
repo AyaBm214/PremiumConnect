@@ -9,8 +9,9 @@ interface Step2Props {
     data?: string[];
     poolOpeningDate?: string;
     hotTubOpeningDate?: string;
+    comments?: string;
     info?: any; // Received from Step 1
-    onUpdate: (data: { amenities: string[], poolOpeningDate?: string, hotTubOpeningDate?: string }) => void;
+    onUpdate: (data: { amenities: string[], poolOpeningDate?: string, hotTubOpeningDate?: string, comments?: string }) => void;
     onNext: () => void;
     onBack: () => void;
 }
@@ -78,18 +79,20 @@ const AMENITY_CATEGORIES = [
 const BEDROOM_ITEMS = ['Queen bed', 'King bed', 'Double bed', 'Single bed', 'Bunk bed', 'Crib (baby)', 'Bedside table', 'Reading lamp', 'Wardrobe / closet', 'Hangers', 'Iron', 'Ironing board', 'Extra pillows', 'Extra blankets', 'Desk / workspace'];
 const BATHROOM_ITEMS = ['Shower', 'Bathtub', 'Hot water', 'Shampoo', 'Conditioner', 'Body soap', 'Towels', 'Toilet paper', 'Hair dryer', 'Bidet', 'Mirror', 'Cleaning products'];
 
-export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeningDate, info, onUpdate, onNext, onBack }: Step2Props) {
+export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeningDate, comments, info, onUpdate, onNext, onBack }: Step2Props) {
     const { t } = useLanguage();
     const [selected, setSelected] = useState<string[]>(data || []);
     const [customAmenity, setCustomAmenity] = useState('');
     const [poolDate, setPoolDate] = useState(poolOpeningDate || '');
     const [hotTubDate, setHotTubDate] = useState(hotTubOpeningDate || '');
+    const [commentText, setCommentText] = useState(comments || '');
 
-    const handleUpdate = (newSelected: string[], newPoolDate?: string, newHotTubDate?: string) => {
+    const handleUpdate = (newSelected: string[], newPoolDate?: string, newHotTubDate?: string, newComments?: string) => {
         onUpdate({
             amenities: newSelected,
             poolOpeningDate: newPoolDate !== undefined ? newPoolDate : poolDate,
-            hotTubOpeningDate: newHotTubDate !== undefined ? newHotTubDate : hotTubDate
+            hotTubOpeningDate: newHotTubDate !== undefined ? newHotTubDate : hotTubDate,
+            comments: newComments !== undefined ? newComments : commentText
         });
     };
 
@@ -268,6 +271,23 @@ export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeni
                         />
                     </div>
                 )}
+            </div>
+
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h4 className={styles.sectionTitle}>{t('step.comments_label')}</h4>
+                <textarea
+                    className={styles.textarea}
+                    placeholder={t('step.comments_placeholder')}
+                    value={commentText}
+                    onChange={e => {
+                        setCommentText(e.target.value);
+                        handleUpdate(selected, poolDate, hotTubDate, e.target.value);
+                    }}
+                    rows={4}
+                    style={{ marginTop: '1rem' }}
+                />
             </div>
 
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>

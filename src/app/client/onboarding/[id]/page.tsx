@@ -239,8 +239,9 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                             info={property.data.info} // Pass info for bedroom/bathroom counts
                             poolOpeningDate={property.data.poolOpeningDate}
                             hotTubOpeningDate={property.data.hotTubOpeningDate}
-                            onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate }) => handleUpdate({
-                                data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate }
+                            comments={property.data.amenitiesComments}
+                            onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate, comments }) => handleUpdate({
+                                data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate, amenitiesComments: comments }
                             })}
                             onNext={nextStep}
                             onBack={prevStep}
@@ -252,15 +253,22 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                             data={{
                                 photos: property.data.photos,
                                 externalLinks: property.data.externalLinks,
-                                googleDriveLink: property.data.googleDriveLink
+                                googleDriveLink: property.data.googleDriveLink,
+                                comments: property.data.photosComments
                             }}
                             info={property.data.info} // Pass info for bedroom count
-                            onUpdate={(updates) => handleUpdate({ data: { ...property.data, ...updates } })}
+                            onUpdate={(updates) => handleUpdate({
+                                data: {
+                                    ...property.data,
+                                    ...updates,
+                                    photosComments: updates.comments
+                                }
+                            })}
                             onNext={nextStep}
                             onBack={prevStep}
                         />
                     )}
-                    {/* Step 4 Access Removed */}
+                    {/* Step 4 Access */}
                     {property.currentStep === 4 && (
                         <Step5Rules
                             data={property.data.rules}

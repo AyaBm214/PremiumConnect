@@ -203,6 +203,20 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
                 />
             </div>
 
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h3 className={styles.sectionTitle}>{t('step.comments_label')}</h3>
+                <textarea
+                    className={styles.textarea}
+                    placeholder={t('step.comments_placeholder')}
+                    value={formData.comments || ''}
+                    onChange={e => handleChange('comments', e.target.value)}
+                    rows={4}
+                    style={{ marginTop: '1rem' }}
+                />
+            </div>
+
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>
                 <Button variant="outline" onClick={onBack}>{t('step.back')}</Button>
                 <Button size="lg" onClick={handleNext} className={styles.nextBtn}>

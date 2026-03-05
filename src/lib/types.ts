@@ -27,19 +27,23 @@ export interface Property {
             reservationsFile?: string;
             checkInTime?: string;
             checkOutTime?: string;
+            comments?: string;
         };
         // Step 2: Amenities
         amenities?: string[];
         poolOpeningDate?: string; // If pool is selected
         hotTubOpeningDate?: string; // If hot tub is selected
+        amenitiesComments?: string;
         // Step 3: Photos (mocked urls)
         photos?: string[];
         externalLinks?: string[];
         googleDriveLink?: string;
+        photosComments?: string;
         // Step 4: Access
         access?: {
             instructions?: string;
             videoUrl?: string; // or file path
+            comments?: string;
         };
         // Step 5: Rules & Fees
         rules?: {
@@ -51,6 +55,7 @@ export interface Property {
             cleaningFee?: number;
             maxGuests?: number;
             maxPets?: number;
+            comments?: string;
         };
         // Step 6: Guide
         guide?: {
@@ -66,6 +71,7 @@ export interface Property {
             extrasPhotos?: string[]; // Sheets, baby, games
             luggageList?: string; // Host essentials for guest
             emergencyContacts?: string;
+            comments?: string;
         };
         // Step 7: Payment
         payment?: {
@@ -75,6 +81,7 @@ export interface Property {
             accountHolder?: string;
             transitInstitution?: string;
             branchNumber?: string;
+            comments?: string;
         };
         // Step 7: Contract
         contract?: {

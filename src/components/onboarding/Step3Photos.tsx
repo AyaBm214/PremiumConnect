@@ -13,6 +13,7 @@ interface Step3Props {
         photos?: string[];
         externalLinks?: string[];
         googleDriveLink?: string;
+        comments?: string;
     };
     info?: Property['data']['info'];
     onUpdate: (data: any) => void;
@@ -184,6 +185,20 @@ export default function Step3Photos({ propertyId, data, info, onUpdate, onNext, 
             <Button variant="outline" onClick={addLink} size="sm" style={{ marginTop: '0.5rem' }}>
                 + Add Another URL
             </Button>
+
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h4 className={styles.sectionTitle}>{t('step.comments_label')}</h4>
+                <textarea
+                    className={styles.textarea}
+                    placeholder={t('step.comments_placeholder')}
+                    value={data?.comments || ''}
+                    onChange={e => onUpdate({ ...data, comments: e.target.value })}
+                    rows={4}
+                    style={{ marginTop: '1rem' }}
+                />
+            </div>
 
             <div className={styles.actions} style={{ justifyContent: 'space-between', marginTop: '2rem' }}>
                 <Button variant="outline" onClick={onBack}>{t('step.back')}</Button>

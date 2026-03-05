@@ -60,6 +60,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'step.next': { en: 'Next Step', fr: 'Étape Suivante' },
     'step.back': { en: 'Back', fr: 'Retour' },
     'step.save_exit': { en: 'Save & Exit', fr: 'Sauvegarder & Quitter' },
+    'step.comments_label': { en: 'Additional Comments', fr: 'Commentaires additionnels' },
+    'step.comments_placeholder': { en: 'Add any specific details or notes here...', fr: 'Ajoutez des détails ou des notes spécifiques ici...' },
     'onboarding.progress_label': { en: 'Onboarding Progress', fr: 'Progression de l\'onboarding' },
     'payment.subtitle': { en: 'Where should we send your payouts?', fr: 'Où devons-nous envoyer vos versements ?' },
     'payment.bank': { en: 'Bank Name', fr: 'Nom de la banque' },

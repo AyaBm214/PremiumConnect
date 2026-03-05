@@ -74,6 +74,20 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                 />
             </div>
 
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h3 className={styles.sectionTitle}>{t('step.comments_label')}</h3>
+                <textarea
+                    className={styles.textarea}
+                    placeholder={t('step.comments_placeholder')}
+                    value={formData.comments || ''}
+                    onChange={e => handleChange('comments', e.target.value)}
+                    rows={4}
+                    style={{ marginTop: '1rem' }}
+                />
+            </div>
+
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>
                 <Button variant="outline" onClick={onBack}>{t('step.back')}</Button>
                 <Button size="lg" onClick={onNext} className={styles.nextBtn}>
