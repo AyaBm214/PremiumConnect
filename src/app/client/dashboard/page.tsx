@@ -125,8 +125,8 @@ export default function ClientDashboard() {
                                 <h3 className={styles.propName}>
                                     {prop.data.info?.propertyName || prop.name}
                                 </h3>
-                                <span className={`${styles.badge} ${styles[prop.status]}`}>
-                                    {prop.status === 'draft' ? t('dash.in_progress') : t('dash.completed')}
+                                <span className={`${styles.badge} ${styles[prop.progress === 100 ? 'active' : 'pending_review']}`}>
+                                    {prop.progress === 100 ? t('dash.completed') : t('dash.in_progress')}
                                 </span>
                             </div>
 

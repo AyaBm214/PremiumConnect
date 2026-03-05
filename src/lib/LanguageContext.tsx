@@ -70,7 +70,7 @@ const dictionary: Record<string, Record<Language, string>> = {
 
     // Contract Step
     'contract.title': { en: 'Guest Contract', fr: 'Contrat de l’invité' },
-    'contract.subtitle': { en: 'Please review and approve your management contract.', fr: 'Veuillez réviser et approuver votre contrat de gestion.' },
+    'contract.subtitle': { en: 'Please review and approve your contract.', fr: 'Veuillez réviser et approuver votre contrat.' },
     'contract.download': { en: 'Download Contract (Word)', fr: 'Télécharger le contrat (Word)' },
     'contract.approve': { en: 'Approve as-is', fr: 'Approuver tel quel' },
     'contract.request_changes': { en: 'Request changes/Add comments', fr: 'Demander des modifications / Ajouter des commentaires' },
@@ -98,7 +98,29 @@ const dictionary: Record<string, Record<Language, string>> = {
     'guide.ac': { en: 'Air Conditioning', fr: 'Climatisation' },
     'guide.extras': { en: 'Extras', fr: 'Extras' },
     'guide.luggage': { en: 'Host Luggage List', fr: 'Liste Valise Hôte' },
-    'guide.emergency': { en: 'Emergency Contacts', fr: 'Contacts d\'Urgence' },
+    'guide.wifi_details': { en: 'Network Name & Password', fr: 'Nom du réseau et mot de passe' },
+    'guide.wifi_placeholder': { en: 'Network: MyWifi / Pass: 123456', fr: 'Réseau : MonWifi / Pass : 123456' },
+    'guide.wifi_router': { en: 'Router Location (Photo)', fr: 'Emplacement du routeur (Photo)' },
+    'guide.wifi_speed': { en: 'Speed Test (Screenshot)', fr: 'Test de vitesse (Capture d\'écran)' },
+    'guide.lock_photo': { en: 'Key Box / Lock (Photo)', fr: 'Boîte à clés / Serrure (Photo)' },
+    'guide.first_aid': { en: 'First Aid Kit (Photo)', fr: 'Trousse de premiers soins (Photo)' },
+    'guide.kitchen_photos': { en: 'Kitchen Utensils (Photos)', fr: 'Ustensiles de cuisine (Photos)' },
+    'guide.ac_video': { en: 'AC Instructions (Video)', fr: 'Instructions Climatisation (Vidéo)' },
+    'guide.extras_photos': { en: 'Extras: Linens, Baby, Games (Photos)', fr: 'Extras : Draps, bébé, jeux (Photos)' },
+    'guide.luggage_description': { en: 'What should guests ABSOLUTELY bring? (e.g., Beach towels, spices...)', fr: 'Que doivent ABSOLUMENT apporter les invités ? (ex: Serviettes de plage, épices...)' },
+    'guide.luggage_placeholder': { en: 'List the essentials...', fr: 'Listez les essentiels...' },
+    'guide.emergency': { en: 'Emergency Contacts', fr: 'Contacts d\'urgence' },
+
+    // Rules Step
+    'rules.smoking': { en: 'Smoking Allowed', fr: 'Fumer autorisé' },
+    'rules.pets': { en: 'Pets Allowed', fr: 'Animaux autorisés' },
+    'rules.events': { en: 'Events Allowed', fr: 'Événements autorisés' },
+    'rules.cleaning': { en: 'I provide cleaning', fr: 'Je m\'occupe du ménage' },
+    'rules.max_pets': { en: 'Max Pets Allowed', fr: 'Nombre maximum d\'animaux' },
+    'rules.quiet_hours': { en: 'Quiet Hours', fr: 'Heures de calme' },
+    'rules.fees_details': { en: 'Fees & Details', fr: 'Frais et détails' },
+    'rules.cleaning_fee': { en: 'Cleaning Fee ($)', fr: 'Frais de ménage ($)' },
+    'rules.max_guests': { en: 'Max Guests', fr: 'Nombre maximum d\'invités' },
     'guide.video_required': { en: 'Access video is mandatory.', fr: 'La vidéo d\'accès est obligatoire.' },
 
     // Profile

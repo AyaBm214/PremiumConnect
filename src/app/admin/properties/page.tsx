@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Property } from '@/lib/types';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { downloadRemoteFile } from '@/lib/pdf';
 import { Input } from '@/components/ui/Input';
@@ -15,6 +16,7 @@ export default function AdminPropertiesPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const supabase = createClient();
+    const router = useRouter();
     const { t } = useLanguage();
 
     useEffect(() => {
@@ -105,6 +107,26 @@ export default function AdminPropertiesPage() {
                                             <Link href={`/admin/properties/${prop.id}`}>
                                                 <Button size="sm" variant="outline">{t('admin.props.view')}</Button>
                                             </Link>
+                                            <button
+                                                onClick={() => router.push(`/client/onboarding/${prop.id}?fromAdmin=true`)}
+                                                style={{
+                                                    padding: '6px 12px',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #d1d9e6',
+                                                    backgroundColor: '#f0f4f8',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: 600,
+                                                    color: '#1a2b4b',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                                title="Modifier comme le client"
+                                            >
+                                                <span style={{ fontSize: '1rem' }}>🎨</span> {t('admin.details.edit')}
+                                            </button>
                                             {prop.data.info?.citqFile && (
                                                 <Button
                                                     size="sm"

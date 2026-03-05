@@ -39,3 +39,11 @@ USING (
   OR 
   (auth.jwt() ->> 'email') = 'admin@premiumconnect.com'
 );
+-- Allow admins to update all profiles
+CREATE POLICY "Admins can update all profiles"
+ON public.profiles FOR UPDATE
+USING (
+  (auth.jwt() -> 'user_metadata' ->> 'type') = 'admin'
+  OR 
+  (auth.jwt() ->> 'email') = 'admin@premiumconnect.com'
+);

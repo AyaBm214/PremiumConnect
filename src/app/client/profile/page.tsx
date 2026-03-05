@@ -1,18 +1,21 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { FileUploader } from '@/components/ui/FileUploader';
 import { UserProfile } from '@/lib/types';
 import { useLanguage } from '@/lib/LanguageContext';
+import { useAuth } from '@/lib/AuthContext';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 
 export default function ProfilePage() {
     const { t } = useLanguage();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const { user: currentUser } = useAuth();
     const supabase = createClient();
     const [profile, setProfile] = useState<Partial<UserProfile>>({});
     const [loading, setLoading] = useState(true);
@@ -20,24 +23,32 @@ export default function ProfilePage() {
     const [uploading, setUploading] = useState(false);
     const [bankingType, setBankingType] = useState<'canada' | 'intl'>('canada');
 
+    const isAdmin = currentUser?.user_metadata?.type === 'admin';
+    const targetUserId = searchParams.get('uid');
+
     useEffect(() => {
         const fetchProfile = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
+            let userIdToFetch = currentUser?.id;
+
+            if (isAdmin && targetUserId) {
+                userIdToFetch = targetUserId;
+            }
+
+            if (userIdToFetch) {
                 // Try fetch existing profile
                 const { data, error } = await supabase
                     .from('profiles')
                     .select('*')
-                    .eq('id', user.id)
+                    .eq('id', userIdToFetch)
                     .single();
 
                 if (data) {
                     setProfile(data);
-                } else {
-                    // Initialize with email
+                } else if (!isAdmin || !targetUserId) {
+                    // Initialize for current user if not found
                     setProfile({
-                        id: user.id,
-                        email: user.email || '',
+                        id: userIdToFetch,
+                        email: currentUser?.email || '',
                         documents: {
                             identity_proof: '',
                             void_cheque: '',
@@ -51,7 +62,7 @@ export default function ProfilePage() {
             setLoading(false);
         };
         fetchProfile();
-    }, []);
+    }, [currentUser, isAdmin, targetUserId]);
 
     const handleChange = (field: keyof UserProfile, value: any) => {
         setProfile(prev => ({ ...prev, [field]: value }));
@@ -94,15 +105,16 @@ export default function ProfilePage() {
     const handleSave = async () => {
         setSaving(true);
         try {
-            const { error } = await supabase
-                .from('profiles')
-                .upsert(profile);
+            const query = supabase.from('profiles');
+            const { error } = (isAdmin && targetUserId)
+                ? await query.update(profile).eq('id', profile.id)
+                : await query.upsert(profile);
 
             if (error) throw error;
             alert('Profile saved successfully!');
         } catch (error) {
             console.error(error);
-            alert('Failed to save profile');
+            alert('Failed to save profile: ' + (error as any).message);
         } finally {
             setSaving(false);
         }
@@ -110,18 +122,44 @@ export default function ProfilePage() {
 
     if (loading) return <div>Loading...</div>;
 
+    const handleBack = () => {
+        if (isAdmin && searchParams.get('fromAdmin')) {
+            router.push('/admin/users');
+        } else {
+            router.push('/client/dashboard');
+        }
+    };
+
     return (
         <div style={{ maxWidth: '800px', margin: '2rem auto', padding: '2rem' }}>
+            {isAdmin && (
+                <div style={{
+                    backgroundColor: '#fffbeb',
+                    border: '1px solid #fef3c7',
+                    padding: '0.75rem 1.5rem',
+                    marginBottom: '2rem',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    color: '#92400e',
+                    fontWeight: 500,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                }}>
+                    <span style={{ fontSize: '1.2rem' }}>🛠️</span>
+                    <span>Admin Mode: Editing profile for {profile.full_name || profile.email || 'this user'}.</span>
+                </div>
+            )}
             <div style={{ marginBottom: '1rem' }}>
                 <Button
                     variant="ghost"
-                    onClick={() => router.push('/client/dashboard')}
+                    onClick={handleBack}
                     style={{ paddingLeft: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary, #666)' }}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    {t('profile.back')}
+                    {isAdmin && searchParams.get('fromAdmin') ? t('admin.details.back') : t('profile.back')}
                 </Button>
             </div>
             <h1>{t('profile.title')}</h1>
@@ -129,7 +167,7 @@ export default function ProfilePage() {
 
             <div style={{ display: 'grid', gap: '1rem', marginTop: '2rem' }}>
                 <Input label={t('profile.fullname')} value={profile.full_name || ''} onChange={e => handleChange('full_name', e.target.value)} />
-                <Input label={t('profile.email')} value={profile.email || ''} disabled onChange={() => { }} />
+                <Input label={t('profile.email')} value={profile.email || ''} disabled={!isAdmin} onChange={e => handleChange('email', e.target.value)} />
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-main)' }}>{t('profile.phone')}</label>

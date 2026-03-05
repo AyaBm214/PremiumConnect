@@ -87,20 +87,20 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.wifi')}</h4>
                 <Input
-                    label="Network Name & Password"
-                    placeholder="Network: MyWifi / Pass: 123456"
+                    label={t('guide.wifi_details')}
+                    placeholder={t('guide.wifi_placeholder')}
                     value={formData.wifiDetails || ''}
                     onChange={e => handleChange('wifiDetails', e.target.value)}
                 />
                 <div className={styles.uploadRow}>
                     <FileUploader
-                        label="Router Location (Photo)"
+                        label={t('guide.wifi_router')}
                         accept="image/*"
                         onChange={(files) => handleUpload(files, 'wifiRouterPhoto')}
                         disabled={uploading}
                     />
                     <FileUploader
-                        label="Speed Test (Screenshot)"
+                        label={t('guide.wifi_speed')}
                         accept="image/*"
                         onChange={(files) => handleUpload(files, 'wifiSpeedTestScreenshot')}
                         disabled={uploading}
@@ -120,13 +120,13 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
                 />
                 <div className={styles.uploadRow}>
                     <FileUploader
-                        label="Key Box / Lock (Photo)"
+                        label={t('guide.lock_photo')}
                         accept="image/*"
                         onChange={(files) => handleUpload(files, 'lockPhoto')}
                         disabled={uploading}
                     />
                     <FileUploader
-                        label="First Aid Kit (Photo)"
+                        label={t('guide.first_aid')}
                         accept="image/*"
                         onChange={(files) => handleUpload(files, 'firstAidKitPhoto')}
                         disabled={uploading}
@@ -138,7 +138,7 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.kitchen')}</h4>
                 <FileUploader
-                    label="Kitchen Utensils (Photos)"
+                    label={t('guide.kitchen_photos')}
                     accept="image/*"
                     onChange={(files) => handleUpload(files, 'kitchenPhotos', true)}
                     disabled={uploading}
@@ -152,7 +152,7 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.ac')}</h4>
                 <FileUploader
-                    label="AC Instructions (Video)"
+                    label={t('guide.ac_video')}
                     accept="video/*"
                     onChange={(files) => handleUpload(files, 'acVideoUrl')}
                     disabled={uploading}
@@ -163,7 +163,7 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.extras')}</h4>
                 <FileUploader
-                    label="Extras: Linens, Baby, Games (Photos)"
+                    label={t('guide.extras_photos')}
                     accept="image/*"
                     onChange={(files) => handleUpload(files, 'extrasPhotos', true)}
                     disabled={uploading}
@@ -176,11 +176,11 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             {/* 6. Luggage List */}
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.luggage')}</h4>
-                <p className={styles.description}>What should guests ABSOLUTELY bring? (e.g., Beach towels, spices...)</p>
+                <p className={styles.description}>{t('guide.luggage_description')}</p>
                 <textarea
                     className={styles.textarea}
                     rows={4}
-                    placeholder="List the essentials..."
+                    placeholder={t('guide.luggage_placeholder')}
                     value={formData.luggageList || ''}
                     onChange={e => handleChange('luggageList', e.target.value)}
                     style={{

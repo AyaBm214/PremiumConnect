@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '../properties/properties.module.css'; // Reuse table styles
 import { createClient } from '@/lib/supabase/client';
 
@@ -7,6 +8,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 export default function UsersPage() {
     const supabase = createClient();
+    const router = useRouter();
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const { t } = useLanguage();
@@ -39,11 +41,12 @@ export default function UsersPage() {
                                 <th>{t('admin.users.table.phone')}</th>
                                 <th>{t('admin.users.table.docs')}</th>
                                 <th>{t('admin.users.table.joined')}</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {users.length === 0 ? (
-                                <tr><td colSpan={5} className={styles.empty}>{t('admin.users.empty')}</td></tr>
+                                <tr><td colSpan={6} className={styles.empty}>{t('admin.users.empty')}</td></tr>
                             ) : (
                                 users.map(u => (
                                     <tr key={u.id}>
@@ -60,6 +63,29 @@ export default function UsersPage() {
                                             </div>
                                         </td>
                                         <td>{u.created_at ? new Date(u.created_at).toLocaleDateString() : '-'}</td>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                <button
+                                                    onClick={() => router.push(`/client/profile?uid=${u.id}&fromAdmin=true`)}
+                                                    style={{
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        border: '1px solid #ddd',
+                                                        backgroundColor: 'white',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        fontSize: '0.8rem',
+                                                        fontWeight: 500,
+                                                        color: '#1a2b4b'
+                                                    }}
+                                                    title="Modifier l'utilisateur"
+                                                >
+                                                    <span style={{ fontSize: '1rem' }}>✏️</span> {t('admin.details.edit')}
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
                             )}

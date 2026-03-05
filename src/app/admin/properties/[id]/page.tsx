@@ -9,6 +9,8 @@ import Link from 'next/link';
 import styles from '../properties.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
+import { calculateTotalProgress } from '@/lib/onboarding-utils';
+
 export default function PropertyDetailsPage() {
     const params = useParams();
     const router = useRouter();
@@ -49,13 +51,17 @@ export default function PropertyDetailsPage() {
 
         fetchProperty();
     }, [params.id, router]);
-
     const handleSave = async (section: string) => {
         if (!property) return;
 
+        const newProgress = calculateTotalProgress(editedData);
+
         const { error } = await supabase
             .from('properties')
-            .update({ data: editedData })
+            .update({
+                data: editedData,
+                progress: newProgress
+            })
             .eq('id', property.id);
 
         if (error) {
@@ -63,7 +69,7 @@ export default function PropertyDetailsPage() {
             return;
         }
 
-        setProperty({ ...property, data: editedData });
+        setProperty({ ...property, data: editedData, progress: newProgress });
         setIsEditing(null);
     };
 

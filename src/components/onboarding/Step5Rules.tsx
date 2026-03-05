@@ -27,17 +27,17 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
             <h3 className={styles.sectionTitle}>{t('step.rules')}</h3>
 
             <div className={styles.togglesGrid}>
-                <Toggle label="Smoking Allowed" checked={formData.smoking} onChange={v => handleChange('smoking', v)} />
-                <Toggle label="Pets Allowed" checked={formData.pets} onChange={v => handleChange('pets', v)} />
-                <Toggle label="Events Allowed" checked={formData.events} onChange={v => handleChange('events', v)} />
-                <Toggle label="I provide cleaning" checked={formData.providesCleaning} onChange={v => handleChange('providesCleaning', v)} />
+                <Toggle label={t('rules.smoking')} checked={formData.smoking} onChange={v => handleChange('smoking', v)} />
+                <Toggle label={t('rules.pets')} checked={formData.pets} onChange={v => handleChange('pets', v)} />
+                <Toggle label={t('rules.events')} checked={formData.events} onChange={v => handleChange('events', v)} />
+                <Toggle label={t('rules.cleaning')} checked={formData.providesCleaning} onChange={v => handleChange('providesCleaning', v)} />
             </div>
 
             {/* Max Pets Conditional Input */}
             {formData.pets && (
                 <div style={{ marginTop: '1rem', width: '200px' }}>
                     <Input
-                        label="Max Pets Allowed"
+                        label={t('rules.max_pets')}
                         type="number"
                         placeholder="e.g. 2"
                         value={formData.maxPets || ''}
@@ -47,19 +47,19 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
             )}
 
             <Input
-                label="Quiet Hours"
-                placeholder="e.g. 10:00 PM - 8:00 AM"
+                label={t('rules.quiet_hours')}
+                placeholder="e.g. 22:00 - 08:00"
                 value={formData.quietHours || ''}
                 onChange={e => handleChange('quietHours', e.target.value)}
             />
 
             <div className={styles.divider} />
 
-            <h3 className={styles.sectionTitle}>Fees & Details</h3>
+            <h3 className={styles.sectionTitle}>{t('rules.fees_details')}</h3>
             <div className={styles.grid}>
                 {formData.providesCleaning && (
                     <Input
-                        label="Cleaning Fee ($)"
+                        label={t('rules.cleaning_fee')}
                         type="number"
                         value={formData.cleaningFee || ''}
                         onChange={e => handleChange('cleaningFee', e.target.value)}
@@ -67,7 +67,7 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                     />
                 )}
                 <Input
-                    label="Max Guests"
+                    label={t('rules.max_guests')}
                     type="number"
                     value={formData.maxGuests || ''}
                     onChange={e => handleChange('maxGuests', e.target.value)}

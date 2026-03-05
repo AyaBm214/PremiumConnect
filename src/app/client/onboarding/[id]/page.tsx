@@ -17,8 +17,9 @@ import StepContract from '@/components/onboarding/StepContract';
 import { notifyAdminOnCompletion } from '@/app/actions/onboarding-actions';
 import { useLanguage } from '@/lib/LanguageContext';
 
-export default function OnboardingPage() {
-    const params = useParams();
+import { calculateStepProgress, calculateTotalProgress } from '@/lib/onboarding-utils';
+
+export default function OnboardingPage({ params }: { params: { id: string } }) {
     const router = useRouter();
     const { user } = useAuth();
     const { t } = useLanguage();
@@ -26,10 +27,12 @@ export default function OnboardingPage() {
     const [loading, setLoading] = useState(true);
     const supabase = createClient();
 
+    const isAdmin = user?.user_metadata?.type === 'admin';
+
     // Load property
     useEffect(() => {
         if (!user) return; // Wait for auth
-        const propId = params.id as string;
+        const propId = params.id;
 
         const fetchProperty = async () => {
             const { data, error } = await supabase
@@ -44,7 +47,8 @@ export default function OnboardingPage() {
                 return;
             }
 
-            if (data.owner_id !== user.id) {
+            // Allow if owner OR admin
+            if (data.owner_id !== user.id && !isAdmin) {
                 router.push('/client/dashboard'); // Unauthorized
                 return;
             }
@@ -67,14 +71,17 @@ export default function OnboardingPage() {
         };
 
         fetchProperty();
-    }, [params.id, user, router, supabase]);
+    }, [params.id, user, router, supabase, isAdmin]);
 
     const handleUpdate = async (updates: Partial<Property>) => {
         if (!property) return;
         const updated = { ...property, ...updates, updatedAt: new Date().toISOString() };
 
+        // Calculate total progress using the shared utility
+        const totalProgress = calculateTotalProgress(updated.data);
+
         // Optimistic update
-        setProperty(updated);
+        setProperty({ ...updated, progress: totalProgress });
 
         // Map TS camelCase to DB snake_case for saving
         const dbPayload = {
@@ -84,27 +91,23 @@ export default function OnboardingPage() {
             status: updated.status,
             current_step: updated.currentStep,
             total_steps: updated.totalSteps,
-            progress: updates.progress ?? (updated.status === 'pending_review' ? 100 : Math.round(((updated.currentStep - 1) / 6) * 100)),
+            progress: totalProgress,
             data: updated.data,
             updated_at: updated.updatedAt
         };
 
-        // Update state progress too if it wasn't passed in updates
-        if (updates.currentStep) {
-            updated.progress = dbPayload.progress;
-            setProperty({ ...updated });
-        }
+        const query = supabase
+            .from('properties');
 
-        const { error } = await supabase
-            .from('properties')
-            .upsert(dbPayload);
+        const { error } = isAdmin
+            ? await query.update(dbPayload).eq('id', updated.id)
+            : await query.upsert(dbPayload);
 
         if (error) {
             console.error('Error saving property:', error);
-            // Optionally revert state here if save fails
+            alert('Error saving: ' + error.message);
         }
     };
-
     const nextStep = () => {
         if (!property) return;
         const next = Math.min(property.currentStep + 1, 7);
@@ -118,73 +121,14 @@ export default function OnboardingPage() {
     };
 
     const handleSaveExit = async () => {
-        // Just ensure latest state is saved (it should be real-time/optimistic already)
-        // Check local storage if we still used it? No.
-        router.push('/client/dashboard');
+        if (isAdmin) {
+            router.push('/admin/properties');
+        } else {
+            router.push('/client/dashboard');
+        }
     };
 
     if (loading || !property) return <div>Loading...</div>;
-
-    const calculateStepProgress = (stepId: number): number => {
-        const data = property.data;
-        if (!data) return 0;
-
-        switch (stepId) {
-            case 1: { // Property Info
-                const info = data.info || {};
-                const fields = ['propertyName', 'description', 'address', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
-                const filled = fields.filter(f => {
-                    const val = (info as any)[f];
-                    return val !== undefined && val !== null && val !== '';
-                }).length;
-                return Math.min(100, Math.round((filled / fields.length) * 100));
-            }
-            case 2: { // Amenities
-                const count = data.amenities?.length || 0;
-                // Consider 15+ amenities as 100%
-                return Math.min(100, Math.round((count / 15) * 100));
-            }
-            case 3: { // Photos
-                const photoCount = data.photos?.length || 0;
-                const extLinksCount = data.externalLinks?.length || 0;
-                const hasDrive = !!data.googleDriveLink;
-                // Mix of photos and links: 12 units = 100%
-                const totalUnits = photoCount + extLinksCount + (hasDrive ? 2 : 0);
-                return Math.min(100, Math.round((totalUnits / 12) * 100));
-            }
-            case 4: { // Rules & Fees
-                const rules = data.rules || {};
-                const fields = ['smoking', 'pets', 'events', 'quietHours', 'cleaningFee', 'maxGuests'];
-                const filled = fields.filter(f => {
-                    const val = (rules as any)[f];
-                    return val !== undefined && val !== null && val !== '';
-                }).length;
-                return Math.min(100, Math.round((filled / fields.length) * 100));
-            }
-            case 5: { // Guest Guide
-                const guide = data.guide || {};
-                const fields = ['wifiDetails', 'wifiRouterPhoto', 'wifiSpeedTestScreenshot', 'tourVideo', 'lockPhoto', 'luggageList', 'emergencyContacts'];
-                const filled = fields.filter(f => {
-                    const val = (guide as any)[f];
-                    return val !== undefined && val !== null && val !== '' && (Array.isArray(val) ? val.length > 0 : true);
-                }).length;
-                return Math.min(100, Math.round((filled / fields.length) * 100));
-            }
-            case 6: { // Payment
-                const payment = data.payment || {};
-                const fields = ['bankName', 'accountHolder', 'accountNumber', 'transitInstitution', 'branchNumber'];
-                const filled = fields.filter(f => {
-                    const val = (payment as any)[f];
-                    return val !== undefined && val !== null && val !== '';
-                }).length;
-                return Math.min(100, Math.round((filled / fields.length) * 100));
-            }
-            case 7: { // Contract
-                return data.contract?.status === 'approved' ? 100 : 0;
-            }
-            default: return 0;
-        }
-    };
 
     return (
         <div className={styles.layout}>
@@ -194,10 +138,34 @@ export default function OnboardingPage() {
                     <img src="/logo.png" alt="Premium Booking" />
                 </div>
 
+                {isAdmin && (
+                    <div style={{ padding: '1rem', borderBottom: '1px solid #eee', marginBottom: '1rem' }}>
+                        <button
+                            onClick={() => router.push('/admin/properties')}
+                            style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                backgroundColor: '#f0f4f8',
+                                border: '1px solid #d1d9e6',
+                                borderRadius: '8px',
+                                color: '#1a2b4b',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px'
+                            }}
+                        >
+                            <span>←</span> {t('admin.details.back')}
+                        </button>
+                    </div>
+                )}
+
                 <nav className={styles.timeline}>
                     <div className={styles.progressLine} />
                     {ONBOARDING_STEPS.map(step => {
-                        const stepProgress = calculateStepProgress(step.id);
+                        const stepProgress = calculateStepProgress(step.id, property.data);
                         return (
                             <div
                                 key={step.id}
@@ -227,12 +195,30 @@ export default function OnboardingPage() {
                     })}
                 </nav>
                 <button onClick={handleSaveExit} className={styles.saveExitBtn}>
-                    Save & Exit
+                    {isAdmin ? 'Save & Return to Admin' : 'Save & Exit'}
                 </button>
             </aside>
 
             {/* Main Content */}
             <main className={styles.main}>
+                {isAdmin && (
+                    <div style={{
+                        backgroundColor: '#fffbeb',
+                        border: '1px solid #fef3c7',
+                        padding: '0.75rem 1.5rem',
+                        marginBottom: '1rem',
+                        borderRadius: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        color: '#92400e',
+                        fontWeight: 500,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                    }}>
+                        <span style={{ fontSize: '1.2rem' }}>🛠️</span>
+                        <span>Mode Admin : Vous modifiez cette propriété pour le client.</span>
+                    </div>
+                )}
                 <header className={styles.header}>
                     <h2>{t(ONBOARDING_STEPS[property.currentStep - 1].key || '')}</h2>
                     <div className={styles.progressText}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
@@ -310,9 +296,14 @@ export default function OnboardingPage() {
                             data={property.data.contract}
                             onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}
                             onNext={async () => {
-                                handleUpdate({ status: 'pending_review', progress: 100 });
+                                // Don't force 100%, let handleUpdate calculate it from data
+                                await handleUpdate({ status: 'pending_review' });
                                 await notifyAdminOnCompletion(property.id, property.data.info?.propertyName || 'Untitled');
-                                router.push('/client/dashboard');
+                                if (isAdmin) {
+                                    router.push('/admin/properties');
+                                } else {
+                                    router.push('/client/dashboard');
+                                }
                             }}
                             onBack={prevStep}
                         />
