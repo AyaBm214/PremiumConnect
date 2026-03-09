@@ -76,6 +76,114 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
 
             <div className={styles.divider} />
 
+            <h3 className={styles.sectionTitle}>{t('rules.access_security')}</h3>
+            <div className={styles.grid}>
+                <Input
+                    label={t('rules.door_code')}
+                    placeholder="e.g. 1234"
+                    value={formData.doorCode || ''}
+                    onChange={e => handleChange('doorCode', e.target.value)}
+                />
+                <div className={styles.categoryBlock} style={{ marginBottom: 0 }}>
+                    <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>{t('rules.lock_type')}</label>
+                    <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                checked={formData.lockType?.includes('smart_lock')}
+                                onChange={e => {
+                                    const current = formData.lockType || [];
+                                    const updated = e.target.checked
+                                        ? [...current, 'smart_lock']
+                                        : current.filter(t => t !== 'smart_lock');
+                                    handleChange('lockType', updated);
+                                }}
+                            />
+                            {t('rules.lock_type.smart')}
+                        </label>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                            <input
+                                type="checkbox"
+                                checked={formData.lockType?.includes('lockbox')}
+                                onChange={e => {
+                                    const current = formData.lockType || [];
+                                    const updated = e.target.checked
+                                        ? [...current, 'lockbox']
+                                        : current.filter(t => t !== 'lockbox');
+                                    handleChange('lockType', updated);
+                                }}
+                            />
+                            {t('rules.lock_type.lockbox')}
+                        </label>
+                    </div>
+                </div>
+                <Input
+                    label={t('rules.alarm_code')}
+                    placeholder="e.g. 5678"
+                    value={formData.alarmCode || ''}
+                    onChange={e => handleChange('alarmCode', e.target.value)}
+                />
+            </div>
+
+            <div className={styles.togglesGrid} style={{ marginTop: '0.5rem' }}>
+                <Toggle
+                    label={t('rules.has_cameras')}
+                    checked={formData.hasCameras}
+                    onChange={v => handleChange('hasCameras', v)}
+                />
+            </div>
+
+            {formData.hasCameras && (
+                <div className={styles.grid} style={{ marginTop: '0.5rem' }}>
+                    <Input
+                        label={t('rules.num_cameras')}
+                        type="number"
+                        placeholder="0"
+                        value={formData.numCameras || ''}
+                        onChange={e => handleChange('numCameras', parseInt(e.target.value))}
+                    />
+                    <div className={styles.fullWidth}>
+                        <Input
+                            label={t('rules.camera_placements')}
+                            placeholder="e.g. Front door, back porch..."
+                            value={formData.cameraPlacements || ''}
+                            onChange={e => handleChange('cameraPlacements', e.target.value)}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <div className={styles.divider} />
+
+            <h3 className={styles.sectionTitle}>{t('rules.ops_contacts')}</h3>
+            <div className={styles.grid}>
+                <Input
+                    label={t('rules.cleaning_contact')}
+                    placeholder="Name + Phone/Email"
+                    value={formData.cleaningContact || ''}
+                    onChange={e => handleChange('cleaningContact', e.target.value)}
+                />
+                <Input
+                    label={t('rules.snow_removal')}
+                    placeholder="Name + Phone/Email"
+                    value={formData.snowRemovalContact || ''}
+                    onChange={e => handleChange('snowRemovalContact', e.target.value)}
+                />
+                <div className={styles.fullWidth}>
+                    <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>{t('rules.additional_notes')}</label>
+                    <textarea
+                        className={styles.textarea}
+                        rows={3}
+                        placeholder="Any other operational details..."
+                        value={formData.additionalNotes || ''}
+                        onChange={e => handleChange('additionalNotes', e.target.value)}
+                        style={{ marginTop: '0.5rem' }}
+                    />
+                </div>
+            </div>
+
+            <div className={styles.divider} />
+
             <div className={styles.categoryBlock}>
                 <h3 className={styles.sectionTitle}>{t('step.comments_label')}</h3>
                 <textarea

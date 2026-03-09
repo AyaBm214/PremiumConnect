@@ -55,6 +55,19 @@ export interface Property {
             cleaningFee?: number;
             maxGuests?: number;
             maxPets?: number;
+
+            // New fields
+            doorCode?: string;
+            lockType?: ('smart_lock' | 'lockbox')[];
+            alarmCode?: string;
+            hasCameras?: boolean;
+            numCameras?: number;
+            cameraPlacements?: string;
+
+            cleaningContact?: string;
+            snowRemovalContact?: string;
+            additionalNotes?: string;
+
             comments?: string;
         };
         // Step 6: Guide

@@ -247,6 +247,48 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('admin.details.rules.pet_fee')} value={editedData.rules?.petFee} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, petFee: v } })} />
                             <EditRow label={t('admin.details.rules.max_guests')} value={editedData.rules?.maxGuests} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, maxGuests: v } })} />
                             <EditRow label={t('admin.details.rules.quiet_hours')} value={editedData.rules?.quietHours} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, quietHours: v } })} />
+
+                            <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.access_security')}</h4>
+                                <EditRow label={t('admin.details.rules.door_code')} value={editedData.rules?.doorCode} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, doorCode: v } })} />
+                                <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
+                                    <span style={{ minWidth: '120px', fontSize: '0.9rem', color: '#666' }}>{t('admin.details.rules.lock_type')}</span>
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem' }}>
+                                            <input type="checkbox" checked={editedData.rules?.lockType?.includes('smart_lock')} onChange={(e) => {
+                                                const current = editedData.rules?.lockType || [];
+                                                const updated = e.target.checked ? [...current, 'smart_lock'] : current.filter((t: string) => t !== 'smart_lock');
+                                                setEditedData({ ...editedData, rules: { ...editedData.rules, lockType: updated } });
+                                            }} /> {t('rules.lock_type.smart')}
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.9rem' }}>
+                                            <input type="checkbox" checked={editedData.rules?.lockType?.includes('lockbox')} onChange={(e) => {
+                                                const current = editedData.rules?.lockType || [];
+                                                const updated = e.target.checked ? [...current, 'lockbox'] : current.filter((t: string) => t !== 'lockbox');
+                                                setEditedData({ ...editedData, rules: { ...editedData.rules, lockType: updated } });
+                                            }} /> {t('rules.lock_type.lockbox')}
+                                        </label>
+                                    </div>
+                                </div>
+                                <EditRow label={t('admin.details.rules.alarm_code')} value={editedData.rules?.alarmCode} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, alarmCode: v } })} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', marginBottom: '0.75rem' }}>
+                                    <input type="checkbox" checked={editedData.rules?.hasCameras} onChange={(e) => setEditedData({ ...editedData, rules: { ...editedData.rules, hasCameras: e.target.checked } })} /> {t('admin.details.rules.has_cameras')}
+                                </label>
+                                {editedData.rules?.hasCameras && (
+                                    <>
+                                        <EditRow label={t('admin.details.rules.num_cameras')} value={editedData.rules?.numCameras} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, numCameras: parseInt(v) } })} />
+                                        <EditRow label={t('admin.details.rules.camera_placements')} value={editedData.rules?.cameraPlacements} isTextArea onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, cameraPlacements: v } })} />
+                                    </>
+                                )}
+                            </div>
+
+                            <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.ops_contacts')}</h4>
+                                <EditRow label={t('admin.details.rules.cleaning_contact')} value={editedData.rules?.cleaningContact} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, cleaningContact: v } })} />
+                                <EditRow label={t('admin.details.rules.snow_removal')} value={editedData.rules?.snowRemovalContact} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, snowRemovalContact: v } })} />
+                                <EditRow label={t('admin.details.rules.additional_notes')} value={editedData.rules?.additionalNotes} isTextArea onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, additionalNotes: v } })} />
+                            </div>
+
                             <EditRow label={t('step.comments_label')} value={editedData.rules?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, comments: v } })} />
                         </>
                     ) : (
@@ -259,6 +301,28 @@ export default function PropertyDetailsPage() {
                             <Row label={t('admin.details.rules.pet_fee')} value={(data.rules as any)?.petFee ? `$${(data.rules as any).petFee}` : '$0'} />
                             <Row label={t('admin.details.rules.max_guests')} value={data.rules?.maxGuests || 'N/A'} />
                             <Row label={t('admin.details.rules.quiet_hours')} value={data.rules?.quietHours || 'None'} />
+
+                            <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.access_security')}</h4>
+                                <Row label={t('admin.details.rules.door_code')} value={data.rules?.doorCode} />
+                                <Row label={t('admin.details.rules.lock_type')} value={data.rules?.lockType?.map((lt: string) => t(`rules.lock_type.${lt.split('_')[0]}`)).join(', ')} />
+                                <Row label={t('admin.details.rules.alarm_code')} value={data.rules?.alarmCode} />
+                                <Row label={t('admin.details.rules.has_cameras')} value={data.rules?.hasCameras ? t('signup.name').includes('m') ? 'Oui' : 'Yes' : t('signup.name').includes('m') ? 'Non' : 'No'} />
+                                {data.rules?.hasCameras && (
+                                    <>
+                                        <Row label={t('admin.details.rules.num_cameras')} value={data.rules?.numCameras} />
+                                        <Row label={t('admin.details.rules.camera_placements')} value={data.rules?.cameraPlacements} />
+                                    </>
+                                )}
+                            </div>
+
+                            <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.ops_contacts')}</h4>
+                                <Row label={t('admin.details.rules.cleaning_contact')} value={data.rules?.cleaningContact} />
+                                <Row label={t('admin.details.rules.snow_removal')} value={data.rules?.snowRemovalContact} />
+                                <Row label={t('admin.details.rules.additional_notes')} value={data.rules?.additionalNotes} />
+                            </div>
+
                             <Row label={t('step.comments_label')} value={data.rules?.comments} />
                         </>
                     )}
