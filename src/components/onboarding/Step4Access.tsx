@@ -56,10 +56,10 @@ export default function Step4Access({ propertyId, data, onUpdate, onNext, onBack
     return (
         <div className={styles.container}>
             <h3 className={styles.sectionTitle}>Property Access</h3>
-            <p style={{ color: 'var(--text-muted)' }}>How do guests get in? (Video is mandatory)</p>
+            <p style={{ color: 'var(--text-muted)' }}>How do guests get in? (Video is optional)</p>
 
             <div className={styles.categoryBlock}>
-                <h4 className={styles.categoryTitle}>Video Instructions {data?.videoUrl ? '✓' : ''} <span style={{ color: 'red' }}>*</span></h4>
+                <h4 className={styles.categoryTitle}>Video Instructions {data?.videoUrl ? '✓' : ''}</h4>
                 {data?.videoUrl && <p style={{ fontSize: '0.8rem', color: 'green' }}>Video uploaded!</p>}
                 <FileUploader
                     label=""
@@ -68,7 +68,6 @@ export default function Step4Access({ propertyId, data, onUpdate, onNext, onBack
                     onChange={handleVideoUpload}
                     disabled={uploading}
                 />
-                {!data?.videoUrl && <p style={{ color: 'red', fontSize: '0.8rem' }}>Required</p>}
             </div>
 
             <div className={styles.divider} />
@@ -86,13 +85,7 @@ export default function Step4Access({ propertyId, data, onUpdate, onNext, onBack
 
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>
                 <Button variant="outline" onClick={onBack}>Back</Button>
-                <Button size="lg" onClick={() => {
-                    if (!data?.videoUrl) {
-                        alert("Access video is mandatory.");
-                        return;
-                    }
-                    onNext();
-                }} className={styles.nextBtn}>
+                <Button size="lg" onClick={onNext} className={styles.nextBtn}>
                     Next Step: Rules →
                 </Button>
             </div>

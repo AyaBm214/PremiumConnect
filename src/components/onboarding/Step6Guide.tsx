@@ -69,10 +69,6 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
     };
 
     const handleNext = () => {
-        if (!formData.lockVideoUrl) {
-            alert(t('guide.video_required'));
-            return;
-        }
         onNext();
     };
 
@@ -112,11 +108,11 @@ export default function Step6Guide({ propertyId, data, info, amenities, photos, 
             <div className={styles.categoryBlock}>
                 <h4 className={styles.categoryTitle}>{t('guide.checkin')}</h4>
                 <FileUploader
-                    label={`${t('guide.access_video')} *`}
+                    label={t('guide.access_video')}
                     accept="video/*"
                     onChange={(files) => handleUpload(files, 'lockVideoUrl')}
                     disabled={uploading}
-                    description={!formData.lockVideoUrl ? <span style={{ color: 'red' }}>* {t('guide.video_required')}</span> : "✓ Uploaded"}
+                    description={formData.lockVideoUrl ? "✓ Uploaded" : ""}
                 />
                 <div className={styles.uploadRow}>
                     <FileUploader
