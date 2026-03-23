@@ -20,6 +20,7 @@ export interface Property {
             floorNumber?: string;
             address?: string;
             size?: string;
+            sizeUnit?: string;
             numRooms?: number;
             numBathrooms?: number;
             type?: PropertyType;
@@ -33,6 +34,7 @@ export interface Property {
         amenities?: string[];
         poolOpeningDate?: string; // If pool is selected
         hotTubOpeningDate?: string; // If hot tub is selected
+        bbqOpeningDate?: string; // If BBQ is selected
         amenitiesComments?: string;
         // Step 3: Photos (mocked urls)
         photos?: string[];

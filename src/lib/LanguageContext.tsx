@@ -35,6 +35,18 @@ const dictionary: Record<string, Record<Language, string>> = {
     'signup.check_email': { en: 'Check Your Email', fr: 'Vérifiez votre courriel' },
     'signup.email_sent': { en: 'A confirmation link has been sent to your email address. Please click it to activate your account.', fr: 'Un lien de confirmation a été envoyé à votre adresse courriel. Veuillez cliquer dessus pour activer votre compte.' },
 
+    // Step 1 Labels
+    'label.property_name': { en: 'Property Name', fr: 'Nom de la propriété' },
+    'label.property_type': { en: 'Property Type', fr: 'Type de propriété' },
+    'label.address': { en: 'Address', fr: 'Adresse' },
+    'label.floor': { en: 'Floor / Suite', fr: 'Étage / Suite' },
+    'label.size': { en: 'Property Size', fr: 'Superficie' },
+    'label.checkin': { en: 'Check-in Time', fr: "Heure d'arrivée" },
+    'label.checkout': { en: 'Check-out Time', fr: 'Heure de départ' },
+    'label.documents': { en: 'Official Documents', fr: 'Documents officiels' },
+    'label.citq': { en: 'CITQ Certificate', fr: 'Certificat CITQ' },
+    'label.reservations': { en: 'Reservations History', fr: 'Historique des réservations' },
+
     // Dashboard
     'dash.welcome': { en: 'Welcome back', fr: 'Bienvenue' },
     'dash.subtitle': { en: 'Manage your properties and onboardings', fr: 'Gérez vos propriétés et vos mises en service' },
@@ -358,6 +370,7 @@ const dictionary: Record<string, Record<Language, string>> = {
 
     // Hot Tub
     'amenity.hottub_date': { en: 'Hot Tub Opening Date', fr: "Date d'ouverture du Spa" },
+    'amenity.bbq_date': { en: 'BBQ Opening Date', fr: "Date d'ouverture du BBQ" },
     'amenity.pool_date': { en: 'Pool Opening Date', fr: "Date d'ouverture de la piscine" },
 
     // Admin
@@ -399,6 +412,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     // Admin Details Page
     'admin.details.back': { en: 'Back', fr: 'Retour' },
     'admin.details.download_media': { en: 'Download All Media', fr: 'Télécharger tous les médias' },
+    'admin.details.download_all_photos': { en: 'Download All Photos', fr: 'Télécharger toutes les photos' },
     'admin.details.download_pdf': { en: 'Download PDF', fr: 'Télécharger PDF' },
     'admin.details.download_citq': { en: 'Download CITQ', fr: 'Télécharger CITQ' },
     'admin.details.citq_not_found': { en: 'No CITQ PDF uploaded', fr: 'Aucun PDF CITQ téléchargé' },
@@ -422,6 +436,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.details.info.address': { en: 'Address', fr: 'Adresse' },
     'admin.details.info.floor': { en: 'Floor', fr: 'Étage' },
     'admin.details.info.size': { en: 'Size', fr: 'Superficie' },
+    'admin.details.info.size_unit': { en: 'Unit', fr: 'Unité' },
     'admin.details.info.rooms': { en: 'Rooms', fr: 'Chambres' },
     'admin.details.info.bed': { en: 'bed', fr: 'lit' },
     'admin.details.info.bath': { en: 'bath', fr: 'sdb' },

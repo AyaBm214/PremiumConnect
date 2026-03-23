@@ -66,26 +66,26 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
             <h3 className={styles.sectionTitle}>{t('step.info')}</h3>
             <div className={styles.grid}>
                 <Input
-                    label={t('info.name')}
+                    label={t('label.property_name')}
                     placeholder="e.g. Sunny Loft downtown"
                     value={formData.propertyName || ''}
                     onChange={e => handleChange('propertyName', e.target.value)}
                     required
                 />
                 <Select
-                    label={t('info.type')}
+                    label={t('label.property_type')}
                     value={formData.type || ''}
                     onChange={e => handleChange('type', e.target.value as PropertyType)}
                     options={[
-                        { value: 'apartment', label: t('info.type') === 'Type de propriété' ? 'Appartement' : 'Apartment' },
-                        { value: 'house', label: t('info.type') === 'Type de propriété' ? 'Maison' : 'House' },
+                        { value: 'apartment', label: t('label.property_type') === 'Type de propriété' ? 'Appartement' : 'Apartment' },
+                        { value: 'house', label: t('label.property_type') === 'Type de propriété' ? 'Maison' : 'House' },
                         { value: 'villa', label: 'Villa' },
-                        { value: 'cottage', label: t('info.type') === 'Type de propriété' ? 'Chalet' : 'Cottage' },
+                        { value: 'cottage', label: t('label.property_type') === 'Type de propriété' ? 'Chalet' : 'Cottage' },
                     ]}
                     required
                 />
                 <Input
-                    label={t('info.address')}
+                    label={t('label.address')}
                     placeholder="Full address"
                     value={formData.address || ''}
                     onChange={e => handleChange('address', e.target.value)}
@@ -93,17 +93,33 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     required
                 />
                 <Input
-                    label={t('info.floor')}
+                    label={t('label.floor')}
                     placeholder="e.g. 2nd floor"
                     value={formData.floorNumber || ''}
                     onChange={e => handleChange('floorNumber', e.target.value)}
                 />
-                <Input
-                    label={t('info.size')}
-                    placeholder="e.g. 850"
-                    value={formData.size || ''}
-                    onChange={e => handleChange('size', e.target.value)}
-                />
+                <div className={styles.sizeInputGroup}>
+                    <Input
+                        label={t('label.size')}
+                        placeholder="e.g. 850"
+                        value={formData.size || ''}
+                        onChange={e => handleChange('size', e.target.value)}
+                        className={styles.fullWidth}
+                        style={{ flex: 1 }}
+                    />
+                    <Select
+                        label={t('admin.details.info.size_unit') || 'Unit'}
+                        value={formData.sizeUnit || 'm²'}
+                        onChange={e => handleChange('sizeUnit', e.target.value)}
+                        className={styles.unitSelect}
+                        options={[
+                            { value: 'm²', label: 'm²' },
+                            { value: 'ft²', label: 'ft²' },
+                            { value: 'cm²', label: 'cm²' },
+                            { value: 'acres', label: 'acres' },
+                        ]}
+                    />
+                </div>
                 <Input
                     label={t('photos.zone.bedroom')}
                     type="number"
@@ -122,14 +138,14 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                 />
                 <div className={styles.row}>
                     <Input
-                        label={t('info.checkin')}
+                        label={t('label.checkin')}
                         type="time"
                         value={formData.checkInTime || ''}
                         onChange={e => handleChange('checkInTime', e.target.value)}
                         required
                     />
                     <Input
-                        label={t('info.checkout')}
+                        label={t('label.checkout')}
                         type="time"
                         value={formData.checkOutTime || ''}
                         onChange={e => handleChange('checkOutTime', e.target.value)}
@@ -140,13 +156,13 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
 
             <div className={styles.divider} />
 
-            <h3 className={styles.sectionTitle}>{t('info.documents')}</h3>
+            <h3 className={styles.sectionTitle}>{t('label.documents')}</h3>
             <div className={styles.uploadGrid}>
                 {/* CITQ */}
                 <div>
                     {formData.citqFile && <p style={{ fontSize: '0.8rem', color: 'green', marginBottom: '0.5rem' }}>✓ {t('profile.uploaded')}</p>}
                     <FileUploader
-                        label={t('info.citq')}
+                        label={t('label.citq')}
                         accept=".pdf,image/*"
                         description="PDF or image (JPG, PNG)"
                         onChange={(files) => handleFileUpload(files, 'citqFile')}
@@ -157,7 +173,7 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                 <div>
                     {formData.reservationsFile && <p style={{ fontSize: '0.8rem', color: 'green', marginBottom: '0.5rem' }}>✓ {t('profile.uploaded')}</p>}
                     <FileUploader
-                        label={t('info.reservations')}
+                        label={t('label.reservations')}
                         accept=".xlsx,.csv"
                         description="To analyze your booking history"
                         onChange={(files) => handleFileUpload(files, 'reservationsFile')}

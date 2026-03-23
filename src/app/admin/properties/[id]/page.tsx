@@ -10,6 +10,7 @@ import styles from '../properties.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
 
 import { calculateTotalProgress } from '@/lib/onboarding-utils';
+import { downloadPhotosAsZip, PhotoToDownload } from '@/lib/download-utils';
 
 export default function PropertyDetailsPage() {
     const params = useParams();
@@ -17,6 +18,8 @@ export default function PropertyDetailsPage() {
     const [property, setProperty] = useState<Property | null>(null);
     const [isEditing, setIsEditing] = useState<string | null>(null);
     const [editedData, setEditedData] = useState<any>(null);
+    const [downloading, setDownloading] = useState(false);
+    const [downloadProgress, setDownloadProgress] = useState({ current: 0, total: 0 });
     const supabase = createClient();
     const { t } = useLanguage();
 
@@ -100,14 +103,43 @@ export default function PropertyDetailsPage() {
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <Button variant="outline" onClick={() => {
-                        // Open all photos in new tabs
-                        if (data.photos?.length) {
-                            data.photos.forEach((url: string) => window.open(url, '_blank'));
-                        } else {
-                            alert('No photos to download');
-                        }
-                    }}>{t('admin.details.download_media')}</Button>
+                    <Button
+                        variant="outline"
+                        disabled={downloading}
+                        onClick={async () => {
+                            if (!property || !data.photos?.length) {
+                                alert('No photos to download');
+                                return;
+                            }
+
+                            const photosToZip: PhotoToDownload[] = [];
+                            if (data.photos) data.photos.forEach((url, i) => photosToZip.push({ url, filename: `main_${i + 1}` }));
+                            if (data.guide?.wifiRouterPhoto) photosToZip.push({ url: data.guide.wifiRouterPhoto, filename: 'guide_wifi_router' });
+                            if (data.guide?.wifiSpeedTestScreenshot) photosToZip.push({ url: data.guide.wifiSpeedTestScreenshot, filename: 'guide_wifi_speedtest' });
+                            if (data.guide?.firstAidKitPhoto) photosToZip.push({ url: data.guide.firstAidKitPhoto, filename: 'guide_first_aid' });
+                            if (data.guide?.lockPhoto) photosToZip.push({ url: data.guide.lockPhoto, filename: 'guide_lock' });
+                            if (data.guide?.kitchenPhotos) data.guide.kitchenPhotos.forEach((url, i) => photosToZip.push({ url, filename: `guide_kitchen_${i + 1}` }));
+                            if (data.guide?.extrasPhotos) data.guide.extrasPhotos.forEach((url, i) => photosToZip.push({ url, filename: `guide_extras_${i + 1}` }));
+
+                            setDownloading(true);
+                            setDownloadProgress({ current: 0, total: photosToZip.length });
+
+                            try {
+                                const dateStr = new Date().toISOString().split('T')[0];
+                                const zipName = `photos_export_${dateStr}.zip`;
+                                await downloadPhotosAsZip(photosToZip, zipName, (current, total) => {
+                                    setDownloadProgress({ current, total });
+                                });
+                            } catch (error) {
+                                console.error('Error creating ZIP:', error);
+                                alert('Failed to create ZIP archive.');
+                            } finally {
+                                setDownloading(false);
+                            }
+                        }}
+                    >
+                        {downloading ? `📦 ${downloadProgress.current}/${downloadProgress.total}...` : t('admin.details.download_all_photos') || 'Download All Photos'}
+                    </Button>
                     <Button variant="outline" onClick={() => generatePropertyPDF(property)}>{t('admin.details.download_pdf')}</Button>
                     {data.info?.citqFile && (
                         <Button
@@ -157,7 +189,23 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('admin.details.info.type')} value={editedData.info?.type} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, type: v } })} />
                             <EditRow label={t('admin.details.info.address')} value={editedData.info?.address} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, address: v } })} />
                             <EditRow label={t('admin.details.info.floor')} value={editedData.info?.floorNumber} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, floorNumber: v } })} />
-                            <EditRow label={t('admin.details.info.size')} value={editedData.info?.size} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, size: v } })} />
+                            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', alignItems: 'flex-end' }}>
+                                <div style={{ flex: 1 }}>
+                                    <EditRow label={t('admin.details.info.size')} value={editedData.info?.size} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, size: v } })} />
+                                </div>
+                                <div style={{ width: '120px', marginBottom: '0.75rem' }}>
+                                    <select
+                                        style={{ width: '100%', padding: '0.4rem', borderRadius: '4px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+                                        value={editedData.info?.sizeUnit || 'm²'}
+                                        onChange={(e) => setEditedData({ ...editedData, info: { ...editedData.info, sizeUnit: e.target.value } })}
+                                    >
+                                        <option value="m²">m²</option>
+                                        <option value="ft²">ft²</option>
+                                        <option value="cm²">cm²</option>
+                                        <option value="acres">acres</option>
+                                    </select>
+                                </div>
+                            </div>
                             <EditRow label={t('admin.details.info.rooms')} value={editedData.info?.numRooms} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numRooms: parseInt(v) } })} />
                             <EditRow label={t('admin.details.info.rooms')} value={editedData.info?.numBathrooms} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numBathrooms: parseInt(v) } })} />
                             <EditRow label={t('admin.details.info.checkin')} value={editedData.info?.checkInTime} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, checkInTime: v } })} />
@@ -169,7 +217,7 @@ export default function PropertyDetailsPage() {
                             <Row label={t('admin.details.info.type')} value={data.info?.type} />
                             <Row label={t('admin.details.info.address')} value={data.info?.address} />
                             <Row label={t('admin.details.info.floor')} value={data.info?.floorNumber} />
-                            <Row label={t('admin.details.info.size')} value={data.info?.size} />
+                            <Row label={t('admin.details.info.size')} value={data.info?.size ? `${data.info.size} ${data.info.sizeUnit || 'm²'}` : 'N/A'} />
                             <Row label={t('admin.details.info.rooms')} value={`${data.info?.numRooms || 0} ${t('admin.details.info.bed')} / ${data.info?.numBathrooms || 0} ${t('admin.details.info.bath')}`} />
                             <Row label={t('admin.details.info.checkin')} value={data.info?.checkInTime || 'N/A'} />
                             <Row label={t('admin.details.info.checkout')} value={data.info?.checkOutTime || 'N/A'} />
@@ -197,6 +245,7 @@ export default function PropertyDetailsPage() {
                             </div>
                             <EditRow label={t('amenity.pool_date')} value={editedData.poolOpeningDate} onChange={(v) => setEditedData({ ...editedData, poolOpeningDate: v })} />
                             <EditRow label={t('amenity.hottub_date')} value={editedData.hotTubOpeningDate} onChange={(v) => setEditedData({ ...editedData, hotTubOpeningDate: v })} />
+                            <EditRow label={t('amenity.bbq_date')} value={editedData.bbqOpeningDate} onChange={(v) => setEditedData({ ...editedData, bbqOpeningDate: v })} />
                             <EditRow label={t('step.comments_label')} value={editedData.amenitiesComments} isTextArea onChange={(v) => setEditedData({ ...editedData, amenitiesComments: v })} />
                         </>
                     ) : (
@@ -214,6 +263,11 @@ export default function PropertyDetailsPage() {
                             {data.hotTubOpeningDate && (
                                 <div style={{ marginTop: '1rem' }}>
                                     <Row label={t('amenity.hottub_date')} value={data.hotTubOpeningDate} />
+                                </div>
+                            )}
+                            {data.bbqOpeningDate && (
+                                <div style={{ marginTop: '1rem' }}>
+                                    <Row label={t('amenity.bbq_date')} value={data.bbqOpeningDate} />
                                 </div>
                             )}
                             <Row label={t('step.comments_label')} value={data.amenitiesComments} />

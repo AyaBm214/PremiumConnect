@@ -9,9 +9,10 @@ interface Step2Props {
     data?: string[];
     poolOpeningDate?: string;
     hotTubOpeningDate?: string;
+    bbqOpeningDate?: string;
     comments?: string;
     info?: any; // Received from Step 1
-    onUpdate: (data: { amenities: string[], poolOpeningDate?: string, hotTubOpeningDate?: string, comments?: string }) => void;
+    onUpdate: (data: { amenities: string[], poolOpeningDate?: string, hotTubOpeningDate?: string, bbqOpeningDate?: string, comments?: string }) => void;
     onNext: () => void;
     onBack: () => void;
 }
@@ -79,19 +80,21 @@ const AMENITY_CATEGORIES = [
 const BEDROOM_ITEMS = ['Queen bed', 'King bed', 'Double bed', 'Single bed', 'Bunk bed', 'Crib (baby)', 'Bedside table', 'Reading lamp', 'Wardrobe / closet', 'Hangers', 'Iron', 'Ironing board', 'Extra pillows', 'Extra blankets', 'Desk / workspace'];
 const BATHROOM_ITEMS = ['Shower', 'Bathtub', 'Hot water', 'Shampoo', 'Conditioner', 'Body soap', 'Towels', 'Toilet paper', 'Hair dryer', 'Bidet', 'Mirror', 'Cleaning products'];
 
-export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeningDate, comments, info, onUpdate, onNext, onBack }: Step2Props) {
+export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, comments, info, onUpdate, onNext, onBack }: Step2Props) {
     const { t } = useLanguage();
     const [selected, setSelected] = useState<string[]>(data || []);
     const [customAmenity, setCustomAmenity] = useState('');
     const [poolDate, setPoolDate] = useState(poolOpeningDate || '');
     const [hotTubDate, setHotTubDate] = useState(hotTubOpeningDate || '');
+    const [bbqDate, setBbqDate] = useState(bbqOpeningDate || '');
     const [commentText, setCommentText] = useState(comments || '');
 
-    const handleUpdate = (newSelected: string[], newPoolDate?: string, newHotTubDate?: string, newComments?: string) => {
+    const handleUpdate = (newSelected: string[], newPoolDate?: string, newHotTubDate?: string, newBbqDate?: string, newComments?: string) => {
         onUpdate({
             amenities: newSelected,
             poolOpeningDate: newPoolDate !== undefined ? newPoolDate : poolDate,
             hotTubOpeningDate: newHotTubDate !== undefined ? newHotTubDate : hotTubDate,
+            bbqOpeningDate: newBbqDate !== undefined ? newBbqDate : bbqDate,
             comments: newComments !== undefined ? newComments : commentText
         });
     };
@@ -250,7 +253,7 @@ export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeni
                             value={poolDate}
                             onChange={e => {
                                 setPoolDate(e.target.value);
-                                handleUpdate(selected, e.target.value, hotTubDate);
+                                handleUpdate(selected, e.target.value, hotTubDate, bbqDate);
                             }}
                         />
                     </div>
@@ -266,7 +269,23 @@ export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeni
                             value={hotTubDate}
                             onChange={e => {
                                 setHotTubDate(e.target.value);
-                                handleUpdate(selected, poolDate, e.target.value);
+                                handleUpdate(selected, poolDate, e.target.value, bbqDate);
+                            }}
+                        />
+                    </div>
+                )}
+
+                {/* BBQ Date Conditional */}
+                {(selected.some(s => s.toLowerCase().includes('bbq') || s.toLowerCase().includes('barbecue'))) && (
+                    <div className={styles.categoryBlock}>
+                        <h4 className={styles.categoryTitle}>{t('amenity.bbq_date')}</h4>
+                        <Input
+                            label={t('amenity.bbq_date')}
+                            type="date"
+                            value={bbqDate}
+                            onChange={e => {
+                                setBbqDate(e.target.value);
+                                handleUpdate(selected, poolDate, hotTubDate, e.target.value);
                             }}
                         />
                     </div>
@@ -283,7 +302,7 @@ export default function Step2Amenities({ data = [], poolOpeningDate, hotTubOpeni
                     value={commentText}
                     onChange={e => {
                         setCommentText(e.target.value);
-                        handleUpdate(selected, poolDate, hotTubDate, e.target.value);
+                        handleUpdate(selected, poolDate, hotTubDate, bbqDate, e.target.value);
                     }}
                     rows={4}
                     style={{ marginTop: '1rem' }}

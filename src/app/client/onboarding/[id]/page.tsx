@@ -239,9 +239,10 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                             info={property.data.info} // Pass info for bedroom/bathroom counts
                             poolOpeningDate={property.data.poolOpeningDate}
                             hotTubOpeningDate={property.data.hotTubOpeningDate}
+                            bbqOpeningDate={property.data.bbqOpeningDate}
                             comments={property.data.amenitiesComments}
-                            onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate, comments }) => handleUpdate({
-                                data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate, amenitiesComments: comments }
+                            onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, comments }) => handleUpdate({
+                                data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, amenitiesComments: comments }
                             })}
                             onNext={nextStep}
                             onBack={prevStep}
