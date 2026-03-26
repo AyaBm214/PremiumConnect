@@ -11,6 +11,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 
 import { calculateTotalProgress } from '@/lib/onboarding-utils';
 import { downloadPhotosAsZip, PhotoToDownload } from '@/lib/download-utils';
+import PropertyStructureDisplay from '@/components/admin/PropertyStructureDisplay';
 
 export default function PropertyDetailsPage() {
     const params = useParams();
@@ -186,8 +187,21 @@ export default function PropertyDetailsPage() {
                     {isEditing === 'info' ? (
                         <>
                             <EditRow label={t('admin.details.info.type')} value={editedData.info?.propertyName} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, propertyName: v } })} />
-                            <EditRow label={t('admin.details.info.type')} value={editedData.info?.type} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, type: v } })} />
-                            <EditRow label={t('admin.details.info.address')} value={editedData.info?.address} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, address: v } })} />
+                            <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
+                                <span style={{ minWidth: '120px', fontSize: '0.9rem', color: '#666' }}>{t('admin.details.info.property_type')}</span>
+                                <select
+                                    style={{ flex: 1, padding: '0.4rem', borderRadius: '4px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+                                    value={editedData.info?.type || 'other'}
+                                    onChange={(e) => setEditedData({ ...editedData, info: { ...editedData.info, type: e.target.value } })}
+                                >
+                                    <option value="condo">Condo</option>
+                                    <option value="apartment">Appartement</option>
+                                    <option value="villa">Villa</option>
+                                    <option value="chalet">Chalet</option>
+                                    <option value="other">Autre / Other</option>
+                                </select>
+                            </div>
+                            <EditRow label={t('admin.details.info.google_maps')} value={editedData.info?.googleMapsUrl} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, googleMapsUrl: v } })} />
                             <EditRow label={t('admin.details.info.floor')} value={editedData.info?.floorNumber} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, floorNumber: v } })} />
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', alignItems: 'flex-end' }}>
                                 <div style={{ flex: 1 }}>
@@ -206,6 +220,10 @@ export default function PropertyDetailsPage() {
                                     </select>
                                 </div>
                             </div>
+                            <EditRow label={t('admin.details.info.floors')} value={editedData.info?.numFloors} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numFloors: parseInt(v) } })} />
+                            <EditRow label={t('admin.details.info.rooms_dist')} value={editedData.info?.roomsPerFloor?.join(', ')} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, roomsPerFloor: v.split(',').map((s: string) => parseInt(s.trim())) } })} />
+                            <EditRow label={t('admin.details.info.beds_dist')} value={editedData.info?.bedsPerBedroom?.join(', ')} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, bedsPerBedroom: v.split(',').map((s: string) => parseInt(s.trim())) } })} />
+                            
                             <EditRow label={t('admin.details.info.rooms')} value={editedData.info?.numRooms} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numRooms: parseInt(v) } })} />
                             <EditRow label={t('admin.details.info.rooms')} value={editedData.info?.numBathrooms} type="number" onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, numBathrooms: parseInt(v) } })} />
                             <EditRow label={t('admin.details.info.checkin')} value={editedData.info?.checkInTime} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, checkInTime: v } })} />
@@ -214,11 +232,17 @@ export default function PropertyDetailsPage() {
                         </>
                     ) : (
                         <>
-                            <Row label={t('admin.details.info.type')} value={data.info?.type} />
-                            <Row label={t('admin.details.info.address')} value={data.info?.address} />
-                            <Row label={t('admin.details.info.floor')} value={data.info?.floorNumber} />
+                            <Row label={t('admin.details.info.property_type')} value={data.info?.type} />
+                            <Row label={t('admin.details.info.google_maps')} value={data.info?.googleMapsUrl ? <a href={data.info.googleMapsUrl} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} />
                             <Row label={t('admin.details.info.size')} value={data.info?.size ? `${data.info.size} ${data.info.sizeUnit || 'm²'}` : 'N/A'} />
-                            <Row label={t('admin.details.info.rooms')} value={`${data.info?.numRooms || 0} ${t('admin.details.info.bed')} / ${data.info?.numBathrooms || 0} ${t('admin.details.info.bath')}`} />
+                            
+                            <PropertyStructureDisplay 
+                                numFloors={data.info?.numFloors}
+                                numRooms={data.info?.numRooms}
+                                roomsPerFloor={data.info?.roomsPerFloor}
+                                bedsPerBedroom={data.info?.bedsPerBedroom}
+                            />
+
                             <Row label={t('admin.details.info.checkin')} value={data.info?.checkInTime || 'N/A'} />
                             <Row label={t('admin.details.info.checkout')} value={data.info?.checkOutTime || 'N/A'} />
                             <Row label={t('step.comments_label')} value={data.info?.comments} />
@@ -324,6 +348,27 @@ export default function PropertyDetailsPage() {
                                         </label>
                                     </div>
                                 </div>
+                                {editedData.rules?.lockType?.includes('smart_lock') && (
+                                    <>
+                                        <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
+                                            <span style={{ minWidth: '120px', fontSize: '0.9rem', color: '#666' }}>{t('admin.details.rules.smart_lock_brand')}</span>
+                                            <select
+                                                style={{ flex: 1, padding: '0.4rem', borderRadius: '4px', border: '1px solid #ddd', fontSize: '0.9rem' }}
+                                                value={editedData.rules?.smartLockBrand || ''}
+                                                onChange={(e) => setEditedData({ ...editedData, rules: { ...editedData.rules, smartLockBrand: e.target.value } })}
+                                            >
+                                                <option value="">N/A</option>
+                                                <option value="schlage">Schlage</option>
+                                                <option value="yale">Yale</option>
+                                                <option value="eufy">Eufy</option>
+                                                <option value="other">Autre / Other</option>
+                                            </select>
+                                        </div>
+                                        {editedData.rules?.smartLockBrand === 'other' && (
+                                            <EditRow label={t('admin.details.rules.other_brand')} value={editedData.rules?.otherSmartLockBrand} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, otherSmartLockBrand: v } })} />
+                                        )}
+                                    </>
+                                )}
                                 <EditRow label={t('admin.details.rules.alarm_code')} value={editedData.rules?.alarmCode} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, alarmCode: v } })} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', marginBottom: '0.75rem' }}>
                                     <input type="checkbox" checked={editedData.rules?.hasCameras} onChange={(e) => setEditedData({ ...editedData, rules: { ...editedData.rules, hasCameras: e.target.checked } })} /> {t('admin.details.rules.has_cameras')}
@@ -360,6 +405,9 @@ export default function PropertyDetailsPage() {
                                 <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.access_security')}</h4>
                                 <Row label={t('admin.details.rules.door_code')} value={data.rules?.doorCode} />
                                 <Row label={t('admin.details.rules.lock_type')} value={data.rules?.lockType?.map((lt: string) => t(`rules.lock_type.${lt.split('_')[0]}`)).join(', ')} />
+                                {data.rules?.lockType?.includes('smart_lock') && (
+                                    <Row label={t('admin.details.rules.smart_lock_brand')} value={data.rules.smartLockBrand === 'other' ? data.rules.otherSmartLockBrand : data.rules.smartLockBrand} />
+                                )}
                                 <Row label={t('admin.details.rules.alarm_code')} value={data.rules?.alarmCode} />
                                 <Row label={t('admin.details.rules.has_cameras')} value={data.rules?.hasCameras ? t('signup.name').includes('m') ? 'Oui' : 'Yes' : t('signup.name').includes('m') ? 'Non' : 'No'} />
                                 {data.rules?.hasCameras && (
@@ -532,6 +580,10 @@ export default function PropertyDetailsPage() {
                 >
                     {isEditing === 'access' ? (
                         <>
+                            <EditRow label={t('admin.details.access.platforms')} value={editedData.platforms?.join(', ')} onChange={(v) => setEditedData({ ...editedData, platforms: v.split(',').map((s: string) => s.trim()).filter((s: string) => s) })} />
+                            {editedData.platforms?.includes('other') && (
+                                <EditRow label={t('photos.platforms.other_label')} value={editedData.otherPlatform} onChange={(v) => setEditedData({ ...editedData, otherPlatform: v })} />
+                            )}
                             <EditRow label={t('admin.details.access.external')} value={editedData.externalLinks?.join(', ')} isTextArea onChange={(v) => setEditedData({ ...editedData, externalLinks: v.split(',').map((s: string) => s.trim()).filter((s: string) => s) })} />
                             <EditRow label={t('admin.details.access.drive')} value={editedData.googleDriveLink} onChange={(v) => setEditedData({ ...editedData, googleDriveLink: v })} />
                             <EditRow label={t('admin.details.access.instructions')} value={editedData.access?.instructions} isTextArea onChange={(v) => setEditedData({ ...editedData, access: { ...editedData.access, instructions: v } })} />
@@ -539,6 +591,8 @@ export default function PropertyDetailsPage() {
                         </>
                     ) : (
                         <>
+                            <Row label={t('admin.details.access.platforms')} value={data.platforms?.join(' • ') || 'N/A'} />
+                            {data.otherPlatform && <Row label={t('photos.platforms.other_label')} value={data.otherPlatform} />}
                             <Row
                                 label={t('admin.details.access.citq')}
                                 value={data.info?.citqFile ? <a href={data.info.citqFile} target="_blank" style={{ color: 'blue' }}>{t('admin.props.view')} PDF</a> : 'Pending...'}

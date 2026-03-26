@@ -93,10 +93,18 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                                 checked={formData.lockType?.includes('smart_lock')}
                                 onChange={e => {
                                     const current = formData.lockType || [];
-                                    const updated = e.target.checked
+                                    const isChecked = e.target.checked;
+                                    const updated = (isChecked
                                         ? [...current, 'smart_lock']
-                                        : current.filter(t => t !== 'smart_lock');
-                                    handleChange('lockType', updated);
+                                        : current.filter(t => t !== 'smart_lock')) as ('smart_lock' | 'lockbox')[];
+                                    
+                                    const newFormData = { ...formData, lockType: updated };
+                                    if (!isChecked) {
+                                        newFormData.smartLockBrand = undefined;
+                                        newFormData.otherSmartLockBrand = undefined;
+                                    }
+                                    setFormData(newFormData);
+                                    onUpdate(newFormData);
                                 }}
                             />
                             {t('rules.lock_type.smart')}
@@ -117,6 +125,53 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                         </label>
                     </div>
                 </div>
+
+                {formData.lockType?.includes('smart_lock') && (
+                    <div className={styles.fullWidth} style={{ marginTop: '1rem' }}>
+                        <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>
+                            {t('rules.lock_brand')}
+                        </label>
+                        <div className={styles.brandGrid}>
+                            {[
+                                { id: 'schlage', name: 'Schlage', logo: '/logos/schlage.png' },
+                                { id: 'yale', name: 'Yale', logo: '/logos/yale.png' },
+                                { id: 'eufy', name: 'Eufy', logo: '/logos/eufy.png' },
+                                { id: 'other', name: 'Autre', icon: '🔒' }
+                            ].map(brand => (
+                                <div
+                                    key={brand.id}
+                                    className={`${styles.brandCard} ${formData.smartLockBrand === brand.id ? styles.brandCardSelected : ''}`}
+                                    onClick={() => handleChange('smartLockBrand', brand.id as any)}
+                                >
+                                    {brand.logo ? (
+                                        <img src={brand.logo} alt={brand.name} className={styles.brandIcon} />
+                                    ) : (
+                                        <div className={styles.brandIcon} style={{ fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            {brand.icon}
+                                        </div>
+                                    )}
+                                    <span className={styles.brandName}>{brand.name}</span>
+                                    {formData.smartLockBrand === brand.id && (
+                                        <div className={styles.checkmark}>✓</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        {formData.smartLockBrand === 'other' && (
+                            <div style={{ marginTop: '1rem' }}>
+                                <Input
+                                    label={t('rules.lock_brand.other')}
+                                    placeholder="e.g. August, Nest..."
+                                    value={formData.otherSmartLockBrand || ''}
+                                    onChange={e => handleChange('otherSmartLockBrand', e.target.value)}
+                                    required
+                                />
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 <Input
                     label={t('rules.alarm_code')}
                     placeholder="e.g. 5678"

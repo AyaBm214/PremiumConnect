@@ -28,6 +28,76 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
         onUpdate(updated);
     };
 
+    const handleNumFloorsChange = (val: string) => {
+        const n = parseInt(val) || 0;
+        const currentRooms = formData.roomsPerFloor || [];
+        const newRoomsPerFloor = [...currentRooms];
+        
+        if (n > newRoomsPerFloor.length) {
+            for (let i = newRoomsPerFloor.length; i < n; i++) {
+                newRoomsPerFloor.push(0);
+            }
+        } else {
+            newRoomsPerFloor.splice(n);
+        }
+        
+        const updated = { 
+            ...formData, 
+            numFloors: n, 
+            roomsPerFloor: newRoomsPerFloor 
+        };
+        // Also update total rooms and beds array
+        const totalRooms = newRoomsPerFloor.reduce((acc, curr) => acc + (curr || 0), 0);
+        const newBedsPerBedroom = [...(formData.bedsPerBedroom || [])];
+        if (totalRooms > newBedsPerBedroom.length) {
+            for (let i = newBedsPerBedroom.length; i < totalRooms; i++) {
+                newBedsPerBedroom.push(1); // Default 1 bed
+            }
+        } else {
+            newBedsPerBedroom.splice(totalRooms);
+        }
+        updated.numRooms = totalRooms;
+        updated.bedsPerBedroom = newBedsPerBedroom;
+
+        setFormData(updated);
+        onUpdate(updated);
+    };
+
+    const handleRoomsPerFloorChange = (index: number, val: string) => {
+        const n = parseInt(val) || 0;
+        const newRoomsPerFloor = [...(formData.roomsPerFloor || [])];
+        newRoomsPerFloor[index] = n;
+        
+        const totalRooms = newRoomsPerFloor.reduce((acc, curr) => acc + (curr || 0), 0);
+        const newBedsPerBedroom = [...(formData.bedsPerBedroom || [])];
+        if (totalRooms > newBedsPerBedroom.length) {
+            for (let i = newBedsPerBedroom.length; i < totalRooms; i++) {
+                newBedsPerBedroom.push(1);
+            }
+        } else {
+            newBedsPerBedroom.splice(totalRooms);
+        }
+
+        const updated = { 
+            ...formData, 
+            roomsPerFloor: newRoomsPerFloor,
+            numRooms: totalRooms,
+            bedsPerBedroom: newBedsPerBedroom
+        };
+        setFormData(updated);
+        onUpdate(updated);
+    };
+
+    const handleBedsPerBedroomChange = (index: number, val: string) => {
+        const n = parseInt(val) || 0;
+        const newBedsPerBedroom = [...(formData.bedsPerBedroom || [])];
+        newBedsPerBedroom[index] = n;
+        
+        const updated = { ...formData, bedsPerBedroom: newBedsPerBedroom };
+        setFormData(updated);
+        onUpdate(updated);
+    };
+
     const handleFileUpload = async (files: File[], field: 'citqFile' | 'reservationsFile') => {
         if (!files.length) return;
         setUploading(true);
@@ -58,6 +128,11 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault();
+        // Simple URL validation
+        if (formData.googleMapsUrl && !formData.googleMapsUrl.includes('google.com/maps') && !formData.googleMapsUrl.includes('goo.gl/maps')) {
+            alert('Please enter a valid Google Maps URL');
+            return;
+        }
         onNext();
     };
 
@@ -77,27 +152,72 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     value={formData.type || ''}
                     onChange={e => handleChange('type', e.target.value as PropertyType)}
                     options={[
-                        { value: 'apartment', label: t('label.property_type') === 'Type de propriété' ? 'Appartement' : 'Apartment' },
-                        { value: 'house', label: t('label.property_type') === 'Type de propriété' ? 'Maison' : 'House' },
-                        { value: 'villa', label: 'Villa' },
-                        { value: 'cottage', label: t('label.property_type') === 'Type de propriété' ? 'Chalet' : 'Cottage' },
+                        { value: 'condo', label: t('property_type.condo') },
+                        { value: 'apartment', label: t('property_type.apartment') },
+                        { value: 'villa', label: t('property_type.villa') },
+                        { value: 'chalet', label: t('property_type.chalet') },
+                        { value: 'other', label: t('property_type.other') },
                     ]}
                     required
                 />
                 <Input
-                    label={t('label.address')}
-                    placeholder="Full address"
-                    value={formData.address || ''}
-                    onChange={e => handleChange('address', e.target.value)}
+                    label={t('label.google_maps_url')}
+                    placeholder="https://www.google.com/maps/..."
+                    value={formData.googleMapsUrl || ''}
+                    onChange={e => handleChange('googleMapsUrl', e.target.value)}
                     className={styles.fullWidth}
                     required
                 />
+                
                 <Input
-                    label={t('label.floor')}
-                    placeholder="e.g. 2nd floor"
-                    value={formData.floorNumber || ''}
-                    onChange={e => handleChange('floorNumber', e.target.value)}
+                    label={t('label.num_floors')}
+                    type="number"
+                    min={0}
+                    value={formData.numFloors ?? ''}
+                    onChange={e => handleNumFloorsChange(e.target.value)}
+                    required
                 />
+
+                {(() => {
+                    let bedroomGlobalIdx = 0;
+                    return (formData.roomsPerFloor || []).map((numRoomsOnFloor, floorIdx) => (
+                        <div key={`floor-${floorIdx}`} className={styles.floorCard}>
+                            <h4 className={styles.hierarchyTitle}>
+                                🏢 {t('label.floor_n').replace('{0}', (floorIdx + 1).toString())}
+                            </h4>
+                            <Input
+                                label={t('label.rooms_on_floor')}
+                                type="number"
+                                min={0}
+                                value={numRoomsOnFloor || ''}
+                                onChange={e => handleRoomsPerFloorChange(floorIdx, e.target.value)}
+                                required
+                            />
+                            
+                            {numRoomsOnFloor > 0 && (
+                                <div className={styles.roomSection}>
+                                    {Array.from({ length: numRoomsOnFloor }).map((_, rIdx) => {
+                                        const currentIdx = bedroomGlobalIdx++;
+                                        return (
+                                            <div key={`room-${currentIdx}`} className={styles.bedroomCard}>
+                                                <Input
+                                                    label={t('label.bedroom_n').replace('{0}', (currentIdx + 1).toString())}
+                                                    placeholder={t('label.beds_in_bedroom')}
+                                                    type="number"
+                                                    min={1}
+                                                    value={formData.bedsPerBedroom?.[currentIdx] || ''}
+                                                    onChange={e => handleBedsPerBedroomChange(currentIdx, e.target.value)}
+                                                    required
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    ));
+                })()}
+
                 <div className={styles.sizeInputGroup}>
                     <Input
                         label={t('label.size')}
@@ -120,13 +240,6 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                         ]}
                     />
                 </div>
-                <Input
-                    label={t('photos.zone.bedroom')}
-                    type="number"
-                    value={formData.numRooms === -1 ? '' : (formData.numRooms || '')}
-                    onChange={e => handleChange('numRooms', e.target.value === '' ? undefined : parseInt(e.target.value))}
-                    required
-                />
                 <Input
                     label={t('photos.zone.bathroom')}
                     type="number"

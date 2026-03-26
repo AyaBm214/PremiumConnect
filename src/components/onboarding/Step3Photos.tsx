@@ -13,6 +13,8 @@ interface Step3Props {
         photos?: string[];
         externalLinks?: string[];
         googleDriveLink?: string;
+        platforms?: string[];
+        otherPlatform?: string;
         comments?: string;
     };
     info?: Property['data']['info'];
@@ -164,6 +166,10 @@ export default function Step3Photos({ propertyId, data, info, onUpdate, onNext, 
             <div className={styles.divider} />
 
             <h3 className={styles.sectionTitle}>{t('photos.listing_links')}</h3>
+            <div className={styles.warningBanner} style={{ marginTop: '1rem', marginBottom: '1.5rem' }}>
+                <span className={styles.warningIcon}>⚠️</span>
+                <span>{t('photos.warning_banner')}</span>
+            </div>
             {links.map((link, index) => (
                 <div key={index} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
                     <Input
@@ -185,6 +191,61 @@ export default function Step3Photos({ propertyId, data, info, onUpdate, onNext, 
             <Button variant="outline" onClick={addLink} size="sm" style={{ marginTop: '0.5rem' }}>
                 + Add Another URL
             </Button>
+
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h3 className={styles.sectionTitle}>{t('photos.platforms_label')}</h3>
+                <div className={styles.chipGrid}>
+                    {[
+                        { id: 'airbnb', label: t('ota.airbnb') },
+                        { id: 'booking', label: t('ota.booking') },
+                        { id: 'vrbo', label: t('ota.vrbo') },
+                        { id: 'expedia', label: t('ota.expedia') },
+                        { id: 'tripadvisor', label: t('ota.tripadvisor') },
+                        { id: 'abritel', label: t('ota.abritel') },
+                        { id: 'agoda', label: t('ota.agoda') },
+                        { id: 'other', label: t('ota.other') }
+                    ].map(platform => {
+                        const isSelected = data?.platforms?.includes(platform.id);
+                        return (
+                            <div
+                                key={platform.id}
+                                className={`${styles.chip} ${isSelected ? styles.chipSelected : ''}`}
+                                onClick={() => {
+                                    const current = data?.platforms || [];
+                                    const updated = isSelected
+                                        ? current.filter((p: string) => p !== platform.id)
+                                        : [...current, platform.id];
+                                    
+                                    const updates: any = { ...data, platforms: updated };
+                                    if (platform.id === 'other' && isSelected) {
+                                        updates.otherPlatform = undefined;
+                                    }
+                                    onUpdate(updates);
+                                }}
+                            >
+                                {platform.label}
+                                {isSelected && <span>✓</span>}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {data?.platforms?.includes('other') && (
+                    <div style={{ marginTop: '1rem' }}>
+                        <Input
+                            label={t('photos.platforms.other_label')}
+                            value={data?.otherPlatform || ''}
+                            onChange={(e) => onUpdate({ ...data, otherPlatform: e.target.value })}
+                        />
+                    </div>
+                )}
+
+                <div className={styles.helperText}>
+                    <span>💡</span> {t('photos.platforms_helper')}
+                </div>
+            </div>
 
             <div className={styles.divider} />
 

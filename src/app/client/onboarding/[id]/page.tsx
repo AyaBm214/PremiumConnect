@@ -255,6 +255,8 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                                 photos: property.data.photos,
                                 externalLinks: property.data.externalLinks,
                                 googleDriveLink: property.data.googleDriveLink,
+                                platforms: property.data.platforms,
+                                otherPlatform: property.data.otherPlatform,
                                 comments: property.data.photosComments
                             }}
                             info={property.data.info} // Pass info for bedroom count

@@ -1,4 +1,4 @@
-export type PropertyType = 'apartment' | 'house' | 'villa' | 'cottage';
+export type PropertyType = 'condo' | 'apartment' | 'villa' | 'chalet' | 'other';
 
 export interface Property {
     id: string;
@@ -17,12 +17,16 @@ export interface Property {
         info?: {
             propertyName?: string;
             description?: string;
-            floorNumber?: string;
+            floorNumber?: string; // Legacy or text description
+            googleMapsUrl?: string; // New: Google Maps link
             address?: string;
             size?: string;
             sizeUnit?: string;
+            numFloors?: number;
+            roomsPerFloor?: number[]; // indices of rooms per floor
             numRooms?: number;
             numBathrooms?: number;
+            bedsPerBedroom?: number[]; // indices of beds per bedroom
             type?: PropertyType;
             citqFile?: string;
             reservationsFile?: string;
@@ -40,6 +44,8 @@ export interface Property {
         photos?: string[];
         externalLinks?: string[];
         googleDriveLink?: string;
+        platforms?: string[];
+        otherPlatform?: string;
         photosComments?: string;
         // Step 4: Access
         access?: {
@@ -56,11 +62,14 @@ export interface Property {
             providesCleaning?: boolean;
             cleaningFee?: number;
             maxGuests?: number;
+            maxPersons?: number;
             maxPets?: number;
 
             // New fields
             doorCode?: string;
             lockType?: ('smart_lock' | 'lockbox')[];
+            smartLockBrand?: 'schlage' | 'yale' | 'eufy' | 'other';
+            otherSmartLockBrand?: string;
             alarmCode?: string;
             hasCameras?: boolean;
             numCameras?: number;
