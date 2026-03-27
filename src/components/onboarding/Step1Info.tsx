@@ -161,12 +161,26 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     required
                 />
                 <Input
+                    label={t('label.address')}
+                    placeholder="e.g. 123 Main St, Montreal, QC"
+                    value={formData.address || ''}
+                    onChange={e => handleChange('address', e.target.value)}
+                    className={styles.fullWidth}
+                    required
+                />
+                <Input
                     label={t('label.google_maps_url')}
                     placeholder="https://www.google.com/maps/..."
                     value={formData.googleMapsUrl || ''}
                     onChange={e => handleChange('googleMapsUrl', e.target.value)}
                     className={styles.fullWidth}
                     required
+                />
+                <Input
+                    label={t('label.instruction_date')}
+                    type="date"
+                    value={formData.instructionDate || ''}
+                    onChange={e => handleChange('instructionDate', e.target.value)}
                 />
                 
                 <Input

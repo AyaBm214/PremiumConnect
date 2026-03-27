@@ -20,6 +20,7 @@ export interface Property {
             floorNumber?: string; // Legacy or text description
             googleMapsUrl?: string; // New: Google Maps link
             address?: string;
+            instructionDate?: string;
             size?: string;
             sizeUnit?: string;
             numFloors?: number;
@@ -96,6 +97,42 @@ export interface Property {
             luggageList?: string; // Host essentials for guest
             emergencyContacts?: string;
             comments?: string;
+        };
+        // Step 6: Owner Requests
+        ownerRequests?: {
+            spa?: {
+                treatmentType?: 'brome' | 'chlore' | 'sel';
+                productsUsed?: string;
+                productsLocation?: string;
+                hasMaintenanceContract?: boolean;
+            };
+            bedding?: {
+                hasProtection?: boolean;
+                pillowsCount?: number;
+                blanketsCount?: number;
+                hasExchangeLinen?: boolean;
+            };
+            consumables?: {
+            productsProvided?: string;
+            whoRefills?: string;
+            approxBudget?: number;
+            approxBudgetCurrency?: string;
+        };
+            bbq?: {
+                hasPropane?: boolean;
+                hasGauge?: boolean;
+                emptyBottleProcedure?: string;
+            };
+            emergencyKit?: {
+                hasKit?: boolean;
+                kitContents?: string[]; // first_aid, flashlight, batteries
+                kitLocation?: string;
+            };
+            expenseAuth?: {
+                maxAmountNoValidation?: number;
+                allowedExpenseTypes?: string;
+                preferredCommMode?: 'phone' | 'sms' | 'email' | 'whatsapp' | 'other';
+            };
         };
         // Step 7: Payment
         payment?: {

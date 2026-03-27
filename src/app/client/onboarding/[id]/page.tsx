@@ -13,6 +13,7 @@ import Step4Access from '@/components/onboarding/Step4Access';
 import Step5Rules from '@/components/onboarding/Step5Rules';
 import Step6Guide from '@/components/onboarding/Step6Guide';
 import Step7Payment from '@/components/onboarding/Step7Payment';
+import StepOwnerRequests from '@/components/onboarding/StepOwnerRequests';
 import StepContract from '@/components/onboarding/StepContract';
 import { notifyAdminOnCompletion } from '@/app/actions/onboarding-actions';
 import { useLanguage } from '@/lib/LanguageContext';
@@ -110,7 +111,7 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
     };
     const nextStep = () => {
         if (!property) return;
-        const next = Math.min(property.currentStep + 1, 7);
+        const next = Math.min(property.currentStep + 1, 8);
         handleUpdate({ currentStep: next });
     };
 
@@ -293,6 +294,14 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                         />
                     )}
                     {property.currentStep === 6 && (
+                        <StepOwnerRequests
+                            data={property.data.ownerRequests}
+                            onUpdate={(ownerRequests) => handleUpdate({ data: { ...property.data, ownerRequests } })}
+                            onNext={nextStep}
+                            onBack={prevStep}
+                        />
+                    )}
+                    {property.currentStep === 7 && (
                         <Step7Payment
                             propertyId={property.id}
                             propertyName={property.name}
@@ -302,7 +311,7 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                             onBack={prevStep}
                         />
                     )}
-                    {property.currentStep === 7 && (
+                    {property.currentStep === 8 && (
                         <StepContract
                             data={property.data.contract}
                             onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}

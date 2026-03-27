@@ -201,7 +201,10 @@ export default function PropertyDetailsPage() {
                                     <option value="other">Autre / Other</option>
                                 </select>
                             </div>
-                            <EditRow label={t('admin.details.info.google_maps')} value={editedData.info?.googleMapsUrl} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, googleMapsUrl: v } })} />
+                            <EditRow label={t('label.address')} value={editedData.info?.address} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, address: v } })} />
+                            <EditRow label={t('label.google_maps_url')} value={editedData.info?.googleMapsUrl} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, googleMapsUrl: v } })} />
+                            <EditRow label={t('label.instruction_date')} type="date" value={editedData.info?.instructionDate} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, instructionDate: v } })} />
+                            <EditRow label={t('label.property_type')} value={editedData.info?.type} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, type: v } })} />
                             <EditRow label={t('admin.details.info.floor')} value={editedData.info?.floorNumber} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, floorNumber: v } })} />
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', alignItems: 'flex-end' }}>
                                 <div style={{ flex: 1 }}>
@@ -233,7 +236,13 @@ export default function PropertyDetailsPage() {
                     ) : (
                         <>
                             <Row label={t('admin.details.info.property_type')} value={data.info?.type} />
-                            <Row label={t('admin.details.info.google_maps')} value={data.info?.googleMapsUrl ? <a href={data.info.googleMapsUrl} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} />
+                            <Row label={t('label.address')} value={data.info?.address} />
+                            <Row 
+                                label={t('label.google_maps_url')} 
+                                value={data.info?.googleMapsUrl ? <a href={data.info.googleMapsUrl} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} 
+                            />
+                            <Row label={t('label.instruction_date')} value={data.info?.instructionDate} />
+                            <Row label={t('label.property_type')} value={data.info?.type} />
                             <Row label={t('admin.details.info.size')} value={data.info?.size ? `${data.info.size} ${data.info.sizeUnit || 'm²'}` : 'N/A'} />
                             
                             <PropertyStructureDisplay 
@@ -427,6 +436,186 @@ export default function PropertyDetailsPage() {
 
                             <Row label={t('step.comments_label')} value={data.rules?.comments} />
                         </>
+                    )}
+                </Section>
+
+                <Section
+                    title={t('step.owner_requests')}
+                    isEditing={isEditing === 'ownerRequests'}
+                    onEdit={() => setIsEditing('ownerRequests')}
+                    onSave={() => handleSave('ownerRequests')}
+                    onCancel={handleCancel}
+                >
+                    {isEditing === 'ownerRequests' ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            {/* 1. Spa */}
+                            <div style={{ borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.spa.title')}</h4>
+                                <EditRow label={t('owner_req.spa.treatment')} value={editedData.ownerRequests?.spa?.treatmentType} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, spa: { ...editedData.ownerRequests?.spa, treatmentType: v } } })} />
+                                <EditRow label={t('owner_req.spa.products')} value={editedData.ownerRequests?.spa?.productsUsed} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, spa: { ...editedData.ownerRequests?.spa, productsUsed: v } } })} />
+                                <EditRow label={t('owner_req.spa.location')} value={editedData.ownerRequests?.spa?.productsLocation} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, spa: { ...editedData.ownerRequests?.spa, productsLocation: v } } })} />
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                    <input type="checkbox" checked={editedData.ownerRequests?.spa?.hasMaintenanceContract} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, spa: { ...editedData.ownerRequests?.spa, hasMaintenanceContract: e.target.checked } } })} />
+                                    <span style={{ fontSize: '0.9rem' }}>{t('owner_req.spa.contract')}</span>
+                                </div>
+                            </div>
+
+                            {/* 2. Bedding */}
+                            <div style={{ borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.bedding.title')}</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                    <input type="checkbox" checked={editedData.ownerRequests?.bedding?.hasProtection} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bedding: { ...editedData.ownerRequests?.bedding, hasProtection: e.target.checked } } })} />
+                                    <span style={{ fontSize: '0.9rem' }}>{t('owner_req.bedding.protection')}</span>
+                                </div>
+                                <EditRow label={t('owner_req.bedding.pillows')} type="number" value={editedData.ownerRequests?.bedding?.pillowsCount} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bedding: { ...editedData.ownerRequests?.bedding, pillowsCount: parseInt(v) } } })} />
+                                <EditRow label={t('owner_req.bedding.blankets')} type="number" value={editedData.ownerRequests?.bedding?.blanketsCount} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bedding: { ...editedData.ownerRequests?.bedding, blanketsCount: parseInt(v) } } })} />
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                    <input type="checkbox" checked={editedData.ownerRequests?.bedding?.hasExchangeLinen} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bedding: { ...editedData.ownerRequests?.bedding, hasExchangeLinen: e.target.checked } } })} />
+                                    <span style={{ fontSize: '0.9rem' }}>{t('owner_req.bedding.exchange')}</span>
+                                </div>
+                            </div>
+
+                            {/* 3. Consumables */}
+                            <div style={{ borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.consumables.title')}</h4>
+                                <EditRow label={t('owner_req.consumables.products')} isTextArea value={editedData.ownerRequests?.consumables?.productsProvided} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, consumables: { ...editedData.ownerRequests?.consumables, productsProvided: v } } })} />
+                                <EditRow label={t('owner_req.consumables.refill')} value={editedData.ownerRequests?.consumables?.whoRefills} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, consumables: { ...editedData.ownerRequests?.consumables, whoRefills: v } } })} />
+                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <EditRow label={t('owner_req.consumables.budget')} type="number" value={editedData.ownerRequests?.consumables?.approxBudget} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, consumables: { ...editedData.ownerRequests?.consumables, approxBudget: parseFloat(v) } } })} />
+                                    </div>
+                                    <div style={{ width: '100px', marginBottom: '1rem' }}>
+                                        <label style={{ fontSize: '0.8rem', color: '#666', display: 'block', marginBottom: '0.25rem' }}>{t('owner_req.consumables.currency')}</label>
+                                        <select
+                                            style={{ width: '100%', padding: '0.4rem', border: '1px solid #ddd', borderRadius: '4px' }}
+                                            value={editedData.ownerRequests?.consumables?.approxBudgetCurrency || 'CAD'}
+                                            onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, consumables: { ...editedData.ownerRequests?.consumables, approxBudgetCurrency: e.target.value } } })}
+                                        >
+                                            <option value="CAD">CAD</option>
+                                            <option value="USD">USD</option>
+                                            <option value="EUR">EUR</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 4. BBQ */}
+                            <div style={{ borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.bbq.title')}</h4>
+                                <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.75rem' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                                        <input type="checkbox" checked={editedData.ownerRequests?.bbq?.hasPropane} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bbq: { ...editedData.ownerRequests?.bbq, hasPropane: e.target.checked } } })} /> {t('owner_req.bbq.propane')}
+                                    </label>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                                        <input type="checkbox" checked={editedData.ownerRequests?.bbq?.hasGauge} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bbq: { ...editedData.ownerRequests?.bbq, hasGauge: e.target.checked } } })} /> {t('owner_req.bbq.gauge')}
+                                    </label>
+                                </div>
+                                <EditRow label={t('owner_req.bbq.procedure')} isTextArea value={editedData.ownerRequests?.bbq?.emptyBottleProcedure} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, bbq: { ...editedData.ownerRequests?.bbq, emptyBottleProcedure: v } } })} />
+                            </div>
+
+                            {/* 5. Emergency Kit */}
+                            <div style={{ borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.emergency.title')}</h4>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                    <input type="checkbox" checked={editedData.ownerRequests?.emergencyKit?.hasKit} onChange={(e) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, emergencyKit: { ...editedData.ownerRequests?.emergencyKit, hasKit: e.target.checked } } })} />
+                                    <span style={{ fontSize: '0.9rem' }}>{t('owner_req.emergency.presence')}</span>
+                                </div>
+                                <div style={{ marginBottom: '0.75rem' }}>
+                                    <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.25rem' }}>{t('owner_req.emergency.content')}</p>
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        {['first_aid', 'flashlight', 'batteries'].map(k => (
+                                            <label key={k} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem' }}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={(editedData.ownerRequests?.emergencyKit?.kitContents || []).includes(k)}
+                                                    onChange={(e) => {
+                                                        const current = editedData.ownerRequests?.emergencyKit?.kitContents || [];
+                                                        const updated = e.target.checked ? [...current, k] : current.filter((x: string) => x !== k);
+                                                        setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, emergencyKit: { ...editedData.ownerRequests?.emergencyKit, kitContents: updated } } });
+                                                    }}
+                                                /> {t(`owner_req.emergency.${k}`)}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                                <EditRow label={t('owner_req.emergency.location')} value={editedData.ownerRequests?.emergencyKit?.kitLocation} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, emergencyKit: { ...editedData.ownerRequests?.emergencyKit, kitLocation: v } } })} />
+                            </div>
+
+                            {/* 7. Expense Auth */}
+                            <div>
+                                <h4 style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>{t('owner_req.expense.title')}</h4>
+                                <EditRow label={t('owner_req.expense.max_amount')} type="number" value={editedData.ownerRequests?.expenseAuth?.maxAmountNoValidation} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, expenseAuth: { ...editedData.ownerRequests?.expenseAuth, maxAmountNoValidation: parseFloat(v) } } })} />
+                                <EditRow label={t('owner_req.expense.types')} isTextArea value={editedData.ownerRequests?.expenseAuth?.allowedExpenseTypes} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, expenseAuth: { ...editedData.ownerRequests?.expenseAuth, allowedExpenseTypes: v } } })} />
+                                <EditRow label={t('owner_req.expense.comm_mode')} value={editedData.ownerRequests?.expenseAuth?.preferredCommMode} onChange={(v) => setEditedData({ ...editedData, ownerRequests: { ...editedData.ownerRequests, expenseAuth: { ...editedData.ownerRequests?.expenseAuth, preferredCommMode: v } } })} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            {/* Spa */}
+                            {data.ownerRequests?.spa && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.spa.title')}</h4>
+                                    <Row label={t('owner_req.spa.treatment')} value={data.ownerRequests.spa.treatmentType} />
+                                    <Row label={t('owner_req.spa.products')} value={data.ownerRequests.spa.productsUsed} />
+                                    <Row label={t('owner_req.spa.location')} value={data.ownerRequests.spa.productsLocation} />
+                                    <Row label={t('owner_req.spa.contract')} value={data.ownerRequests.spa.hasMaintenanceContract ? 'Yes' : 'No'} />
+                                </div>
+                            )}
+
+                            {/* Bedding */}
+                            {data.ownerRequests?.bedding && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.bedding.title')}</h4>
+                                    <Row label={t('owner_req.bedding.protection')} value={data.ownerRequests.bedding.hasProtection ? 'Yes' : 'No'} />
+                                    <Row label={t('owner_req.bedding.pillows')} value={data.ownerRequests.bedding.pillowsCount} />
+                                    <Row label={t('owner_req.bedding.blankets')} value={data.ownerRequests.bedding.blanketsCount} />
+                                    <Row label={t('owner_req.bedding.exchange')} value={data.ownerRequests.bedding.hasExchangeLinen ? 'Yes' : 'No'} />
+                                </div>
+                            )}
+
+                            {/* Consumables */}
+                            {data.ownerRequests?.consumables && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.consumables.title')}</h4>
+                                    <Row label={t('owner_req.consumables.products')} value={data.ownerRequests.consumables.productsProvided} />
+                                    <Row label={t('owner_req.consumables.refill')} value={data.ownerRequests.consumables.whoRefills} />
+                                    <Row
+                                        label={t('owner_req.consumables.budget')}
+                                        value={`${data.ownerRequests.consumables.approxBudget ?? 0} ${data.ownerRequests.consumables.approxBudgetCurrency || 'CAD'}`}
+                                    />
+                                </div>
+                            )}
+
+                            {/* BBQ */}
+                            {data.ownerRequests?.bbq && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.bbq.title')}</h4>
+                                    <Row label={t('owner_req.bbq.propane')} value={data.ownerRequests.bbq.hasPropane ? 'Yes' : 'No'} />
+                                    <Row label={t('owner_req.bbq.gauge')} value={data.ownerRequests.bbq.hasGauge ? 'Yes' : 'No'} />
+                                    <Row label={t('owner_req.bbq.procedure')} value={data.ownerRequests.bbq.emptyBottleProcedure} />
+                                </div>
+                            )}
+
+                            {/* Emergency */}
+                            {data.ownerRequests?.emergencyKit && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.emergency.title')}</h4>
+                                    <Row label={t('owner_req.emergency.presence')} value={data.ownerRequests.emergencyKit.hasKit ? 'Yes' : 'No'} />
+                                    <Row label={t('owner_req.emergency.content')} value={data.ownerRequests.emergencyKit.kitContents?.map((k: string) => t(`owner_req.emergency.${k}`)).join(', ')} />
+                                    <Row label={t('owner_req.emergency.location')} value={data.ownerRequests.emergencyKit.kitLocation} />
+                                </div>
+                            )}
+
+                            {/* Expense */}
+                            {data.ownerRequests?.expenseAuth && (
+                                <div>
+                                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{t('owner_req.expense.title')}</h4>
+                                    <Row label={t('owner_req.expense.max_amount')} value={data.ownerRequests.expenseAuth.maxAmountNoValidation ? `$${data.ownerRequests.expenseAuth.maxAmountNoValidation}` : 'N/A'} />
+                                    <Row label={t('owner_req.expense.types')} value={data.ownerRequests.expenseAuth.allowedExpenseTypes} />
+                                    <Row label={t('owner_req.expense.comm_mode')} value={data.ownerRequests.expenseAuth.preferredCommMode} />
+                                </div>
+                            )}
+                        </div>
                     )}
                 </Section>
 

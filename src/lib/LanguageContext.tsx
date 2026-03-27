@@ -39,7 +39,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'label.property_name': { en: 'Property Name', fr: 'Nom de la propriété' },
     'label.property_type': { en: 'Property Type', fr: 'Type de propriété' },
     'label.address': { en: 'Address', fr: 'Adresse' },
-    'label.google_maps_url': { en: 'Address', fr: 'Adresse' },
+    'label.google_maps_url': { en: 'Google Maps URL', fr: 'Lien Google Maps' },
+    'label.instruction_date': { en: 'Instruction Date', fr: 'Date d\'instruction' },
     'label.num_floors': { en: 'Number of floors', fr: "Nombre d'étages" },
     'label.rooms_on_floor': { en: 'Number of rooms', fr: 'Nombre de chambres' },
     'label.beds_in_bedroom': { en: 'Number of beds', fr: 'Nombre de lits' },
@@ -75,6 +76,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'step.guide': { en: 'Guest Guide', fr: 'Guide Invité' },
     'step.payment': { en: 'Payment', fr: 'Paiement' },
     'step.contract': { en: 'Guest Contract', fr: 'Contrat de l’invité' },
+    'step.owner_requests': { en: 'Owner Request List', fr: 'Liste des demandes Propriétaire' },
     'step.next': { en: 'Next Step', fr: 'Étape Suivante' },
     'step.back': { en: 'Back', fr: 'Retour' },
     'step.save_exit': { en: 'Save & Exit', fr: 'Sauvegarder & Quitter' },
@@ -107,7 +109,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'photos.zone.bathroom': { en: 'Bathroom', fr: 'Salle de bain' },
     'photos.zone.plan': { en: 'Floor Plan / Blueprint', fr: 'Plan d\'étage / Plan' },
     'photos.listing_links': { en: 'Previous Listing Links', fr: "Anciens liens de l'annonce" },
-    'photos.warning_banner': { 
+    'photos.warning_banner': {
         en: '⚠️ Essential: Some platforms (like Booking.com) block new listings if the property already exists. Tell us where you are published to avoid delays.',
         fr: '⚠️ Information essentielle : Certaines plateformes (comme Booking.com) bloquent la création d\'annonces si la propriété existe déjà. Indiquez-nous vos publications actuelles pour éviter tout retard.'
     },
@@ -531,6 +533,49 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.details.contract.status': { en: 'Status', fr: 'Statut' },
     'admin.details.contract.comments': { en: 'Client Comments', fr: 'Commentaires du client' },
     'admin.details.contract.date': { en: 'Reviewed At', fr: 'Révisé le' },
+
+    // Owner Requests
+    'owner_req.spa.title': { en: '1. Spa', fr: '1. Spa' },
+    'owner_req.spa.treatment': { en: 'Treatment Type', fr: 'Type de traitement' },
+    'owner_req.spa.brome': { en: 'Bromine', fr: 'Brome' },
+    'owner_req.spa.chlore': { en: 'Chlorine', fr: 'Chlore' },
+    'owner_req.spa.sel': { en: 'Salt', fr: 'Sel' },
+    'owner_req.spa.products': { en: 'Products used', fr: 'Produits utilisés' },
+    'owner_req.spa.location': { en: 'Location of products', fr: 'Emplacement des produits' },
+    'owner_req.spa.contract': { en: 'Spa maintenance contract?', fr: 'Contrat d\'entretien pour le spa ?' },
+
+    'owner_req.bedding.title': { en: '2. Bedding', fr: '2. Literie' },
+    'owner_req.bedding.protection': { en: 'Bedding protection', fr: 'Protection literie' },
+    'owner_req.bedding.pillows': { en: 'Pillows (Quantity)', fr: 'Oreillers (Quantité)' },
+    'owner_req.bedding.blankets': { en: 'Blankets (Quantity)', fr: 'Couvertures (Quantité)' },
+    'owner_req.bedding.exchange': { en: 'Exchange linen available?', fr: 'Linge de rechange disponible ?' },
+
+    'owner_req.consumables.title': { en: '3. Consumables', fr: '3. Consommables' },
+    'owner_req.consumables.products': { en: 'Products provided', fr: 'Produits fournis' },
+    'owner_req.consumables.refill': { en: 'Who manages refills?', fr: 'Qui gère le réapprovisionnement ?' },
+    'owner_req.consumables.budget': { en: 'Approximate budget', fr: 'Budget approximatif' },
+    'owner_req.consumables.currency': { en: 'Currency', fr: 'Devise' },
+
+    'owner_req.bbq.title': { en: '4. Propane / BBQ', fr: '4. Propane / BBQ' },
+    'owner_req.bbq.propane': { en: 'Propane available?', fr: 'Propane disponible ?' },
+    'owner_req.bbq.gauge': { en: 'Presence of a gauge', fr: 'Présence d\'un gauge (indicateur de niveau)' },
+    'owner_req.bbq.procedure': { en: 'Procedure if bottle is empty', fr: 'Procédure si bouteille vide' },
+
+    'owner_req.emergency.title': { en: '5. Emergency Kit', fr: '5. Kit d\'urgence' },
+    'owner_req.emergency.presence': { en: 'Presence of an emergency kit', fr: 'Présence d\'un kit d\'urgence' },
+    'owner_req.emergency.content': { en: 'Kit content', fr: 'Contenu du kit' },
+    'owner_req.emergency.first_aid': { en: 'First aid kit', fr: 'Trousse de premiers secours' },
+    'owner_req.emergency.flashlight': { en: 'Flashlight', fr: 'Lampe de poche' },
+    'owner_req.emergency.batteries': { en: 'Batteries', fr: 'Piles' },
+    'owner_req.emergency.location': { en: 'Kit location', fr: 'Emplacement du kit' },
+
+    'owner_req.expense.title': { en: '6. Expense Authorization', fr: '6. Autorisation de dépenses' },
+    'owner_req.expense.max_amount': { en: 'Maximum amount without validation', fr: 'Montant maximum sans validation' },
+    'owner_req.expense.types': { en: 'Types of allowed expenses', fr: 'Types de dépenses autorisées' },
+    'owner_req.expense.comm_mode': { en: 'Preferred communication mode', fr: 'Mode de communication préféré' },
+    'owner_req.common.save': { en: 'Save / Update', fr: 'Sauvegarder / Mettre à jour' },
+    'owner_req.common.yes': { en: 'Yes', fr: 'Oui' },
+    'owner_req.common.no': { en: 'No', fr: 'Non' },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {

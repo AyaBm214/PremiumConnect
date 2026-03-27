@@ -4,7 +4,7 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
     switch (stepId) {
         case 1: { // Property Info
             const info = data.info || {};
-            const fields = ['propertyName', 'description', 'address', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
+            const fields = ['propertyName', 'description', 'address', 'instructionDate', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
             const filled = fields.filter(f => {
                 const val = (info as any)[f];
                 return val !== undefined && val !== null && val !== '';
@@ -42,7 +42,17 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
             }).length;
             return Math.min(100, Math.round((filled / fields.length) * 100));
         }
-        case 6: { // Payment
+        case 6: { // Owner Requests
+            const reqs = data.ownerRequests || {};
+            const sections = ['spa', 'bedding', 'consumables', 'bbq', 'emergencyKit', 'expenseAuth'];
+            const filledSections = sections.filter(s => {
+                const sec = (reqs as any)[s];
+                if (!sec) return false;
+                return Object.values(sec).some(v => v !== undefined && v !== null && v !== '' && (Array.isArray(v) ? v.length > 0 : true));
+            }).length;
+            return Math.min(100, Math.round((filledSections / 6) * 100));
+        }
+        case 7: { // Payment
             const payment = data.payment || {};
             const fields = ['bankName', 'accountHolder', 'accountNumber', 'transitInstitution', 'branchNumber'];
             const filled = fields.filter(f => {
@@ -51,7 +61,7 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
             }).length;
             return Math.min(100, Math.round((filled / fields.length) * 100));
         }
-        case 7: { // Contract
+        case 8: { // Contract
             return data.contract?.status === 'approved' ? 100 : 0;
         }
         default: return 0;
@@ -59,6 +69,6 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
 };
 
 export const calculateTotalProgress = (data: any): number => {
-    const stepProgresses = [1, 2, 3, 4, 5, 6, 7].map(id => calculateStepProgress(id, data));
-    return Math.round(stepProgresses.reduce((a, b) => a + b, 0) / 7);
+    const stepProgresses = [1, 2, 3, 4, 5, 6, 7, 8].map(id => calculateStepProgress(id, data));
+    return Math.round(stepProgresses.reduce((a, b) => a + b, 0) / 8);
 };
