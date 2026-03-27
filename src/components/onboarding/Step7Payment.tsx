@@ -61,14 +61,14 @@ export default function Step7Payment({ propertyId, propertyName, data, onUpdate,
                     label={t('payment.bank')}
                     value={formData.bankName || ''}
                     onChange={e => handleChange('bankName', e.target.value)}
-                    required
                 />
+
                 <Input
                     label={t('payment.holder')}
                     value={formData.accountHolder || ''}
                     onChange={e => handleChange('accountHolder', e.target.value)}
-                    required
                 />
+
                 <Input
                     label={t('payment.institution')}
                     value={formData.transitInstitution || ''}

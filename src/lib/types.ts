@@ -65,6 +65,7 @@ export interface Property {
             maxGuests?: number;
             maxPersons?: number;
             maxPets?: number;
+            petFee?: number;
 
             // New fields
             doorCode?: string;

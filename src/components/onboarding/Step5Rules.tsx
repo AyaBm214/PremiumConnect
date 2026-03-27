@@ -33,18 +33,30 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                 <Toggle label={t('rules.cleaning')} checked={formData.providesCleaning} onChange={v => handleChange('providesCleaning', v)} />
             </div>
 
-            {/* Max Pets Conditional Input */}
+            {/* Max Pets & Pet Fee Conditional Input */}
             {formData.pets && (
-                <div style={{ marginTop: '1rem', width: '200px' }}>
-                    <Input
-                        label={t('rules.max_pets')}
-                        type="number"
-                        placeholder="e.g. 2"
-                        value={formData.maxPets || ''}
-                        onChange={e => handleChange('maxPets', parseInt(e.target.value))}
-                    />
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                    <div style={{ flex: 1 }}>
+                        <Input
+                            label={t('rules.max_pets')}
+                            type="number"
+                            placeholder="e.g. 2"
+                            value={formData.maxPets || ''}
+                            onChange={e => handleChange('maxPets', parseInt(e.target.value))}
+                        />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <Input
+                            label={t('rules.pet_fee')}
+                            type="number"
+                            placeholder="e.g. 50"
+                            value={formData.petFee || ''}
+                            onChange={e => handleChange('petFee', parseFloat(e.target.value))}
+                        />
+                    </div>
                 </div>
             )}
+
 
             <Input
                 label={t('rules.quiet_hours')}
@@ -63,9 +75,9 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                         type="number"
                         value={formData.cleaningFee || ''}
                         onChange={e => handleChange('cleaningFee', e.target.value)}
-                        required
                     />
                 )}
+
                 <Input
                     label={t('rules.max_guests')}
                     type="number"
@@ -165,10 +177,10 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                                     placeholder="e.g. August, Nest..."
                                     value={formData.otherSmartLockBrand || ''}
                                     onChange={e => handleChange('otherSmartLockBrand', e.target.value)}
-                                    required
                                 />
                             </div>
                         )}
+
                     </div>
                 )}
 

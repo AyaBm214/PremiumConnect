@@ -241,6 +241,7 @@ export default function PropertyDetailsPage() {
                                 label={t('label.google_maps_url')} 
                                 value={data.info?.googleMapsUrl ? <a href={data.info.googleMapsUrl} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} 
                             />
+
                             <Row label={t('label.instruction_date')} value={data.info?.instructionDate} />
                             <Row label={t('label.property_type')} value={data.info?.type} />
                             <Row label={t('admin.details.info.size')} value={data.info?.size ? `${data.info.size} ${data.info.sizeUnit || 'm²'}` : 'N/A'} />
@@ -328,10 +329,11 @@ export default function PropertyDetailsPage() {
                                     <input type="checkbox" checked={editedData.rules?.events} onChange={(e) => setEditedData({ ...editedData, rules: { ...editedData.rules, events: e.target.checked } })} /> {t('admin.details.rules.events')}
                                 </label>
                             </div>
-                            <EditRow label={t('admin.details.rules.max_pets')} value={editedData.rules?.maxPets} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, maxPets: v } })} />
+                            <EditRow label={t('rules.max_pets')} value={editedData.rules?.maxPets} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, maxPets: parseInt(v) || 0 } })} />
+                            <EditRow label={t('rules.pet_fee')} value={editedData.rules?.petFee} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, petFee: parseFloat(v) || 0 } })} />
+
                             <EditRow label={t('admin.details.rules.cleaning')} value={editedData.rules?.cleaningFee} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, cleaningFee: v } })} />
                             <EditRow label={t('admin.details.rules.deposit')} value={editedData.rules?.securityDeposit} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, securityDeposit: v } })} />
-                            <EditRow label={t('admin.details.rules.pet_fee')} value={editedData.rules?.petFee} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, petFee: v } })} />
                             <EditRow label={t('admin.details.rules.max_guests')} value={editedData.rules?.maxGuests} type="number" onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, maxGuests: v } })} />
                             <EditRow label={t('admin.details.rules.quiet_hours')} value={editedData.rules?.quietHours} onChange={(v) => setEditedData({ ...editedData, rules: { ...editedData.rules, quietHours: v } })} />
 
@@ -404,11 +406,12 @@ export default function PropertyDetailsPage() {
                             <Row label={t('admin.details.rules.smoking')} value={data.rules?.smoking ? 'Yes' : 'No'} />
                             <Row label={t('admin.details.rules.pets')} value={data.rules?.pets ? `Yes (Max: ${data.rules.maxPets || 'Any'})` : 'No'} />
                             <Row label={t('admin.details.rules.events')} value={data.rules?.events ? 'Yes' : 'No'} />
-                            <Row label={t('admin.details.rules.cleaning')} value={data.rules?.cleaningFee ? `$${data.rules.cleaningFee}` : '$0'} />
-                            <Row label={t('admin.details.rules.deposit')} value={(data.rules as any)?.securityDeposit ? `$${(data.rules as any).securityDeposit}` : '$0'} />
-                            <Row label={t('admin.details.rules.pet_fee')} value={(data.rules as any)?.petFee ? `$${(data.rules as any).petFee}` : '$0'} />
-                            <Row label={t('admin.details.rules.max_guests')} value={data.rules?.maxGuests || 'N/A'} />
-                            <Row label={t('admin.details.rules.quiet_hours')} value={data.rules?.quietHours || 'None'} />
+                             <Row label={t('admin.details.rules.cleaning')} value={data.rules?.cleaningFee ? `$${data.rules.cleaningFee}` : '$0'} />
+                             <Row label={t('admin.details.rules.deposit')} value={(data.rules as any)?.securityDeposit ? `$${(data.rules as any).securityDeposit}` : '$0'} />
+                             <Row label={t('rules.pet_fee')} value={data.rules?.petFee ? `$${data.rules.petFee}` : '$0'} />
+                             <Row label={t('admin.details.rules.max_guests')} value={data.rules?.maxGuests || 'N/A'} />
+                             <Row label={t('admin.details.rules.quiet_hours')} value={data.rules?.quietHours || 'None'} />
+
 
                             <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
                                 <h4 style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: '#666' }}>{t('admin.details.rules.access_security')}</h4>

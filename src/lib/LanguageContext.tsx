@@ -157,6 +157,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     // Rules Step
     'rules.smoking': { en: 'Smoking Allowed', fr: 'Fumer autorisé' },
     'rules.pets': { en: 'Pets Allowed', fr: 'Animaux autorisés' },
+    'rules.pet_fee': { en: 'Pet Fee ($)', fr: 'Frais pour animaux ($)' },
     'rules.events': { en: 'Events Allowed', fr: 'Événements autorisés' },
     'rules.cleaning': { en: 'I provide cleaning', fr: 'Je m\'occupe du ménage' },
     'rules.max_pets': { en: 'Max Pets Allowed', fr: 'Nombre maximum d\'animaux' },

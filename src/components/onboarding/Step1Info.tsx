@@ -128,11 +128,6 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault();
-        // Simple URL validation
-        if (formData.googleMapsUrl && !formData.googleMapsUrl.includes('google.com/maps') && !formData.googleMapsUrl.includes('goo.gl/maps')) {
-            alert('Please enter a valid Google Maps URL');
-            return;
-        }
         onNext();
     };
 
@@ -145,8 +140,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     placeholder="e.g. Sunny Loft downtown"
                     value={formData.propertyName || ''}
                     onChange={e => handleChange('propertyName', e.target.value)}
-                    required
                 />
+
                 <Select
                     label={t('label.property_type')}
                     value={formData.type || ''}
@@ -158,16 +153,16 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                         { value: 'chalet', label: t('property_type.chalet') },
                         { value: 'other', label: t('property_type.other') },
                     ]}
-                    required
                 />
+
                 <Input
                     label={t('label.address')}
                     placeholder="e.g. 123 Main St, Montreal, QC"
                     value={formData.address || ''}
                     onChange={e => handleChange('address', e.target.value)}
                     className={styles.fullWidth}
-                    required
                 />
+
                 <Input
                     label={t('label.google_maps_url')}
                     placeholder="https://www.google.com/maps/..."
@@ -189,8 +184,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     min={0}
                     value={formData.numFloors ?? ''}
                     onChange={e => handleNumFloorsChange(e.target.value)}
-                    required
                 />
+
 
                 {(() => {
                     let bedroomGlobalIdx = 0;
@@ -205,8 +200,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                                 min={0}
                                 value={numRoomsOnFloor || ''}
                                 onChange={e => handleRoomsPerFloorChange(floorIdx, e.target.value)}
-                                required
                             />
+
                             
                             {numRoomsOnFloor > 0 && (
                                 <div className={styles.roomSection}>
@@ -221,8 +216,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                                                     min={1}
                                                     value={formData.bedsPerBedroom?.[currentIdx] || ''}
                                                     onChange={e => handleBedsPerBedroomChange(currentIdx, e.target.value)}
-                                                    required
                                                 />
+
                                             </div>
                                         );
                                     })}
@@ -261,24 +256,23 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     min={0}
                     value={formData.numBathrooms ?? ''}
                     onChange={e => handleChange('numBathrooms', e.target.value === '' ? undefined : parseFloat(e.target.value))}
-                    required
                 />
+
                 <div className={styles.row}>
                     <Input
                         label={t('label.checkin')}
                         type="time"
                         value={formData.checkInTime || ''}
                         onChange={e => handleChange('checkInTime', e.target.value)}
-                        required
                     />
                     <Input
                         label={t('label.checkout')}
                         type="time"
                         value={formData.checkOutTime || ''}
                         onChange={e => handleChange('checkOutTime', e.target.value)}
-                        required
                     />
                 </div>
+
             </div>
 
             <div className={styles.divider} />
