@@ -174,8 +174,8 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     value={formData.googleMapsUrl || ''}
                     onChange={e => handleChange('googleMapsUrl', e.target.value)}
                     className={styles.fullWidth}
-                    required
                 />
+
                 <Input
                     label={t('label.instruction_date')}
                     type="date"
