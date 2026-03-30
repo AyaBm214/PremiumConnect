@@ -203,7 +203,7 @@ export default function PropertyDetailsPage() {
                             </div>
                             <EditRow label={t('label.address')} value={editedData.info?.address} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, address: v } })} />
                             <EditRow label={t('label.google_maps_url')} value={editedData.info?.googleMapsUrl} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, googleMapsUrl: v } })} />
-                            <EditRow label={t('label.instruction_date')} type="date" value={editedData.info?.instructionDate} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, instructionDate: v } })} />
+                            <EditRow label={t('label.construction_date')} type="date" value={editedData.info?.constructionDate} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, constructionDate: v } })} />
                             <EditRow label={t('label.property_type')} value={editedData.info?.type} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, type: v } })} />
                             <EditRow label={t('admin.details.info.floor')} value={editedData.info?.floorNumber} onChange={(v) => setEditedData({ ...editedData, info: { ...editedData.info, floorNumber: v } })} />
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', alignItems: 'flex-end' }}>
@@ -242,7 +242,7 @@ export default function PropertyDetailsPage() {
                                 value={data.info?.googleMapsUrl ? <a href={data.info.googleMapsUrl} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} 
                             />
 
-                            <Row label={t('label.instruction_date')} value={data.info?.instructionDate} />
+                            <Row label={t('label.construction_date')} value={data.info?.constructionDate} />
                             <Row label={t('label.property_type')} value={data.info?.type} />
                             <Row label={t('admin.details.info.size')} value={data.info?.size ? `${data.info.size} ${data.info.sizeUnit || 'm²'}` : 'N/A'} />
                             

@@ -172,10 +172,10 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                 />
 
                 <Input
-                    label={t('label.instruction_date')}
+                    label={t('label.construction_date')}
                     type="date"
-                    value={formData.instructionDate || ''}
-                    onChange={e => handleChange('instructionDate', e.target.value)}
+                    value={formData.constructionDate || ''}
+                    onChange={e => handleChange('constructionDate', e.target.value)}
                 />
                 
                 <Input

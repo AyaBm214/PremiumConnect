@@ -27,6 +27,7 @@ export const generatePropertyPDF = (property: Property) => {
         body: [
             ['Type', data.info?.type || '-'],
             ['Address', data.info?.address || '-'],
+            ['Construction Date', data.info?.constructionDate || '-'],
             ['Floor', data.info?.floorNumber || '-'],
             ['Size', data.info?.size || '-'],
             ['Rooms', `${data.info?.numRooms || 0} Bed / ${data.info?.numBathrooms || 0} Bath`],

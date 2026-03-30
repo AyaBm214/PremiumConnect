@@ -20,7 +20,7 @@ export interface Property {
             floorNumber?: string; // Legacy or text description
             googleMapsUrl?: string; // New: Google Maps link
             address?: string;
-            instructionDate?: string;
+            constructionDate?: string;
             size?: string;
             sizeUnit?: string;
             numFloors?: number;

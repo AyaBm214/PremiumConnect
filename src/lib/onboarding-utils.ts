@@ -4,7 +4,7 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
     switch (stepId) {
         case 1: { // Property Info
             const info = data.info || {};
-            const fields = ['propertyName', 'description', 'address', 'instructionDate', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
+            const fields = ['propertyName', 'description', 'address', 'constructionDate', 'type', 'numRooms', 'numBathrooms', 'size', 'checkInTime', 'checkOutTime'];
             const filled = fields.filter(f => {
                 const val = (info as any)[f];
                 return val !== undefined && val !== null && val !== '';

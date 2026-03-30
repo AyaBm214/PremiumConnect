@@ -40,7 +40,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'label.property_type': { en: 'Property Type', fr: 'Type de propriété' },
     'label.address': { en: 'Address', fr: 'Adresse' },
     'label.google_maps_url': { en: 'Google Maps URL', fr: 'Lien Google Maps' },
-    'label.instruction_date': { en: 'Instruction Date', fr: 'Date d\'instruction' },
+    'label.construction_date': { en: 'Construction Date', fr: 'Date de construction' },
     'label.num_floors': { en: 'Number of floors', fr: "Nombre d'étages" },
     'label.rooms_on_floor': { en: 'Number of rooms', fr: 'Nombre de chambres' },
     'label.beds_in_bedroom': { en: 'Number of beds', fr: 'Nombre de lits' },

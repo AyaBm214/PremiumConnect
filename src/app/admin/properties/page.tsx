@@ -70,12 +70,13 @@ export default function AdminPropertiesPage() {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Property</th>
-                            <th>Owner ID</th>
-                            <th>Status</th>
-                            <th>Progress</th>
-                            <th>Last Updated</th>
-                            <th>Actions</th>
+                            <th>{t('admin.props.table.prop')}</th>
+                            <th>{t('admin.props.table.owner')}</th>
+                            <th>{t('admin.props.table.status')}</th>
+                            <th>{t('admin.props.table.progress')}</th>
+                            <th>{t('label.construction_date')}</th>
+                            <th>{t('admin.props.table.updated')}</th>
+                            <th>{t('admin.props.table.actions')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,6 +102,7 @@ export default function AdminPropertiesPage() {
                                             <div className={styles.progressFill} style={{ width: `${prop.progress}%` }} />
                                         </div>
                                     </td>
+                                    <td>{prop.data.info?.constructionDate || 'N/A'}</td>
                                     <td>{new Date(prop.updatedAt).toLocaleDateString()}</td>
                                     <td>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
