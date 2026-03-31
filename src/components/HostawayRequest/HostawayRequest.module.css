@@ -1,0 +1,201 @@
+.container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-light);
+  font-family: inherit;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.textSection {
+  flex-grow: 1;
+}
+
+.title {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--pb-navy);
+}
+
+.description {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.actionSection {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusBox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.statusBox.completed {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.statusIcon {
+  font-size: 1.25rem;
+}
+
+.statusText {
+  font-size: 0.95rem;
+}
+
+.completedContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.credentialsBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px dashed #bbf7d0;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.credentialItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.credentialLabel {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.credentialValue {
+  font-family: monospace;
+  background: #f8fafc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--pb-navy);
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  color: var(--pb-red);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.copyBtn:hover {
+  color: #b91c1c;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal h3 {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--pb-navy);
+}
+
+.modal p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loader {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.loader {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  animation: loader 1.5s infinite ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .actionSection {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

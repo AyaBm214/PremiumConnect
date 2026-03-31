@@ -81,3 +81,15 @@
     font-size: 1.05rem;
     font-weight: 600;
 }
+
+.danger {
+    background-color: #dc3545;
+    color: white;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.danger:hover:not(:disabled) {
+    background-color: #bb2d3b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(220, 53, 69, 0.3);
+}

@@ -8,6 +8,8 @@ import { Property } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import OnboardingTimeline from '@/components/OnboardingTimeline';
+import HostawayHeaderItem from '@/components/HostawayRequest/HostawayHeaderItem';
 import styles from './dashboard.module.css';
 
 export default function ClientDashboard() {
@@ -95,7 +97,8 @@ export default function ClientDashboard() {
                     <h1 className={styles.title}>{t('dash.welcome')}, {user?.user_metadata?.full_name || user?.email?.split('@')[0]}</h1>
                     <p className={styles.subtitle}>{t('dash.subtitle')}</p>
                 </div>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <HostawayHeaderItem />
                     <Button onClick={handleCreateNew}>
                         {t('dash.new_prop')}
                     </Button>
@@ -109,6 +112,19 @@ export default function ClientDashboard() {
                     </Button>
                 </div>
             </header>
+
+            <div style={{ 
+                backgroundColor: 'white', 
+                borderRadius: '1.5rem', 
+                boxShadow: 'var(--shadow-lg)', 
+                marginBottom: '3rem',
+                border: '1px solid var(--border-light)',
+                overflow: 'hidden'
+            }}>
+                <OnboardingTimeline 
+                    clientName={user?.user_metadata?.full_name?.split(' ')[0]} 
+                />
+            </div>
 
             <div className={styles.grid}>
                 {properties.length === 0 ? (

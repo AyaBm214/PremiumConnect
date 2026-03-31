@@ -577,6 +577,22 @@ const dictionary: Record<string, Record<Language, string>> = {
     'owner_req.common.save': { en: 'Save / Update', fr: 'Sauvegarder / Mettre à jour' },
     'owner_req.common.yes': { en: 'Yes', fr: 'Oui' },
     'owner_req.common.no': { en: 'No', fr: 'Non' },
+
+    // Hostaway
+    'hostaway.title': { en: 'Hostaway Access', fr: 'Accès Hostaway' },
+    'hostaway.request_btn': { en: 'Request Hostaway Access', fr: 'Demander l\'accès Hostaway' },
+    'hostaway.pending': { en: 'Access Requested', fr: 'Accès Demandé' },
+    'hostaway.in_progress': { en: 'Access in Progress', fr: 'Accès en cours' },
+    'hostaway.completed': { en: 'Access Ready', fr: 'Accès Prêt' },
+    'hostaway.modal.title': { en: 'Hostaway Access Request', fr: 'Demande d\'Accès Hostaway' },
+    'hostaway.modal.text': { en: 'Do you want us to create your Hostaway access? This will allow you to sync with platforms and manage bookings.', fr: 'Souhaitez-vous que nous créions votre accès Hostaway ? Cela vous permettra de synchroniser vos calendriers et gérer vos réservations.' },
+    'hostaway.modal.yes': { en: 'Yes, Request Access', fr: 'Oui, demander l\'accès' },
+    'hostaway.modal.cancel': { en: 'Cancel', fr: 'Annuler' },
+    'hostaway.copy': { en: 'Copy', fr: 'Copier' },
+    'hostaway.copied': { en: 'Copied!', fr: 'Copié !' },
+    'admin.hostaway.resend': { en: 'Resend Email', fr: 'Renvoyer l\'email' },
+    'admin.hostaway.start': { en: 'Start Creation', fr: 'Démarrer Création' },
+    'admin.hostaway.complete': { en: 'Mark Completed', fr: 'Marquer Terminé' },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {

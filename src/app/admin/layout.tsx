@@ -7,6 +7,7 @@ import Image from 'next/image';
 import styles from './admin.module.css';
 
 import { useLanguage } from '@/lib/LanguageContext';
+import { createClient } from '@/lib/supabase/client';
 
 function AdminSidebar() {
     const pathname = usePathname();
@@ -18,7 +19,38 @@ function AdminSidebar() {
         { href: '/admin/properties', label: t('admin.properties'), icon: '🏠' },
         { href: '/admin/users', label: t('admin.users'), icon: '👥' },
         { href: '/admin/media', label: t('admin.media'), icon: '📁' },
+        { href: '/admin/hostaway-requests', label: 'Hostaway Access', icon: '🔑', isHostaway: true },
     ];
+
+    const [requestCount, setRequestCount] = React.useState(0);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const fetchCount = async () => {
+            const { count, error } = await supabase
+                .from('hostaway_requests')
+                .select('*', { count: 'exact', head: true })
+                .eq('status', 'requested');
+
+            if (!error && count !== null) {
+                setRequestCount(count);
+            }
+        };
+
+        fetchCount();
+        
+        // Optional: Real-time subscription
+        const channel = supabase
+            .channel('hostaway_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'hostaway_requests' }, () => {
+                fetchCount();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
 
     return (
         <aside className={styles.sidebar}>
@@ -58,7 +90,10 @@ function AdminSidebar() {
                         className={`${styles.navItem} ${pathname === link.href ? styles.active : ''}`}
                     >
                         <span className={styles.icon}>{link.icon}</span>
-                        {link.label}
+                        <span style={{ flexGrow: 1 }}>{link.label}</span>
+                        {(link as any).isHostaway && requestCount > 0 && (
+                            <span className={styles.badge}>{requestCount}</span>
+                        )}
                     </Link>
                 ))}
             </nav>
