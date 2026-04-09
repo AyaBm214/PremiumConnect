@@ -593,6 +593,14 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.hostaway.resend': { en: 'Resend Email', fr: 'Renvoyer l\'email' },
     'admin.hostaway.start': { en: 'Start Creation', fr: 'Démarrer Création' },
     'admin.hostaway.complete': { en: 'Mark Completed', fr: 'Marquer Terminé' },
+    'admin.settings.title': { en: 'Settings', fr: 'Paramètres' },
+    'admin.settings.password_section': { en: 'Change Password', fr: 'Changer le mot de passe' },
+    'admin.settings.new_password': { en: 'New Password', fr: 'Nouveau mot de passe' },
+    'admin.settings.confirm_password': { en: 'Confirm New Password', fr: 'Confirmer le nouveau mot de passe' },
+    'admin.settings.update_btn': { en: 'Update Password', fr: 'Mettre à jour le mot de passe' },
+    'admin.settings.success': { en: 'Password updated successfully!', fr: 'Mot de passe mis à jour avec succès !' },
+    'admin.settings.error': { en: 'Error updating password', fr: 'Erreur lors de la mise à jour du mot de passe' },
+    'admin.settings.mismatch': { en: 'Passwords do not match', fr: 'Les mots de passe ne correspondent pas' },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {

@@ -20,6 +20,7 @@ function AdminSidebar() {
         { href: '/admin/users', label: t('admin.users'), icon: '👥' },
         { href: '/admin/media', label: t('admin.media'), icon: '📁' },
         { href: '/admin/hostaway-requests', label: 'Hostaway Access', icon: '🔑', isHostaway: true },
+        { href: '/admin/settings', label: t('admin.settings.title'), icon: '⚙️' },
     ];
 
     const [requestCount, setRequestCount] = React.useState(0);

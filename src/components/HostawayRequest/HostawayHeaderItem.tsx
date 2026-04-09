@@ -133,25 +133,44 @@ export default function HostawayHeaderItem() {
 
     if (request.status === 'completed') {
       return (
-        <div className={styles.completedGroup}>
-          <div className={`${styles.statusBadge} ${styles.success}`}>
-            <span className={styles.icon}>✅</span>
-            {t('hostaway.completed')}
-          </div>
-          {request.hostaway_password && (
-            <div className={styles.passwordPop}>
-              <code>{request.hostaway_password}</code>
-              <button 
-                className={styles.copyTiny} 
-                onClick={() => {
-                  navigator.clipboard.writeText(request.hostaway_password!);
-                  alert(t('hostaway.copied'));
-                }}
-              >
-                {t('hostaway.copy')}
-              </button>
+        <div className={styles.credentialsCard}>
+          <div className={styles.cardHeader}>
+            <div className={styles.brand}>
+              <img src="/hostaway-logo.png" alt="Hostaway" className={styles.brandLogo} />
+              <span className={styles.brandName}>Hostaway Access</span>
             </div>
-          )}
+            <a 
+              href="https://dashboard.hostaway.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={styles.dashboardLink}
+            >
+              Open Dashboard ↗
+            </a>
+          </div>
+          
+          <div className={styles.credentialsBody}>
+            <div className={styles.credentialItem}>
+              <span className={styles.label}>{t('login.email')}</span>
+              <span className={styles.value}>{user?.email}</span>
+            </div>
+            <div className={styles.credentialItem}>
+              <span className={styles.label}>{t('login.password')}</span>
+              <div className={styles.passwordWrapper}>
+                <code className={styles.password}>{request.hostaway_password}</code>
+                <button 
+                  className={styles.copyBtn} 
+                  onClick={() => {
+                    navigator.clipboard.writeText(request.hostaway_password!);
+                    alert(t('hostaway.copied'));
+                  }}
+                  title={t('hostaway.copy')}
+                >
+                  <span className={styles.copyIcon}>📋</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
