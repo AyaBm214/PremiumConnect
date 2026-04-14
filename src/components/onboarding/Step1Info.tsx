@@ -20,6 +20,7 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
     const { t } = useLanguage();
     const [formData, setFormData] = useState(data || {});
     const [uploading, setUploading] = useState(false);
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const supabase = createClient();
 
     const handleChange = (field: keyof NonNullable<Property['data']['info']>, value: any) => {
@@ -128,6 +129,20 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        const newErrors: Record<string, string> = {};
+        if (!formData.size) {
+            newErrors.size = t('error.field_required') || 'Ce champ est obligatoire';
+        }
+        if (formData.numBathrooms === undefined || formData.numBathrooms === null) {
+            newErrors.numBathrooms = t('error.field_required') || 'Ce champ est obligatoire';
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
         onNext();
     };
 
@@ -229,10 +244,14 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
 
                 <div className={styles.sizeInputGroup}>
                     <Input
-                        label={t('label.size')}
+                        label={`${t('label.size')} *`}
                         placeholder="e.g. 850"
                         value={formData.size || ''}
-                        onChange={e => handleChange('size', e.target.value)}
+                        onChange={e => {
+                            handleChange('size', e.target.value);
+                            if (errors.size) setErrors(prev => ({ ...prev, size: '' }));
+                        }}
+                        error={errors.size}
                         className={styles.fullWidth}
                         style={{ flex: 1 }}
                     />
@@ -250,12 +269,17 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
                     />
                 </div>
                 <Input
-                    label={t('photos.zone.bathroom')}
+                    label={`${t('photos.zone.bathroom')} *`}
                     type="number"
                     step={0.5}
                     min={0}
                     value={formData.numBathrooms ?? ''}
-                    onChange={e => handleChange('numBathrooms', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                    onChange={e => {
+                        const val = e.target.value === '' ? undefined : parseFloat(e.target.value);
+                        handleChange('numBathrooms', val);
+                        if (errors.numBathrooms) setErrors(prev => ({ ...prev, numBathrooms: '' }));
+                    }}
+                    error={errors.numBathrooms}
                 />
 
                 <div className={styles.row}>

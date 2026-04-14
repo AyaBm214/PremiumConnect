@@ -129,6 +129,26 @@ export default function AdminPropertiesPage() {
                                             >
                                                 <span style={{ fontSize: '1rem' }}>🎨</span> {t('admin.details.edit')}
                                             </button>
+                                            <button
+                                                onClick={() => router.push(`/client/dashboard?uid=${prop.ownerId}`)}
+                                                style={{
+                                                    padding: '6px 12px',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #e2e8f0',
+                                                    backgroundColor: '#ffffff',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    fontSize: '0.85rem',
+                                                    fontWeight: 600,
+                                                    color: '#475569',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                                title="Voir le dashboard client"
+                                            >
+                                                <span style={{ fontSize: '1rem' }}>📊</span> Dashboard
+                                            </button>
                                             {prop.data.info?.citqFile && (
                                                 <Button
                                                     size="sm"
