@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { useLanguage } from '@/lib/LanguageContext';
 import { Button } from '@/components/ui/Button';
@@ -12,7 +12,7 @@ import OnboardingTimeline from '@/components/OnboardingTimeline';
 import HostawayHeaderItem from '@/components/HostawayRequest/HostawayHeaderItem';
 import styles from './dashboard.module.css';
 
-export default function ClientDashboard() {
+function DashboardContent() {
     const { user, isLoading, logout } = useAuth();
     const { t } = useLanguage();
     const [properties, setProperties] = useState<Property[]>([]);
@@ -213,5 +213,13 @@ export default function ClientDashboard() {
                 )}
             </div>
         </main>
+    );
+}
+
+export default function ClientDashboard() {
+    return (
+        <Suspense fallback={<div className={styles.loading}>Loading...</div>}>
+            <DashboardContent />
+        </Suspense>
     );
 }
