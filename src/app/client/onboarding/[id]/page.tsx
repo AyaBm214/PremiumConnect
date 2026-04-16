@@ -63,6 +63,7 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                 currentStep: data.current_step,
                 totalSteps: data.total_steps,
                 progress: data.progress,
+                onboardingPhase: data.onboarding_phase || 1,
                 updatedAt: data.updated_at,
                 data: data.data || {}
             };

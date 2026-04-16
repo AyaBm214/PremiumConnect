@@ -37,6 +37,7 @@ export default function AdminPropertiesPage() {
                     currentStep: p.current_step,
                     totalSteps: p.total_steps,
                     progress: p.progress,
+                    onboardingPhase: p.onboarding_phase || 1,
                     data: p.data,
                     updatedAt: p.updated_at
                 }));

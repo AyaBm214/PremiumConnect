@@ -151,7 +151,7 @@ export default function PropertyDetailsPage() {
                     >
                         <option value={1}>1. Signature du contrat</option>
                         <option value={2}>2. Audit documentaire</option>
-                        <option value={3}>3. Démarrage d'embarquement</option>
+                        <option value={3}>3. Démarrage d&apos;embarquement</option>
                         <option value={4}>4. Vérification des accès</option>
                         <option value={5}>5. Finalisation</option>
                     </select>

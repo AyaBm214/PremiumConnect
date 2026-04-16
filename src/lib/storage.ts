@@ -56,6 +56,7 @@ export const storage = {
             currentStep: 1,
             totalSteps: TOTAL_ONBOARDING_STEPS,
             progress: 0,
+            onboardingPhase: 1,
             updatedAt: new Date().toISOString(),
             data: {}
         };
