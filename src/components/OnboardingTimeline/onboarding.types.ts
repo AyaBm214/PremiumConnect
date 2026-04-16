@@ -16,4 +16,5 @@ export interface OnboardingTimelineProps {
   onAllComplete?: () => void;
   initialCompleted?: number[];
   readOnly?: boolean;
+  onboardingPhase?: number;
 }

@@ -305,6 +305,9 @@ export default function Step1Info({ propertyId, data, onUpdate, onNext }: Step1P
             <div className={styles.uploadGrid}>
                 {/* CITQ */}
                 <div>
+                    <div className={styles.warningBanner} style={{ marginBottom: '1rem', padding: '0.75rem 1rem', fontSize: '0.85rem' }}>
+                        {t('onboarding.citq.note')}
+                    </div>
                     {formData.citqFile && <p style={{ fontSize: '0.8rem', color: 'green', marginBottom: '0.5rem' }}>✓ {t('profile.uploaded')}</p>}
                     <FileUploader
                         label={t('label.citq')}

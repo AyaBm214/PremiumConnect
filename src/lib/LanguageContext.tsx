@@ -67,6 +67,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'dash.last_updated': { en: 'Last updated:', fr: 'Dernière mise à jour :' },
     'dash.continue': { en: 'Continue', fr: 'Continuer' },
     'dash.view_details': { en: 'View Details', fr: 'Voir les détails' },
+    'dash.your_properties': { en: 'Your Properties', fr: 'Vos propriétés' },
+    'onboarding.journey.title': { en: 'Your Onboarding Journey', fr: 'Votre parcours de mise en service' },
 
     // Onboarding Steps
     'step.info': { en: 'Property Info', fr: 'Info Propriété' },
@@ -112,6 +114,10 @@ const dictionary: Record<string, Record<Language, string>> = {
     'photos.warning_banner': {
         en: '⚠️ Essential: Some platforms (like Booking.com) block new listings if the property already exists. Tell us where you are published to avoid delays.',
         fr: '⚠️ Information essentielle : Certaines plateformes (comme Booking.com) bloquent la création d\'annonces si la propriété existe déjà. Indiquez-nous vos publications actuelles pour éviter tout retard.'
+    },
+    'onboarding.citq.note': {
+        en: '⚠️ Important: We always require the original document in PDF version for CITQ certificates.',
+        fr: '⚠️ Important : Nous exigeons toujours le document original en version PDF pour les certificats CITQ.'
     },
     'photos.platforms_label': { en: 'On which platforms is your property published?', fr: 'Sur quelles plateformes votre bien est-il publié ?' },
     'photos.platforms_helper': { en: 'The more you tell us, the better we can support you.', fr: 'Plus vous nous en dites, mieux nous pouvons vous accompagner.' },

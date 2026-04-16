@@ -45,6 +45,7 @@ export default function PropertyDetailsPage() {
                 currentStep: data.current_step,
                 totalSteps: data.total_steps,
                 progress: data.progress,
+                onboardingPhase: data.onboarding_phase || 1,
                 data: data.data,
                 updatedAt: data.updated_at
             };
@@ -77,6 +78,22 @@ export default function PropertyDetailsPage() {
         setIsEditing(null);
     };
 
+    const handlePhaseChange = async (newPhase: number) => {
+        if (!property) return;
+
+        const { error } = await supabase
+            .from('properties')
+            .update({ onboarding_phase: newPhase })
+            .eq('id', property.id);
+
+        if (error) {
+            alert('Error updating onboarding phase: ' + error.message);
+            return;
+        }
+
+        setProperty({ ...property, onboardingPhase: newPhase });
+    };
+
     const handleCancel = () => {
         if (property) {
             setEditedData(JSON.parse(JSON.stringify(property.data)));
@@ -103,6 +120,43 @@ export default function PropertyDetailsPage() {
                         )}
                     </div>
                 </div>
+
+                {/* Onboarding Phase Selector */}
+                <div style={{
+                    backgroundColor: '#f8fafc',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+                }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.025em' }}>Phase Onboarding</span>
+                    <select
+                        style={{
+                            padding: '0.4rem 0.75rem',
+                            borderRadius: '8px',
+                            border: '1px solid #cbd5e1',
+                            fontSize: '0.9rem',
+                            fontWeight: 500,
+                            backgroundColor: 'white',
+                            color: '#1e293b',
+                            cursor: 'pointer',
+                            outline: 'none',
+                            minWidth: '220px'
+                        }}
+                        value={property.onboardingPhase}
+                        onChange={(e) => handlePhaseChange(parseInt(e.target.value))}
+                    >
+                        <option value={1}>1. Signature du contrat</option>
+                        <option value={2}>2. Audit documentaire</option>
+                        <option value={3}>3. Démarrage d'embarquement</option>
+                        <option value={4}>4. Vérification des accès</option>
+                        <option value={5}>5. Finalisation</option>
+                    </select>
+                </div>
+
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <Button
                         variant="outline"

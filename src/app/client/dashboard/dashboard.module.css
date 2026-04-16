@@ -1,7 +1,9 @@
 .container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 2.5rem 1.5rem;
+    background-color: #f9fafb;
+    min-height: 100vh;
 }
 
 .loading {
@@ -12,122 +14,189 @@
     color: var(--text-muted);
 }
 
-.header {
+/* --- Hero Section (Branding & User Greeting) --- */
+
+.heroSection {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 2rem;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.heroMain {
+    flex: 1;
+}
+
+.logoWrapper {
+    margin-bottom: 2rem;
 }
 
 .title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a2b4b;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
 }
 
 .subtitle {
-    color: var(--text-muted);
+    font-size: 1.15rem;
+    color: #64748b;
+    max-width: 600px;
 }
+
+.actionRow {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.heroSide {
+    width: 320px;
+}
+
+/* --- Section Formatting --- */
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sectionTitle span {
+    color: #2563eb;
+    background: #dbeafe;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* --- Onboarding Wrapper --- */
+
+.onboardingWrapper {
+    background: white;
+    border-radius: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-bottom: 3rem;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+/* --- Property Grid --- */
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
 }
 
 .emptyState {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 4rem;
+    padding: 5rem 2rem;
     background: white;
-    border-radius: var(--radius-lg);
-    border: 1px dashed var(--border-light);
+    border-radius: 2rem;
+    border: 1px dashed #cbd5e1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    color: var(--text-muted);
+    gap: 2rem;
+    color: #64748b;
 }
 
 .card {
     background: white;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light);
-    padding: 1.5rem;
-    transition: all 0.2s;
+    border-radius: 1.5rem;
+    border: 1px solid #e2e8f0;
+    padding: 2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-blue);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    border-color: #2563eb;
 }
 
 .cardHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .propName {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-main);
-    line-height: 1.4;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
 }
 
 .badge {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 20px;
-    font-weight: 600;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 99px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .draft {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background-color: #dbeafe;
+    color: #2563eb;
 }
 
 .pending_review {
-    background-color: #fff3e0;
-    color: #ef6c00;
+    background-color: #fff7ed;
+    color: #9a3412;
 }
 
 .active {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: #dcfce7;
+    color: #15803d;
 }
 
 .progressContainer {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .progressBar {
-    height: 6px;
-    background-color: var(--border-light);
-    border-radius: 3px;
+    height: 10px;
+    background-color: #f1f5f9;
+    border-radius: 5px;
     overflow: hidden;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .progressFill {
     height: 100%;
-    background-color: var(--primary-blue);
-    border-radius: 3px;
-    transition: width 0.5s ease;
+    background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+    border-radius: 5px;
+    transition: width 0.8s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .progressText {
-    font-size: 0.85rem;
-    color: var(--text-muted);
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
 }
 
 .cardFooter {
@@ -135,16 +204,56 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1rem;
-    border-top: 1px solid #f1f3f5;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
 }
 
 .lastUpdated {
-    font-size: 0.8rem;
-    color: var(--text-muted);
+    font-size: 0.85rem;
+    color: #94a3b8;
 }
 
 .resumeBtn {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+}
+
+/* --- Responsive Layout --- */
+
+@media (max-width: 1024px) {
+    .heroSection {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .heroSide {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .heroSection {
+        padding: 1.5rem;
+    }
+    
+    .title {
+        font-size: 1.75rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actionRow {
+        flex-direction: column;
+    }
+    
+    .actionRow button {
+        width: 100%;
+    }
 }

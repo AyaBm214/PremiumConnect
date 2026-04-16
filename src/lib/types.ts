@@ -9,6 +9,7 @@ export interface Property {
     currentStep: number;
     totalSteps: number;
     progress: number; // 0 to 100
+    onboardingPhase: number; // 1 to 5
     updatedAt: string;
 
     // Data from steps

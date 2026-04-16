@@ -68,6 +68,7 @@ function DashboardContent() {
                     currentStep: d.current_step,
                     totalSteps: d.total_steps,
                     progress: d.progress,
+                    onboardingPhase: d.onboarding_phase || 1,
                     updatedAt: d.updated_at,
                     data: d.data
                 } as Property));
@@ -106,14 +107,15 @@ function DashboardContent() {
 
     return (
         <main className={styles.container}>
-            <header className={styles.header}>
-                <div>
-                    <div style={{ marginBottom: '1rem' }}>
+            {/* Hero Section */}
+            <section className={styles.heroSection}>
+                <div className={styles.heroMain}>
+                    <div className={styles.logoWrapper}>
                         <Image
                             src="/logo.png"
                             alt="Premium Booking Connect"
-                            width={160}
-                            height={50}
+                            width={180}
+                            height={56}
                             style={{ objectFit: 'contain' }}
                         />
                     </div>
@@ -121,53 +123,60 @@ function DashboardContent() {
                         {t('dash.welcome')}, {viewingUser ? viewingUser.name : (user?.user_metadata?.full_name || user?.email?.split('@')[0])}
                     </h1>
                     <p className={styles.subtitle}>{t('dash.subtitle')}</p>
+                    
                     {isAdmin && targetUid && (
                         <div style={{
                             backgroundColor: '#fff7ed',
                             border: '1px solid #ffedd5',
-                            padding: '8px 16px',
-                            borderRadius: '8px',
-                            marginTop: '12px',
+                            padding: '10px 16px',
+                            borderRadius: '12px',
+                            marginTop: '16px',
                             color: '#9a3412',
-                            fontSize: '0.9rem',
+                            fontSize: '0.95rem',
                             fontWeight: 600,
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '8px'
+                            gap: '10px'
                         }}>
                             <span>🛠️</span> Mode Admin : Vous visualisez et gérez le compte de <strong>{viewingUser?.name || '...'}</strong>
                         </div>
                     )}
-                </div>
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <HostawayHeaderItem />
-                    <Button onClick={handleCreateNew}>
-                        {t('dash.new_prop')}
-                    </Button>
-                    <Link href="/client/profile">
-                        <Button variant="outline">
-                            {t('dash.profile')}
-                        </Button>
-                    </Link>
-                    <Button variant="secondary" onClick={logout}>
-                        {t('dash.signout')}
-                    </Button>
-                </div>
-            </header>
 
-            <div style={{ 
-                backgroundColor: 'white', 
-                borderRadius: '1.5rem', 
-                boxShadow: 'var(--shadow-lg)', 
-                marginBottom: '3rem',
-                border: '1px solid var(--border-light)',
-                overflow: 'hidden'
-            }}>
+                    <div className={styles.actionRow}>
+                        <Button onClick={handleCreateNew} size="lg">
+                            <span style={{ fontSize: '1.2rem', marginRight: '8px' }}>+</span> {t('dash.new_prop')}
+                        </Button>
+                        <Link href="/client/profile">
+                            <Button variant="outline" size="lg">
+                                {t('dash.profile')}
+                            </Button>
+                        </Link>
+                        <Button variant="secondary" onClick={logout} size="lg">
+                            {t('dash.signout')}
+                        </Button>
+                    </div>
+                </div>
+
+                <div className={styles.heroSide}>
+                    <HostawayHeaderItem />
+                </div>
+            </section>
+
+            {/* Journey Section */}
+            <h2 className={styles.sectionTitle}>
+                <span>1</span> {t('onboarding.journey.title') || 'Votre parcours de mise en service'}
+            </h2>
+            <div className={styles.onboardingWrapper}>
                 <OnboardingTimeline 
                     clientName={user?.user_metadata?.full_name?.split(' ')[0]} 
+                    onboardingPhase={properties[0]?.onboardingPhase || 1}
                 />
             </div>
 
+            {/* Properties Section */}
+            <h2 className={styles.sectionTitle}>
+                <span>2</span> {t('dash.your_properties') || 'Vos propriétés'}
+            </h2>
             <div className={styles.grid}>
                 {properties.length === 0 ? (
                     <div className={styles.emptyState}>

@@ -139,197 +139,188 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                     <img src="/logo.png" alt="Premium Booking" />
                 </div>
 
-                {isAdmin && (
-                    <div style={{ padding: '1rem', borderBottom: '1px solid #eee', marginBottom: '1rem' }}>
-                        <button
-                            onClick={() => router.push('/admin/properties')}
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                backgroundColor: '#f0f4f8',
-                                border: '1px solid #d1d9e6',
-                                borderRadius: '8px',
-                                color: '#1a2b4b',
-                                fontWeight: 600,
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '8px'
-                            }}
-                        >
-                            <span>←</span> {t('admin.details.back')}
-                        </button>
+                <div className={styles.progressSection}>
+                    <div className={styles.stepProgress}>
+                        <span className={styles.stepPercentage}>{Math.round(property.progress)}%</span>
+                        <span className={styles.progressLabel}>{t('onboarding.progress.total') || 'Progress'}</span>
                     </div>
-                )}
+                    <div className={styles.miniProgressBar}>
+                        <div 
+                            className={styles.miniProgressFill} 
+                            style={{ width: `${property.progress}%` }} 
+                        />
+                    </div>
+                </div>
 
-                <nav className={styles.timeline}>
-                    <div className={styles.progressLine} />
-                    {ONBOARDING_STEPS.map(step => {
-                        const stepProgress = calculateStepProgress(step.id, property.data);
-                        return (
-                            <div
-                                key={step.id}
-                                className={`
-                                    ${styles.stepItem} 
-                                    ${step.id === property.currentStep ? styles.activeStep : ''}
-                                    ${step.id < property.currentStep ? styles.completedStep : ''}
-                                `}
-                            >
-                                <div className={styles.stepCircle}>
-                                    {step.id < property.currentStep ? '●' : step.id}
-                                </div>
-                                <div className={styles.stepProgress}>
-                                    <div className={styles.stepTitleAndPercent}>
-                                        <span className={styles.stepTitle}>{t(step.key || '')}</span>
-                                        <span className={styles.stepPercentage}>{stepProgress}%</span>
-                                    </div>
-                                    <div className={styles.miniProgressBar}>
-                                        <div
-                                            className={styles.miniProgressFill}
-                                            style={{ width: `${stepProgress}%` }}
-                                        />
-                                    </div>
-                                </div>
+                <nav className={styles.sidebarNav}>
+                    {ONBOARDING_STEPS.map(step => (
+                        <div
+                            key={step.id}
+                            className={`
+                                ${styles.stepItem} 
+                                ${step.id === property.currentStep ? styles.activeStep : ''}
+                                ${step.id < property.currentStep ? styles.completedStep : ''}
+                            `}
+                        >
+                            <div className={styles.stepCircle}>
+                                {step.id < property.currentStep ? '✓' : step.id}
                             </div>
-                        );
-                    })}
+                            <span className={styles.stepTitle}>{t(step.key || '')}</span>
+                        </div>
+                    ))}
                 </nav>
-                <button onClick={handleSaveExit} className={styles.saveExitBtn}>
-                    {isAdmin ? 'Save & Return to Admin' : 'Save & Exit'}
-                </button>
             </aside>
 
-            {/* Main Content */}
-            <main className={styles.main}>
-                {isAdmin && (
-                    <div style={{
-                        backgroundColor: '#fffbeb',
-                        border: '1px solid #fef3c7',
-                        padding: '0.75rem 1.5rem',
-                        marginBottom: '1rem',
-                        borderRadius: '12px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        color: '#92400e',
-                        fontWeight: 500,
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
-                    }}>
-                        <span style={{ fontSize: '1.2rem' }}>🛠️</span>
-                        <span>Mode Admin : Vous modifiez cette propriété pour le client.</span>
+            <div className={styles.contentWrapper}>
+                {/* Top Header */}
+                <header className={styles.topHeader}>
+                    <div className={styles.headerActions}>
+                        {isAdmin && (
+                            <button
+                                onClick={() => router.push('/admin/properties')}
+                                className={styles.saveExitBtn}
+                                style={{ backgroundColor: '#f0f4f8', borderColor: '#d1d9e6', color: '#1a2b4b' }}
+                            >
+                                <span>←</span> {t('admin.details.back')}
+                            </button>
+                        )}
+                        <button onClick={handleSaveExit} className={styles.saveExitBtn}>
+                            {isAdmin ? 'Save & Return to Admin' : 'Save & Exit'}
+                        </button>
                     </div>
-                )}
-                <header className={styles.header}>
-                    <h2>{t(ONBOARDING_STEPS[property.currentStep - 1].key || '')}</h2>
-                    <div className={styles.progressText}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
                 </header>
 
-                <div className={styles.stepContent}>
-                    {property.currentStep === 1 && (
-                        <Step1Info
-                            propertyId={property.id}
-                            data={property.data.info}
-                            onUpdate={(data) => handleUpdate({ data: { ...property.data, info: data } })}
-                            onNext={nextStep}
-                        />
+                {/* Main Content */}
+                <main className={styles.main}>
+                    {isAdmin && (
+                        <div style={{
+                            backgroundColor: '#fff7ed',
+                            border: '1px solid #ffedd5',
+                            padding: '0.75rem 1.5rem',
+                            marginBottom: '1.5rem',
+                            borderRadius: '12px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            color: '#9a3412',
+                            fontWeight: 600,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                        }}>
+                            <span style={{ fontSize: '1.2rem' }}>🛠️</span>
+                            <span>Mode Admin : Vous modifiez cette propriété pour le client.</span>
+                        </div>
                     )}
-                    {property.currentStep === 2 && (
-                        <Step2Amenities
-                            data={property.data.amenities}
-                            info={property.data.info} // Pass info for bedroom/bathroom counts
-                            poolOpeningDate={property.data.poolOpeningDate}
-                            hotTubOpeningDate={property.data.hotTubOpeningDate}
-                            bbqOpeningDate={property.data.bbqOpeningDate}
-                            comments={property.data.amenitiesComments}
-                            onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, comments }) => handleUpdate({
-                                data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, amenitiesComments: comments }
-                            })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {property.currentStep === 3 && (
-                        <Step3Photos
-                            propertyId={property.id}
-                            data={{
-                                photos: property.data.photos,
-                                externalLinks: property.data.externalLinks,
-                                googleDriveLink: property.data.googleDriveLink,
-                                platforms: property.data.platforms,
-                                otherPlatform: property.data.otherPlatform,
-                                comments: property.data.photosComments
-                            }}
-                            info={property.data.info} // Pass info for bedroom count
-                            onUpdate={(updates) => handleUpdate({
-                                data: {
-                                    ...property.data,
-                                    ...updates,
-                                    photosComments: updates.comments
-                                }
-                            })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {/* Step 4 Access */}
-                    {property.currentStep === 4 && (
-                        <Step5Rules
-                            data={property.data.rules}
-                            onUpdate={(rules) => handleUpdate({ data: { ...property.data, rules } })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {property.currentStep === 5 && (
-                        <Step6Guide
-                            propertyId={property.id}
-                            data={property.data.guide}
-                            info={property.data.info}
-                            amenities={property.data.amenities}
-                            photos={property.data.photos}
-                            onUpdate={(guide) => handleUpdate({ data: { ...property.data, guide } })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {property.currentStep === 6 && (
-                        <StepOwnerRequests
-                            data={property.data.ownerRequests}
-                            onUpdate={(ownerRequests) => handleUpdate({ data: { ...property.data, ownerRequests } })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {property.currentStep === 7 && (
-                        <Step7Payment
-                            propertyId={property.id}
-                            propertyName={property.name}
-                            data={property.data.payment}
-                            onUpdate={(payment) => handleUpdate({ data: { ...property.data, payment } })}
-                            onNext={nextStep}
-                            onBack={prevStep}
-                        />
-                    )}
-                    {property.currentStep === 8 && (
-                        <StepContract
-                            data={property.data.contract}
-                            onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}
-                            onNext={async () => {
-                                // Don't force 100%, let handleUpdate calculate it from data
-                                await handleUpdate({ status: 'pending_review' });
-                                await notifyAdminOnCompletion(property.id, property.data.info?.propertyName || 'Untitled');
-                                if (isAdmin) {
-                                    router.push('/admin/properties');
-                                } else {
-                                    router.push('/client/dashboard');
-                                }
-                            }}
-                            onBack={prevStep}
-                        />
-                    )}
-                </div>
-            </main>
+                    <header className={styles.header}>
+                        <h2>{t(ONBOARDING_STEPS[property.currentStep - 1].key || '')}</h2>
+                        <div className={styles.progressText}>Step {property.currentStep} of {ONBOARDING_STEPS.length}</div>
+                    </header>
+
+                    <div className={styles.stepContent}>
+                        {property.currentStep === 1 && (
+                            <Step1Info
+                                propertyId={property.id}
+                                data={property.data.info}
+                                onUpdate={(data) => handleUpdate({ data: { ...property.data, info: data } })}
+                                onNext={nextStep}
+                            />
+                        )}
+                        {property.currentStep === 2 && (
+                            <Step2Amenities
+                                data={property.data.amenities}
+                                info={property.data.info} // Pass info for bedroom/bathroom counts
+                                poolOpeningDate={property.data.poolOpeningDate}
+                                hotTubOpeningDate={property.data.hotTubOpeningDate}
+                                bbqOpeningDate={property.data.bbqOpeningDate}
+                                comments={property.data.amenitiesComments}
+                                onUpdate={({ amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, comments }) => handleUpdate({
+                                    data: { ...property.data, amenities, poolOpeningDate, hotTubOpeningDate, bbqOpeningDate, amenitiesComments: comments }
+                                })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 3 && (
+                            <Step3Photos
+                                propertyId={property.id}
+                                data={{
+                                    photos: property.data.photos,
+                                    externalLinks: property.data.externalLinks,
+                                    googleDriveLink: property.data.googleDriveLink,
+                                    platforms: property.data.platforms,
+                                    otherPlatform: property.data.otherPlatform,
+                                    comments: property.data.photosComments
+                                }}
+                                info={property.data.info} // Pass info for bedroom count
+                                onUpdate={(updates) => handleUpdate({
+                                    data: {
+                                        ...property.data,
+                                        ...updates,
+                                        photosComments: updates.comments
+                                    }
+                                })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {/* Step 4 Access */}
+                        {property.currentStep === 4 && (
+                            <Step5Rules
+                                data={property.data.rules}
+                                onUpdate={(rules) => handleUpdate({ data: { ...property.data, rules } })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 5 && (
+                            <Step6Guide
+                                propertyId={property.id}
+                                data={property.data.guide}
+                                info={property.data.info}
+                                amenities={property.data.amenities}
+                                photos={property.data.photos}
+                                onUpdate={(guide) => handleUpdate({ data: { ...property.data, guide } })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 6 && (
+                            <StepOwnerRequests
+                                data={property.data.ownerRequests}
+                                onUpdate={(ownerRequests) => handleUpdate({ data: { ...property.data, ownerRequests } })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 7 && (
+                            <Step7Payment
+                                propertyId={property.id}
+                                propertyName={property.name}
+                                data={property.data.payment}
+                                onUpdate={(payment) => handleUpdate({ data: { ...property.data, payment } })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 8 && (
+                            <StepContract
+                                data={property.data.contract}
+                                onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}
+                                onNext={async () => {
+                                    // Don't force 100%, let handleUpdate calculate it from data
+                                    await handleUpdate({ status: 'pending_review' });
+                                    await notifyAdminOnCompletion(property.id, property.data.info?.propertyName || 'Untitled');
+                                    if (isAdmin) {
+                                        router.push('/admin/properties');
+                                    } else {
+                                        router.push('/client/dashboard');
+                                    }
+                                }}
+                                onBack={prevStep}
+                            />
+                        )}
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }
