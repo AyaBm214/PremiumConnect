@@ -15,11 +15,48 @@ interface Step5Props {
 export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Props) {
     const { t } = useLanguage();
     const [formData, setFormData] = useState(data || {});
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleChange = (field: string, value: any) => {
         const updated = { ...formData, [field]: value };
         setFormData(updated);
         onUpdate(updated);
+        if (errors[field]) {
+            setErrors(prev => {
+                const next = { ...prev };
+                delete next[field];
+                return next;
+            });
+        }
+    };
+
+    const handleNext = () => {
+        const newErrors: Record<string, string> = {};
+
+        if (!formData.lockType || formData.lockType.length === 0) {
+            newErrors.lockType = t('error.lock_type_required');
+        }
+
+        if (formData.lockType?.includes('smart_lock')) {
+            if (!formData.smartLockBrand) {
+                newErrors.smartLockBrand = t('error.lock_brand_required');
+            } else if (formData.smartLockBrand === 'other' && !formData.otherSmartLockBrand) {
+                newErrors.otherSmartLockBrand = t('error.field_required');
+            }
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            // Scroll to the first error
+            const firstErrorField = Object.keys(newErrors)[0];
+            const element = document.getElementById(`error-${firstErrorField}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        onNext();
     };
 
     return (
@@ -96,8 +133,10 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                     value={formData.doorCode || ''}
                     onChange={e => handleChange('doorCode', e.target.value)}
                 />
-                <div className={styles.categoryBlock} style={{ marginBottom: 0 }}>
-                    <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>{t('rules.lock_type')}</label>
+                <div className={styles.categoryBlock} style={{ marginBottom: 0 }} id="error-lockType">
+                    <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>
+                        {t('rules.lock_type')} <span style={{ color: 'var(--error)' }}>*</span>
+                    </label>
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                             <input
@@ -117,6 +156,7 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                                     }
                                     setFormData(newFormData);
                                     onUpdate(newFormData);
+                                    if (errors.lockType) setErrors(prev => ({ ...prev, lockType: '' }));
                                 }}
                             />
                             {t('rules.lock_type.smart')}
@@ -131,17 +171,21 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                                         ? [...current, 'lockbox']
                                         : current.filter(t => t !== 'lockbox');
                                     handleChange('lockType', updated);
+                                    if (errors.lockType) setErrors(prev => ({ ...prev, lockType: '' }));
                                 }}
                             />
                             {t('rules.lock_type.lockbox')}
                         </label>
                     </div>
+                    {errors.lockType && (
+                        <p style={{ color: 'var(--error)', fontSize: '0.8rem', marginTop: '0.25rem' }}>{errors.lockType}</p>
+                    )}
                 </div>
 
                 {formData.lockType?.includes('smart_lock') && (
-                    <div className={styles.fullWidth} style={{ marginTop: '1rem' }}>
+                    <div className={styles.fullWidth} style={{ marginTop: '1rem' }} id="error-smartLockBrand">
                         <label className={styles.categoryTitle} style={{ fontSize: '0.9rem' }}>
-                            {t('rules.lock_brand')}
+                            {t('rules.lock_brand')} <span style={{ color: 'var(--error)' }}>*</span>
                         </label>
                         <div className={styles.brandGrid}>
                             {[
@@ -169,14 +213,18 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
                                 </div>
                             ))}
                         </div>
+                        {errors.smartLockBrand && (
+                            <p style={{ color: 'var(--error)', fontSize: '0.8rem', marginTop: '0.5rem' }}>{errors.smartLockBrand}</p>
+                        )}
 
                         {formData.smartLockBrand === 'other' && (
                             <div style={{ marginTop: '1rem' }}>
                                 <Input
-                                    label={t('rules.lock_brand.other')}
+                                    label={`${t('rules.lock_brand.other')} *`}
                                     placeholder="e.g. August, Nest..."
                                     value={formData.otherSmartLockBrand || ''}
                                     onChange={e => handleChange('otherSmartLockBrand', e.target.value)}
+                                    error={errors.otherSmartLockBrand}
                                 />
                             </div>
                         )}
@@ -265,7 +313,7 @@ export default function Step5Rules({ data, onUpdate, onNext, onBack }: Step5Prop
 
             <div className={styles.actions} style={{ justifyContent: 'space-between' }}>
                 <Button variant="outline" onClick={onBack}>{t('step.back')}</Button>
-                <Button size="lg" onClick={onNext} className={styles.nextBtn}>
+                <Button size="lg" onClick={handleNext} className={styles.nextBtn}>
                     {t('step.next')} →
                 </Button>
             </div>

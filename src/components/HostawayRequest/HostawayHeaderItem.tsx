@@ -19,6 +19,7 @@ export default function HostawayHeaderItem() {
   const [request, setRequest] = useState<HostawayRequest | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -104,6 +105,22 @@ export default function HostawayHeaderItem() {
     setSubmitting(false);
   };
 
+  const handleCopy = (text: string, messageKey: string) => {
+    navigator.clipboard.writeText(text);
+    setCopyMessage(t(messageKey));
+    setTimeout(() => setCopyMessage(null), 3000);
+  };
+
+  const handleOpenDashboard = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (request?.hostaway_password) {
+      navigator.clipboard.writeText(request.hostaway_password);
+      setCopyMessage(t('hostaway.copied') + ' (Password)');
+      setTimeout(() => setCopyMessage(null), 3000);
+    }
+    window.open("https://dashboard.hostaway.com", "_blank");
+  };
+
   const renderButton = () => {
     if (!request) {
       return (
@@ -141,8 +158,7 @@ export default function HostawayHeaderItem() {
             </div>
             <a 
               href="https://dashboard.hostaway.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
+              onClick={handleOpenDashboard}
               className={styles.dashboardLink}
             >
               Open Dashboard ↗
@@ -152,24 +168,35 @@ export default function HostawayHeaderItem() {
           <div className={styles.credentialsBody}>
             <div className={styles.credentialItem}>
               <span className={styles.label}>{t('login.email')}</span>
-              <span className={styles.value}>{user?.email}</span>
-            </div>
-            <div className={styles.credentialItem}>
-              <span className={styles.label}>{t('login.password')}</span>
-              <div className={styles.passwordWrapper}>
-                <code className={styles.password}>{request.hostaway_password}</code>
+              <div className={styles.valueWrapper}>
+                <span className={styles.value}>{user?.email}</span>
                 <button 
-                  className={styles.copyBtn} 
-                  onClick={() => {
-                    navigator.clipboard.writeText(request.hostaway_password!);
-                    alert(t('hostaway.copied'));
-                  }}
+                  className={styles.miniCopyBtn} 
+                  onClick={() => handleCopy(user?.email || '', 'hostaway.copied')}
                   title={t('hostaway.copy')}
                 >
-                  <span className={styles.copyIcon}>📋</span>
+                  📋
                 </button>
               </div>
             </div>
+            <div className={styles.credentialItem}>
+              <span className={styles.label}>{t('login.password')}</span>
+              <div className={styles.valueWrapper}>
+                <code className={styles.password}>{request.hostaway_password}</code>
+                <button 
+                  className={styles.miniCopyBtn} 
+                  onClick={() => handleCopy(request.hostaway_password || '', 'hostaway.copied')}
+                  title={t('hostaway.copy')}
+                >
+                  📋
+                </button>
+              </div>
+            </div>
+            {copyMessage && (
+              <div className={styles.copyToast}>
+                {copyMessage}
+              </div>
+            )}
           </div>
         </div>
       );

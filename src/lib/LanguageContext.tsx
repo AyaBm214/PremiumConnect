@@ -187,6 +187,9 @@ const dictionary: Record<string, Record<Language, string>> = {
     'rules.snow_removal': { en: 'Snow Removal Contact', fr: 'Contact déneigement' },
     'rules.additional_notes': { en: 'Additional Notes', fr: 'Notes additionnelles' },
     'guide.video_required': { en: 'Access video is mandatory.', fr: 'La vidéo d\'accès est obligatoire.' },
+    'error.field_required': { en: 'This field is required', fr: 'Ce champ est obligatoire' },
+    'error.lock_type_required': { en: 'Please select at least one lock type', fr: 'Veuillez sélectionner au moins un type de serrure' },
+    'error.lock_brand_required': { en: 'Please select a lock brand', fr: 'Veuillez sélectionner une marque de serrure' },
 
     // Profile
     'profile.title': { en: 'Owner Profile', fr: 'Profil du propriétaire' },
