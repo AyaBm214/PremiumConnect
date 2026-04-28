@@ -174,9 +174,16 @@ function DashboardContent() {
             </div>
 
             {/* Properties Section */}
-            <h2 className={styles.sectionTitle}>
-                <span>2</span> {t('dash.your_properties') || 'Vos propriétés'}
-            </h2>
+            <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>
+                    <span>2</span> {t('dash.your_properties') || 'Vos propriétés'}
+                </h2>
+                {properties.length > 0 && (
+                    <Button onClick={handleCreateNew} size="sm" variant="outline">
+                        <span style={{ marginRight: '6px' }}>+</span> {t('dash.new_prop')}
+                    </Button>
+                )}
+            </div>
             <div className={styles.grid}>
                 {properties.length === 0 ? (
                     <div className={styles.emptyState}>
@@ -219,6 +226,18 @@ function DashboardContent() {
                             </div>
                         </div>
                     ))
+                )}
+
+                {properties.length > 0 && (
+                    <div className={styles.addCard} onClick={handleCreateNew}>
+                        <div className={styles.addCardContent}>
+                            <div className={styles.addIcon}>
+                                <span>+</span>
+                            </div>
+                            <h3 className={styles.addTitle}>{t('dash.new_prop')}</h3>
+                            <p className={styles.addSubtitle}>{t('dash.subtitle')}</p>
+                        </div>
+                    </div>
                 )}
             </div>
         </main>
