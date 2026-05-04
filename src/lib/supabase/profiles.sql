@@ -5,6 +5,12 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     email TEXT,
     phone_number TEXT,
     documents JSONB DEFAULT '{}'::jsonb,
+    second_contact JSONB DEFAULT '{}'::jsonb,
+    hostaway_access JSONB DEFAULT '{}'::jsonb,
+    additional_data TEXT,
+    meeting_url_1 TEXT,
+    meeting_url_2 TEXT,
+    meeting_url_3 TEXT,
     created_at TIMESTAMPTZ DEFAULT now() NOT NULL
 );
 

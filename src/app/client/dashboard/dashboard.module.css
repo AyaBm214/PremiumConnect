@@ -333,3 +333,62 @@
         width: 100%;
     }
 }
+
+/* --- Meetings Section --- */
+.sectionSubtitle {
+    color: #64748b;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    margin-top: -1.5rem;
+}
+
+.meetingsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.videoCard {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.videoCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    background: #000;
+}
+
+.videoInfo {
+    padding: 1.5rem;
+}
+
+.videoTitle {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1a2b4b;
+    font-weight: 700;
+}
+
+.videoMeta {
+    margin: 0.5rem 0 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .meetingsGrid {
+        grid-template-columns: 1fr;
+    }
+}

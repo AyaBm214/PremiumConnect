@@ -610,6 +610,21 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.settings.success': { en: 'Password updated successfully!', fr: 'Mot de passe mis à jour avec succès !' },
     'admin.settings.error': { en: 'Error updating password', fr: 'Erreur lors de la mise à jour du mot de passe' },
     'admin.settings.mismatch': { en: 'Passwords do not match', fr: 'Les mots de passe ne correspondent pas' },
+    'admin.user.detail.title': { en: 'User Details', fr: 'Détails de l\'utilisateur' },
+    'admin.user.status.active': { en: 'ACTIVE USER', fr: 'UTILISATEUR ACTIF' },
+    'admin.user.status.inactive': { en: 'INACTIVE USER', fr: 'UTILISATEUR INACTIF' },
+    'admin.user.card.contact': { en: 'Secondary Contact', fr: 'Contact Secondaire' },
+    'admin.user.card.hostaway': { en: 'Hostaway Access', fr: 'Accès Hostaway' },
+    'admin.user.card.team': { en: 'Team Management & Permissions', fr: 'Gestion d\'équipe & Permissions' },
+    'admin.user.card.extra': { en: 'Additional Data', fr: 'Données Additionnelles' },
+    'admin.user.hostaway.key': { en: 'API CLIENT KEY', fr: 'CLÉ CLIENT API' },
+    'admin.user.hostaway.status': { en: 'Connection Status', fr: 'Statut de connexion' },
+    'admin.user.export': { en: 'Export Data', fr: 'Exporter les données' },
+    'admin.user.card.meetings': { en: 'Scheduled Meetings', fr: 'Réunions Planifiées' },
+    'admin.user.meeting.url': { en: 'Loom URL {0}', fr: 'URL Loom {0}' },
+    'dash.meetings.title': { en: 'Your Meetings', fr: 'Vos Réunions' },
+    'dash.meetings.subtitle': { en: 'Watch your recorded strategy and onboarding sessions.', fr: 'Consultez les enregistrements de vos sessions de stratégie et de mise en service.' },
+    'admin.user.modify': { en: 'Modify', fr: 'Modifier' },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {

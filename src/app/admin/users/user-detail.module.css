@@ -1,0 +1,206 @@
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+}
+
+.profileCard {
+    grid-column: span 12;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.smallCard {
+    grid-column: span 4;
+}
+
+.avatarWrapper {
+    position: relative;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    background: #f1f5f9;
+}
+
+.statusBadge {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.statusActive {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.userInfo h2 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.userDetails {
+    display: flex;
+    gap: 1.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.cardHeader {
+    margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.iconWrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.contactIcon { background: #fdf2f8; color: #db2777; }
+.meetingIcon { background: #f5f3ff; color: #7c3aed; }
+.extraIcon { background: #f0fdf4; color: #16a34a; }
+
+.contactBox {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+}
+
+.miniAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.contactInfo h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.contactInfo p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.contactField {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.label { color: #94a3b8; }
+.value { color: #475569; font-weight: 500; }
+
+
+
+.apiKeyWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.apiKeyLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+}
+
+.apiKeyValue {
+    background: rgba(255,255,255,0.05);
+    padding: 0.75rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    resize: vertical;
+}
+
+@media (max-width: 1024px) {
+    .smallCard { grid-column: span 6; }
+}
+
+@media (max-width: 768px) {
+    .smallCard { grid-column: span 12; }
+    .profileCard { flex-direction: column; text-align: center; }
+    .userDetails { flex-direction: column; gap: 0.5rem; }
+}

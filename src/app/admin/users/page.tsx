@@ -66,6 +66,25 @@ export default function UsersPage() {
                                         <td>
                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                 <button
+                                                    onClick={() => router.push(`/admin/users/${u.id}`)}
+                                                    style={{
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        border: '1px solid #ddd',
+                                                        backgroundColor: 'white',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px',
+                                                        fontSize: '0.8rem',
+                                                        fontWeight: 500,
+                                                        color: '#1a2b4b'
+                                                    }}
+                                                    title="Voir les détails"
+                                                >
+                                                    <span style={{ fontSize: '1rem' }}>👁️</span> {t('admin.props.view')}
+                                                </button>
+                                                <button
                                                     onClick={() => router.push(`/client/profile?uid=${u.id}&fromAdmin=true`)}
                                                     style={{
                                                         padding: '4px 8px',

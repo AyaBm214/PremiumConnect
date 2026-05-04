@@ -76,7 +76,7 @@ function ProfileContent() {
         try {
             const file = files[0];
             const fileExt = file.name.split('.').pop();
-            const fileName = `${docName}_${Date.now()}.${fileExt}`;
+            const fileName = `${String(docName)}_${Date.now()}.${fileExt}`;
             const filePath = `${profile.id}/documents/${fileName}`;
 
             const { error: uploadError } = await supabase.storage
@@ -187,8 +187,8 @@ function ProfileContent() {
             <div style={{ display: 'grid', gap: '1rem' }}>
                 <FileUploader
                     label={t('profile.doc.id')}
-                    onChange={files => handleDocUpload(files, 'identity_proof')}
-                    description={profile.documents?.identity_proof ? `✓ ${t('profile.uploaded')}` : ''}
+                    onChange={files => handleDocUpload(files, 'identity_proof' as any)}
+                    description={(profile.documents as any)?.identity_proof ? `✓ ${t('profile.uploaded')}` : ''}
                 />
                 <div style={{ border: '1px solid var(--border-color, #e0e0e0)', borderRadius: '8px', padding: '1.5rem' }}>
                     <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--text-main)' }}>{t('profile.banking.title')}</h4>
@@ -243,17 +243,17 @@ function ProfileContent() {
                 </div>
                 <FileUploader
                     label={t('profile.doc.ins')}
-                    onChange={files => handleDocUpload(files, 'insurance_proof')}
-                    description={profile.documents?.insurance_proof ? `✓ ${t('profile.uploaded')}` : ''}
+                    onChange={files => handleDocUpload(files, 'insurance_proof' as any)}
+                    description={(profile.documents as any)?.insurance_proof ? `✓ ${t('profile.uploaded')}` : ''}
                 />
 
                 <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '1rem' }}>
                     <input
                         type="checkbox"
-                        checked={profile.documents?.tax_confirmation || false}
+                        checked={(profile.documents as any)?.tax_confirmation || false}
                         onChange={e => setProfile(prev => ({
                             ...prev,
-                            documents: { ...prev.documents!, tax_confirmation: e.target.checked }
+                            documents: { ...(prev.documents || {}) as any, tax_confirmation: e.target.checked }
                         }))}
                     />
                     {t('profile.tax_confirm')}

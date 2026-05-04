@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useLanguage } from '@/lib/LanguageContext';
 import { Button } from '@/components/ui/Button';
 import { createClient } from '@/lib/supabase/client';
-import { Property } from '@/lib/types';
+import { Property, UserProfile } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -16,6 +16,7 @@ function DashboardContent() {
     const { user, isLoading, logout } = useAuth();
     const { t } = useLanguage();
     const [properties, setProperties] = useState<Property[]>([]);
+    const [profile, setProfile] = useState<UserProfile | null>(null);
     const [viewingUser, setViewingUser] = useState<{ id: string, name: string } | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -41,13 +42,22 @@ function DashboardContent() {
             if (isAdmin && targetUid) {
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('full_name')
+                    .select('*')
                     .eq('id', targetUid)
                     .single();
                 if (profile) {
                     setViewingUser({ id: targetUid, name: profile.full_name });
+                    setProfile(profile as unknown as UserProfile);
                 }
-            } else {
+            } else if (user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+                if (profile) {
+                    setProfile(profile as unknown as UserProfile);
+                }
                 setViewingUser(null);
             }
 
@@ -102,6 +112,29 @@ function DashboardContent() {
             router.push(`/client/onboarding/${data.id}`);
         }
     };
+
+    const getLoomEmbedUrl = (url: string | undefined) => {
+        if (!url) return null;
+        const match = url.match(/loom\.com\/(share|embed)\/([a-zA-Z0-9_-]+)/);
+        if (match && match[2]) {
+            return `https://www.loom.com/embed/${match[2]}?hide_owner=true&hide_share=true&hide_title=true&hide_embed_overlay=true`;
+        }
+        return null;
+    };
+
+    // Deep scan for Loom URLs in case of naming mismatches
+    const deepScanMeetings = profile ? Object.entries(profile)
+        .filter(([key, value]) => typeof value === 'string' && value.includes('loom.com'))
+        .map(([key, value]) => value as string) : [];
+
+    const meetings = deepScanMeetings.length > 0 ? deepScanMeetings : [
+        (profile as any)?.meeting_url_1,
+        (profile as any)?.meeting_url_2,
+        (profile as any)?.meeting_url_3
+    ].filter(Boolean) as string[];
+
+    console.log("Dashboard Profile Data:", profile);
+    console.log("Scanned Meetings:", deepScanMeetings);
 
     if (isLoading) return <div className={styles.loading}>Loading...</div>;
 
@@ -227,7 +260,6 @@ function DashboardContent() {
                         </div>
                     ))
                 )}
-
                 {properties.length > 0 && (
                     <div className={styles.addCard} onClick={handleCreateNew}>
                         <div className={styles.addCardContent}>
@@ -237,6 +269,42 @@ function DashboardContent() {
                             <h3 className={styles.addTitle}>{t('dash.new_prop')}</h3>
                             <p className={styles.addSubtitle}>{t('dash.subtitle')}</p>
                         </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Meetings Section */}
+            <div style={{ marginTop: '4rem' }}>
+                <h2 className={styles.sectionTitle}>
+                    <span>3</span> {t('dash.meetings.title') || 'Vos Réunions'}
+                </h2>
+                <p className={styles.sectionSubtitle}>{t('dash.meetings.subtitle')}</p>
+                
+                {meetings.length > 0 ? (
+                    <div className={styles.meetingsGrid}>
+                        {meetings.map((url, idx) => {
+                            const embedUrl = getLoomEmbedUrl(url);
+                            if (!embedUrl) return null;
+                            return (
+                                <div key={idx} className={styles.videoCard}>
+                                    <div className={styles.videoWrapper}>
+                                        <iframe 
+                                            src={embedUrl} 
+                                            allowFullScreen 
+                                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '12px', border: 'none' }}
+                                        />
+                                    </div>
+                                    <div className={styles.videoInfo}>
+                                        <h4 className={styles.videoTitle}>Session {idx + 1}</h4>
+                                        <p className={styles.videoMeta}>Enregistrement stratégique</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <div style={{ background: '#f8fafc', padding: '2rem', borderRadius: '16px', textAlign: 'center', border: '1px dashed #e2e8f0', color: '#64748b' }}>
+                        {profile ? "Aucune réunion enregistrée pour le moment." : "Chargement des données..."}
                     </div>
                 )}
             </div>

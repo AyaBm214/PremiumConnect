@@ -160,13 +160,24 @@ export interface UserProfile {
     full_name: string;
     email: string;
     phone_number: string;
-    documents: {
-        identity_proof: string; // URL
-        void_cheque: string; // URL
-        insurance_proof: string; // URL
-        citq_certificate: string; // URL
-        tax_confirmation: boolean;
+    business_number?: string;
+    documents?: any; // Supporting both object and array formats
+    second_contact?: {
+        full_name: string;
+        email: string;
+        phone: string;
+        relationship: string;
     };
+    hostaway_access?: {
+        client_key: string;
+        client_secret: string;
+        status: 'connected' | 'disconnected' | 'pending';
+        connection_status: string;
+    };
+    additional_data?: string;
+    meeting_url_1?: string;
+    meeting_url_2?: string;
+    meeting_url_3?: string;
     created_at: string;
 }
 

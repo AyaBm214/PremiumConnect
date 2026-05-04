@@ -81,8 +81,16 @@ export default function LoginPage() {
                         fullWidth
                         type="submit"
                         disabled={isLoading}
+                        style={{ 
+                            backgroundColor: '#ef4444', 
+                            color: 'white', 
+                            height: '48px', 
+                            fontWeight: 'bold',
+                            marginTop: '1rem',
+                            border: 'none'
+                        }}
                     >
-                        {isLoading ? '...' : t('login.button')}
+                        {isLoading ? '...' : (t('login.button') || 'Sign In')}
                     </Button>
                 </form>
 
