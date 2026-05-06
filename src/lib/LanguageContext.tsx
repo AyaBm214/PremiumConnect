@@ -456,6 +456,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'admin.users.table.joined': { en: 'Joined', fr: 'Inscription' },
     'admin.users.empty': { en: 'No users found', fr: 'Aucun utilisateur trouvé' },
     'admin.users.download': { en: 'Download', fr: 'Télécharger' },
+    'admin.user.dashboard': { en: 'Dashboard', fr: 'Tableau de bord' },
 
     // Admin Details Page
     'admin.details.back': { en: 'Back', fr: 'Retour' },

@@ -116,6 +116,9 @@ export default function UserDetailPage() {
                     ← {t('admin.details.back')}
                 </Button>
                 <div className={styles.actions}>
+                    <Button variant="outline" onClick={() => router.push(`/client/dashboard?uid=${user.id}`)}>
+                        📊 {t('admin.user.dashboard')}
+                    </Button>
                     <Button variant="outline" onClick={() => alert('Exporting...')}>
                         📤 {t('admin.user.export')}
                     </Button>

@@ -148,7 +148,7 @@ export default function AdminPropertiesPage() {
                                                 }}
                                                 title="Voir le dashboard client"
                                             >
-                                                <span style={{ fontSize: '1rem' }}>📊</span> Dashboard
+                                                <span style={{ fontSize: '1rem' }}>📊</span> {t('admin.user.dashboard')}
                                             </button>
                                             {prop.data.info?.citqFile && (
                                                 <Button
