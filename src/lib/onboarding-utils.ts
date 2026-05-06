@@ -61,7 +61,15 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
             }).length;
             return Math.min(100, Math.round((filled / fields.length) * 100));
         }
-        case 8: { // Contract
+        case 8: { // Financials
+            const fin = data.financials || {};
+            const fixedCount = Object.keys(fin.fixedCosts || {}).length;
+            const varCount = Object.keys(fin.variableCosts || {}).length;
+            // Consider 5 items in each as "good enough" progress
+            const total = fixedCount + varCount;
+            return Math.min(100, Math.round((total / 10) * 100));
+        }
+        case 9: { // Contract
             return data.contract?.status === 'approved' ? 100 : 0;
         }
         default: return 0;
@@ -69,6 +77,6 @@ export const calculateStepProgress = (stepId: number, data: any): number => {
 };
 
 export const calculateTotalProgress = (data: any): number => {
-    const stepProgresses = [1, 2, 3, 4, 5, 6, 7, 8].map(id => calculateStepProgress(id, data));
-    return Math.round(stepProgresses.reduce((a, b) => a + b, 0) / 8);
+    const stepProgresses = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(id => calculateStepProgress(id, data));
+    return Math.round(stepProgresses.reduce((a, b) => a + b, 0) / 9);
 };

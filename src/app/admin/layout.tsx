@@ -18,6 +18,7 @@ function AdminSidebar() {
         { href: '/admin/dashboard', label: t('admin.overview'), icon: '📊' },
         { href: '/admin/properties', label: t('admin.properties'), icon: '🏠' },
         { href: '/admin/users', label: t('admin.users'), icon: '👥' },
+        { href: '/admin/financials', label: t('financials.title'), icon: '💰' },
         { href: '/admin/media', label: t('admin.media'), icon: '📁' },
         { href: '/admin/hostaway-requests', label: 'Hostaway Access', icon: '🔑', isHostaway: true },
         { href: '/admin/settings', label: t('admin.settings.title'), icon: '⚙️' },

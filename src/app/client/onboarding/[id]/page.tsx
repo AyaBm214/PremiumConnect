@@ -13,6 +13,7 @@ import Step4Access from '@/components/onboarding/Step4Access';
 import Step5Rules from '@/components/onboarding/Step5Rules';
 import Step6Guide from '@/components/onboarding/Step6Guide';
 import Step7Payment from '@/components/onboarding/Step7Payment';
+import Step8Financials from '@/components/onboarding/Step8Financials';
 import StepOwnerRequests from '@/components/onboarding/StepOwnerRequests';
 import StepContract from '@/components/onboarding/StepContract';
 import { notifyAdminOnCompletion } from '@/app/actions/onboarding-actions';
@@ -112,7 +113,7 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
     };
     const nextStep = () => {
         if (!property) return;
-        const next = Math.min(property.currentStep + 1, 8);
+        const next = Math.min(property.currentStep + 1, 9);
         handleUpdate({ currentStep: next });
     };
 
@@ -263,7 +264,7 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                                 onBack={prevStep}
                             />
                         )}
-                        {/* Step 4 Access */}
+                        {/* Step 4 Rules & Fees */}
                         {property.currentStep === 4 && (
                             <Step5Rules
                                 data={property.data.rules}
@@ -303,6 +304,14 @@ export default function OnboardingPage({ params }: { params: { id: string } }) {
                             />
                         )}
                         {property.currentStep === 8 && (
+                            <Step8Financials
+                                data={property.data.financials}
+                                onUpdate={(financials) => handleUpdate({ data: { ...property.data, financials } })}
+                                onNext={nextStep}
+                                onBack={prevStep}
+                            />
+                        )}
+                        {property.currentStep === 9 && (
                             <StepContract
                                 data={property.data.contract}
                                 onUpdate={(contract) => handleUpdate({ data: { ...property.data, contract } })}

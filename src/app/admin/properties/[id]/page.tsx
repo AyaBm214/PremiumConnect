@@ -703,9 +703,13 @@ export default function PropertyDetailsPage() {
                         </>
                     )}
                 </Section>
-
-
-
+                <Section
+                    title={t('admin.details.section.contract')}
+                >
+                    <Row label={t('admin.props.table.status')} value={data.contract?.status} />
+                    <Row label={t('step.comments_label')} value={data.contract?.comments} />
+                    <Row label={t('admin.props.table.updated')} value={data.contract?.reviewedAt ? new Date(data.contract.reviewedAt).toLocaleDateString() : 'N/A'} />
+                </Section>
 
                 <Section
                     title={t('admin.details.section.guide')}

@@ -152,6 +152,37 @@ export interface Property {
             comments?: string;
             reviewedAt?: string;
         };
+        // Step 8: Financials
+        financials?: {
+            fixedCosts?: {
+                municipalTaxes?: number;
+                schoolTaxes?: number;
+                waterTaxes?: number;
+                insurance?: number;
+                advertising?: number;
+                citqFee?: number;
+                adminFee?: number;
+                cleaningPerStay?: number;
+                snowRemoval?: number;
+                lawnLandscaping?: number;
+                maintenanceMonthly?: number;
+                exterminator?: number;
+                associationFee?: number;
+                accounting?: number;
+                miscPercent?: number;
+            };
+            variableCosts?: {
+                applianceRental?: number;
+                applianceRepair?: number;
+                wasteManagement?: number;
+                electricity?: number;
+                heatingOilGas?: number;
+                wood?: number;
+                poolSpa?: number;
+                telecom?: number;
+                condoFees?: number;
+            };
+        };
     };
 }
 
@@ -181,4 +212,4 @@ export interface UserProfile {
     created_at: string;
 }
 
-export const TOTAL_ONBOARDING_STEPS = 7;
+export const TOTAL_ONBOARDING_STEPS = 9;
