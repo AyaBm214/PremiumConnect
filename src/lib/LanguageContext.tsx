@@ -95,7 +95,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     // Contract Step
     'contract.title': { en: 'Guest Contract', fr: 'Contrat de l’invité' },
     'contract.subtitle': { en: 'Please review and approve your contract.', fr: 'Veuillez réviser et approuver votre contrat.' },
-    'contract.download': { en: 'Download Contract (Word)', fr: 'Télécharger le contrat (Word)' },
+    'contract.download': { en: 'Download Contract (PDF)', fr: 'Télécharger le contrat (PDF)' },
     'contract.approve': { en: 'Approve as-is', fr: 'Approuver tel quel' },
     'contract.request_changes': { en: 'Request changes/Add comments', fr: 'Demander des modifications / Ajouter des commentaires' },
     'contract.comments_placeholder': { en: 'Specify any changes, additions, or removals you want...', fr: 'Précisez les changements, ajouts ou retraits que vous souhaitez...' },

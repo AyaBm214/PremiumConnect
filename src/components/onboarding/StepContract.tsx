@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { Button } from '@/components/ui/Button';
+import { generateContractPDF } from '@/lib/pdf';
 import styles from './Step.module.css';
 
 interface StepContractProps {
@@ -229,20 +230,24 @@ export default function StepContract({ data, onUpdate, onNext, onBack }: StepCon
                 </div>
 
                 <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-                    <a
-                        href="/contracts/contract_template.docx"
-                        download="Management_Contract.docx"
+                    <button
+                        onClick={() => generateContractPDF(CONTRACT_TEXT, 'Management_Contract.pdf')}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '0.5rem',
                             color: '#0066cc',
                             fontWeight: 'bold',
-                            textDecoration: 'underline'
+                            textDecoration: 'underline',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0,
+                            font: 'inherit'
                         }}
                     >
                         📄 {t('contract.download')}
-                    </a>
+                    </button>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

@@ -118,3 +118,33 @@ export const downloadRemoteFile = async (url: string, filename: string) => {
         window.open(url, '_blank');
     }
 };
+
+export const generateContractPDF = (text: string, filename: string = 'Contract.pdf') => {
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(220, 53, 69);
+    doc.text('Premium Booking', 14, 20);
+    
+    doc.setDrawColor(220, 53, 69);
+    doc.line(14, 25, 196, 25);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    
+    const splitText = doc.splitTextToSize(text, 180);
+    let cursorY = 35;
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    splitText.forEach((line: string) => {
+        if (cursorY > pageHeight - 20) {
+            doc.addPage();
+            cursorY = 20;
+        }
+        doc.text(line, 14, cursorY);
+        cursorY += 6;
+    });
+
+    doc.save(filename);
+};
