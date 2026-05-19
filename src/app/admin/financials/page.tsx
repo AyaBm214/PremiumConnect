@@ -260,6 +260,7 @@ export default function FinancialsPage() {
                                             value={fRows.adminFee} 
                                             isEditing={isEditing} 
                                             onChange={(v) => setEditedData({...editedData, financials: {...editedData.financials, fixedCosts: {...editedData.financials.fixedCosts, adminFee: parseFloat(v) || 0}}})} 
+                                            isPercentage={true}
                                         />
                                         <CostRow 
                                             label={t('financials.fixed.cleaning_per_stay')} 
@@ -308,6 +309,7 @@ export default function FinancialsPage() {
                                             value={fRows.miscPercent} 
                                             isEditing={isEditing} 
                                             onChange={(v) => setEditedData({...editedData, financials: {...editedData.financials, fixedCosts: {...editedData.financials.fixedCosts, miscPercent: parseFloat(v) || 0}}})} 
+                                            isPercentage={true}
                                         />
                                         
                                         <div className={styles.summaryRows}>
@@ -437,7 +439,7 @@ export default function FinancialsPage() {
     );
 }
 
-function CostRow({ label, value, isEditing, onChange }: { label: string, value: any, isEditing: boolean, onChange: (v: string) => void }) {
+function CostRow({ label, value, isEditing, onChange, isPercentage }: { label: string, value: any, isEditing: boolean, onChange: (v: string) => void, isPercentage?: boolean }) {
     return (
         <div className={styles.costRow}>
             <span className={styles.costLabel}>{label}</span>
@@ -449,7 +451,7 @@ function CostRow({ label, value, isEditing, onChange }: { label: string, value: 
                     onChange={(e) => onChange(e.target.value)}
                 />
             ) : (
-                <span className={styles.costValue}>${(value || 0).toFixed(2)}</span>
+                <span className={styles.costValue}>{isPercentage ? `${(value || 0).toFixed(2)}%` : `$${(value || 0).toFixed(2)}`}</span>
             )}
         </div>
     );
