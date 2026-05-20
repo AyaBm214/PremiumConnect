@@ -305,6 +305,12 @@ export default function FinancialsPage() {
                                             onChange={(v) => setEditedData({...editedData, financials: {...editedData.financials, fixedCosts: {...editedData.financials.fixedCosts, accounting: parseFloat(v) || 0}}})} 
                                         />
                                         <CostRow 
+                                            label={t('financials.fixed.mortgage')} 
+                                            value={fRows.mortgage} 
+                                            isEditing={isEditing} 
+                                            onChange={(v) => setEditedData({...editedData, financials: {...editedData.financials, fixedCosts: {...editedData.financials.fixedCosts, mortgage: parseFloat(v) || 0}}})} 
+                                        />
+                                        <CostRow 
                                             label={t('financials.fixed.misc_percent')} 
                                             value={fRows.miscPercent} 
                                             isEditing={isEditing} 

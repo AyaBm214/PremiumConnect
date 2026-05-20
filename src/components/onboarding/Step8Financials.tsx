@@ -184,6 +184,15 @@ export default function Step8Financials({ data, onUpdate, onNext, onBack }: Step
                             placeholder="0.00"
                         />
                         <Input
+                            label={t('financials.fixed.mortgage')}
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={formData.fixedCosts?.mortgage || ''}
+                            onChange={(e) => handleFixedChange('mortgage', e.target.value)}
+                            placeholder="0.00"
+                        />
+                        <Input
                             label={t('financials.fixed.misc_percent')}
                             type="number"
                             min="0"

@@ -607,6 +607,7 @@ const dictionary: Record<string, Record<Language, string>> = {
     'financials.fixed.exterminator': { en: 'Exterminator', fr: 'Exterminateur' },
     'financials.fixed.association_fee': { en: 'Association Fee', fr: 'Frais d\'association' },
     'financials.fixed.accounting': { en: 'Accounting', fr: 'Comptabilité' },
+    'financials.fixed.mortgage': { en: 'Mortgage', fr: 'Hypothèque' },
     'financials.fixed.misc_percent': { en: 'Misc %', fr: 'Divers : %' },
 
     'financials.variable.appliance_rental': { en: 'Appliance/Water heater rental', fr: 'Frais location appareils/eau chaude/mois' },
