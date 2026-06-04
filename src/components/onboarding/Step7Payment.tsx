@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { FileUploader } from '@/components/ui/FileUploader';
 import { Property } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import styles from './Step.module.css';
 import { useLanguage } from '@/lib/LanguageContext';
+import { createClient } from '@/lib/supabase/client';
 
 interface Step7Props {
     propertyId: string;
@@ -19,12 +21,42 @@ export default function Step7Payment({ propertyId, propertyName, data, onUpdate,
     const { t } = useLanguage();
     const [formData, setFormData] = useState(data || {});
     const [submitting, setSubmitting] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const router = useRouter();
+    const supabase = createClient();
 
     const handleChange = (field: string, value: any) => {
         const updated = { ...formData, [field]: value };
         setFormData(updated);
         onUpdate(updated);
+    };
+
+    const handleFileUpload = async (files: File[], field: 'voidedChequeFile') => {
+        if (!files.length) return;
+        setUploading(true);
+        try {
+            const file = files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${field}_${Date.now()}.${fileExt}`;
+            const filePath = `${propertyId}/documents/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('properties')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('properties')
+                .getPublicUrl(filePath);
+
+            handleChange(field, publicUrl);
+        } catch (error) {
+            console.error('File upload failed', error);
+            alert('File upload failed');
+        } finally {
+            setUploading(false);
+        }
     };
 
     const handleFinish = async () => {
@@ -84,6 +116,32 @@ export default function Step7Payment({ propertyId, propertyName, data, onUpdate,
                     label={t('payment.account')}
                     value={formData.accountNumber || ''}
                     onChange={e => handleChange('accountNumber', e.target.value)}
+                />
+            </div>
+
+            <div className={styles.divider} />
+
+            <div className={styles.categoryBlock}>
+                <h3 className={styles.sectionTitle} style={{ marginBottom: '1rem' }}>{t('payment.cheque')}</h3>
+                
+                <div style={{ backgroundColor: '#eff6ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #bfdbfe', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>ℹ️</span>
+                    <p style={{ color: '#1e3a8a', fontSize: '0.9rem', margin: 0, lineHeight: 1.5 }}>
+                        {t('payment.cheque_note')}
+                    </p>
+                </div>
+
+                {formData.voidedChequeFile && (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '6px', marginBottom: '1rem' }}>
+                        <span style={{ color: '#059669', fontWeight: 500, fontSize: '0.85rem' }}>✓ {t('profile.uploaded')}</span>
+                    </div>
+                )}
+
+                <FileUploader
+                    accept=".pdf,image/*"
+                    description="PDF or image (JPG, PNG)"
+                    onChange={(files) => handleFileUpload(files, 'voidedChequeFile')}
+                    disabled={uploading}
                 />
             </div>
 

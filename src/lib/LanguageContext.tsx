@@ -91,6 +91,8 @@ const dictionary: Record<string, Record<Language, string>> = {
     'payment.institution': { en: 'Institution Number', fr: "Numéro d'institution" },
     'payment.branch': { en: 'Branch (Transit) Number', fr: 'Numéro de transit (Succursale)' },
     'payment.account': { en: 'Account Number', fr: 'Numéro de compte' },
+    'payment.cheque': { en: 'Voided Cheque', fr: 'Spécimen de chèque' },
+    'payment.cheque_note': { en: "You can attach a picture or a PDF of a voided cheque. Alternatively, you can send it to accounting@premiumbooking.ca.", fr: "Vous pouvez joindre une photo ou un PDF d'un spécimen de chèque annulé. Sinon, vous pouvez l'envoyer à accounting@premiumbooking.ca." },
 
     // Contract Step
     'contract.title': { en: 'Guest Contract', fr: 'Contrat de l’invité' },

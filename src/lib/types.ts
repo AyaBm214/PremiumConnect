@@ -144,6 +144,7 @@ export interface Property {
             accountHolder?: string;
             transitInstitution?: string;
             branchNumber?: string;
+            voidedChequeFile?: string;
             comments?: string;
         };
         // Step 7: Contract

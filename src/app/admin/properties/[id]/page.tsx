@@ -690,6 +690,7 @@ export default function PropertyDetailsPage() {
                             <EditRow label={t('payment.account')} value={editedData.payment?.accountNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, accountNumber: v } })} />
                             <EditRow label={t('payment.institution')} value={editedData.payment?.transitInstitution || editedData.payment?.routingNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, transitInstitution: v, routingNumber: v } })} />
                             <EditRow label={t('payment.branch')} value={editedData.payment?.branchNumber} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, branchNumber: v } })} />
+                            <EditRow label={t('payment.cheque')} value={editedData.payment?.voidedChequeFile} onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, voidedChequeFile: v } })} />
                             <EditRow label={t('step.comments_label')} value={editedData.payment?.comments} isTextArea onChange={(v) => setEditedData({ ...editedData, payment: { ...editedData.payment, comments: v } })} />
                         </>
                     ) : (
@@ -699,6 +700,10 @@ export default function PropertyDetailsPage() {
                             <Row label={t('payment.account')} value={data.payment?.accountNumber} />
                             <Row label={t('payment.institution')} value={data.payment?.transitInstitution || data.payment?.routingNumber} />
                             <Row label={t('payment.branch')} value={data.payment?.branchNumber} />
+                            <Row 
+                                label={t('payment.cheque')} 
+                                value={data.payment?.voidedChequeFile ? <a href={data.payment.voidedChequeFile} target="_blank" style={{ color: 'blue', textDecoration: 'underline' }}>{t('admin.props.view')}</a> : 'N/A'} 
+                            />
                             <Row label={t('step.comments_label')} value={data.payment?.comments} />
                         </>
                     )}
